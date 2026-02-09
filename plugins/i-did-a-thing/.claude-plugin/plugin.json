@@ -1,0 +1,12 @@
+{
+  "name": "i-did-a-thing",
+  "version": "1.0.0",
+  "description": "A build-me-up tool that helps you log accomplishments, practice interviews, and construct tailored resumes from your personal arsenal of wins",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["career", "accomplishments", "resume", "interview", "self-advocacy", "professional-development"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

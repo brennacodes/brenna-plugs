@@ -1,0 +1,37 @@
+{
+  "hooks": [
+    {
+      "name": "auto-index-on-log",
+      "description": "Automatically rebuild the things index after a new log is written",
+      "event": "PostToolUse",
+      "matcher": {
+        "tool": "Write",
+        "path_pattern": "*/logs/*.md"
+      },
+      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/rebuild-index.sh",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "auto-arsenal-update",
+      "description": "Update arsenal skill files when a new log entry references skills",
+      "event": "PostToolUse",
+      "matcher": {
+        "tool": "Write",
+        "path_pattern": "*/logs/*.md"
+      },
+      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/update-arsenal.sh \"${TOOL_INPUT_FILE_PATH}\"",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "validate-log-format",
+      "description": "Validate that log entries have required frontmatter fields before writing",
+      "event": "PreToolUse",
+      "matcher": {
+        "tool": "Write",
+        "path_pattern": "*/logs/*.md"
+      },
+      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-log.sh \"${TOOL_INPUT_FILE_PATH}\"",
+      "timeout_ms": 3000
+    }
+  ]
+}
