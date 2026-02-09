@@ -1,0 +1,13 @@
+{
+  "name": "brenna-plugs",
+  "owner": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "A collection of Claude Code plugins by brennacodes",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": []
+}
