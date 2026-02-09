@@ -1,0 +1,12 @@
+{
+  "name": "mark-my-words",
+  "version": "1.0.0",
+  "description": "Write, manage, and publish blog posts on Quartz static sites",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["blog", "quartz", "writing", "markdown"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

@@ -9,5 +9,14 @@
     "version": "1.0.0",
     "pluginRoot": "./plugins"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "mark-my-words",
+      "source": "mark-my-words",
+      "description": "Create and manage blog posts for Quartz static sites with guided interview workflows",
+      "version": "1.0.0",
+      "keywords": ["blog", "quartz", "writing", "markdown"],
+      "category": "content"
+    }
+  ]
 }
