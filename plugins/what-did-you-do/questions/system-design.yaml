@@ -1,0 +1,165 @@
+# System design interview questions
+# Focus: end-to-end system architecture, scalability, trade-off analysis
+
+questions:
+  - id: sd-001
+    text: "Design a URL shortener like bit.ly."
+    category: system-design
+    subcategory: web-systems
+    skills_tested: [system-design, scalability, database-design]
+    level: [mid, senior, staff]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How would you handle analytics — tracking clicks, geographic data, referrers?"
+        depth: 2
+      - text: "What happens when you need to support custom short URLs and collision handling?"
+        depth: 3
+    difficulty: 2
+    expected_format: whiteboard
+    time_budget_minutes: 30
+    red_flags:
+      - "no discussion of ID generation strategy"
+      - "ignores read-heavy access patterns"
+      - "no mention of URL expiration or abuse prevention"
+    green_flags:
+      - "discusses hash vs counter-based ID generation"
+      - "considers caching for hot URLs"
+      - "addresses redirect latency requirements"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sd-002
+    text: "Design a real-time chat application like Slack."
+    category: system-design
+    subcategory: real-time
+    skills_tested: [system-design, real-time-systems, message-delivery]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you handle message ordering guarantees across multiple channels?"
+        depth: 2
+      - text: "How would you design the notification system for offline users?"
+        depth: 3
+    difficulty: 4
+    expected_format: whiteboard
+    time_budget_minutes: 45
+    red_flags:
+      - "polling-only approach"
+      - "no mention of message persistence"
+      - "ignores presence/status system"
+    green_flags:
+      - "websocket with fallback strategy"
+      - "discusses message delivery guarantees"
+      - "considers channel-based partitioning"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sd-003
+    text: "Design a rate limiter for an API gateway."
+    category: system-design
+    subcategory: infrastructure
+    skills_tested: [system-design, distributed-systems, algorithm-design]
+    level: [senior, staff]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you handle rate limiting across multiple API gateway instances?"
+        depth: 2
+      - text: "How would you implement tiered rate limits for different API plans?"
+        depth: 3
+    difficulty: 3
+    expected_format: whiteboard
+    time_budget_minutes: 30
+    red_flags:
+      - "only considers single-node solution"
+      - "no discussion of algorithm tradeoffs"
+      - "ignores race conditions in distributed counting"
+    green_flags:
+      - "compares token bucket, sliding window, and fixed window"
+      - "addresses distributed coordination"
+      - "considers graceful degradation"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sd-004
+    text: "Design a notification system that handles email, push, and SMS."
+    category: system-design
+    subcategory: messaging
+    skills_tested: [system-design, event-driven-architecture, reliability]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you handle user preferences and notification fatigue?"
+        depth: 2
+      - text: "How would you ensure exactly-once delivery semantics?"
+        depth: 3
+    difficulty: 3
+    expected_format: whiteboard
+    time_budget_minutes: 35
+    red_flags:
+      - "synchronous delivery approach"
+      - "no mention of delivery guarantees"
+      - "ignores user preference management"
+    green_flags:
+      - "event-driven with message queue"
+      - "discusses retry and dead-letter strategies"
+      - "considers template management and localization"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sd-005
+    text: "Design a search autocomplete system."
+    category: system-design
+    subcategory: data-systems
+    skills_tested: [system-design, data-structures, latency-optimization]
+    level: [mid, senior, staff]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you rank suggestions — by popularity, recency, or personalization?"
+        depth: 2
+      - text: "How do you handle offensive or inappropriate suggestions?"
+        depth: 3
+    difficulty: 3
+    expected_format: whiteboard
+    time_budget_minutes: 30
+    red_flags:
+      - "full database query per keystroke"
+      - "no discussion of trie or prefix-based data structures"
+      - "ignores latency requirements"
+    green_flags:
+      - "discusses trie-based approach"
+      - "considers caching and precomputation"
+      - "addresses p99 latency targets"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sd-006
+    text: "Design a distributed task scheduler like cron at scale."
+    category: system-design
+    subcategory: infrastructure
+    skills_tested: [system-design, distributed-systems, reliability]
+    level: [staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [principal-engineer, cto]
+    follow_ups:
+      - text: "How do you ensure exactly-once execution across multiple scheduler nodes?"
+        depth: 2
+      - text: "How do you handle task dependencies and fan-out/fan-in patterns?"
+        depth: 3
+    difficulty: 5
+    expected_format: whiteboard
+    time_budget_minutes: 45
+    red_flags:
+      - "single-node scheduler"
+      - "no leader election or consensus"
+      - "ignores failure recovery and retry"
+    green_flags:
+      - "discusses leader election and fencing tokens"
+      - "handles clock skew and time zones"
+      - "considers observability and debugging"
+    source: built-in
+    added_date: "2025-01-01"

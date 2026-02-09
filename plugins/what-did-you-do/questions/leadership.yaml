@@ -1,0 +1,222 @@
+# Leadership interview questions
+# Focus: mentorship, decision-making, vision, organizational influence
+
+questions:
+  # --- Mentorship & Growth ---
+  - id: lead-001
+    text: "How do you approach mentoring a junior engineer?"
+    category: leadership
+    subcategory: mentorship
+    skills_tested: [mentorship, communication, patience]
+    level: [senior, staff, principal]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "Can you give a specific example of someone you mentored and what changed?"
+        depth: 2
+      - text: "How do you adjust your mentoring style for someone who's resistant to guidance?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "one-size-fits-all approach"
+      - "no concrete example"
+      - "confuses mentoring with managing"
+    green_flags:
+      - "adapts style to the individual"
+      - "describes specific outcomes"
+      - "creates psychological safety"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: lead-002
+    text: "Describe how you've helped someone grow in their career."
+    category: leadership
+    subcategory: mentorship
+    skills_tested: [mentorship, leadership, empathy]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, vp-engineering]
+    follow_ups:
+      - text: "How did you identify what they needed to grow?"
+        depth: 2
+      - text: "What's the most difficult mentoring situation you've navigated?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "only helped people like themselves"
+      - "growth was accidental, not intentional"
+      - "no long-term follow-through"
+    green_flags:
+      - "intentional development plan"
+      - "created stretch opportunities"
+      - "describes person's trajectory over time"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: lead-003
+    text: "How do you give constructive feedback?"
+    category: leadership
+    subcategory: mentorship
+    skills_tested: [communication, leadership, emotional-intelligence]
+    level: [senior, staff, principal]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, vp-engineering]
+    follow_ups:
+      - text: "How do you handle it when someone reacts defensively to your feedback?"
+        depth: 2
+      - text: "How do you give feedback to someone more senior than you?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "only gives feedback in reviews"
+      - "avoids negative feedback"
+      - "no framework or structure"
+    green_flags:
+      - "timely and specific feedback"
+      - "focuses on behavior, not person"
+      - "follows up to track improvement"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Decision-Making ---
+  - id: lead-004
+    text: "How do you make decisions when the team disagrees?"
+    category: leadership
+    subcategory: decision-making
+    skills_tested: [decision-making, facilitation, leadership]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, vp-engineering, bar-raiser]
+    follow_ups:
+      - text: "When is it appropriate to make a unilateral decision vs seeking consensus?"
+        depth: 2
+      - text: "How do you get people to commit to a decision they disagreed with?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "always seeks consensus (decision paralysis)"
+      - "always overrides (authoritarian)"
+      - "no structured decision-making process"
+    green_flags:
+      - "disagree-and-commit framework"
+      - "makes reversible vs irreversible distinction"
+      - "ensures dissenting voices are heard"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: lead-005
+    text: "Describe a time you had to push back on a decision from above."
+    category: leadership
+    subcategory: decision-making
+    skills_tested: [courage, communication, judgment]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, vp-engineering, bar-raiser]
+    follow_ups:
+      - text: "How did you frame your pushback to be constructive rather than combative?"
+        depth: 2
+      - text: "What happened when your pushback didn't change the decision?"
+        depth: 3
+    difficulty: 4
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "never pushes back"
+      - "pushes back combatively"
+      - "undermines the decision after losing"
+    green_flags:
+      - "data-driven pushback"
+      - "proposes alternative, not just opposition"
+      - "commits to the decision if overruled"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: lead-006
+    text: "How do you prioritize when everything feels urgent?"
+    category: leadership
+    subcategory: decision-making
+    skills_tested: [prioritization, judgment, composure]
+    level: [senior, staff, principal]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, vp-engineering]
+    follow_ups:
+      - text: "How do you communicate to stakeholders when their priority isn't top of the list?"
+        depth: 2
+      - text: "How do you prevent urgency-driven prioritization from becoming the default?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "works on whatever's loudest"
+      - "no prioritization framework"
+      - "can't say no"
+    green_flags:
+      - "clear framework (impact, urgency, effort)"
+      - "communicates tradeoffs transparently"
+      - "protects team from context-switching"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Vision & Strategy ---
+  - id: lead-007
+    text: "How do you align technical decisions with business goals?"
+    category: leadership
+    subcategory: strategy
+    skills_tested: [strategic-thinking, communication, business-acumen]
+    level: [staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [vp-engineering, cto, bar-raiser]
+    follow_ups:
+      - text: "Give an example where a technical decision was unpopular but right for the business."
+        depth: 2
+      - text: "How do you communicate technical strategy to non-technical stakeholders?"
+        depth: 3
+    difficulty: 4
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "technical decisions in isolation"
+      - "can't speak business language"
+      - "optimizes for engineering elegance over value"
+    green_flags:
+      - "frames technical work in business impact"
+      - "builds relationships with product/business peers"
+      - "makes tradeoffs explicitly"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: lead-008
+    text: "Describe how you've driven a technical initiative from idea to adoption."
+    category: leadership
+    subcategory: strategy
+    skills_tested: [influence, execution, vision]
+    level: [staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [principal-engineer, vp-engineering, cto]
+    follow_ups:
+      - text: "What resistance did you encounter, and how did you overcome it?"
+        depth: 2
+      - text: "How did you measure adoption and prove the initiative's value?"
+        depth: 3
+    difficulty: 4
+    expected_format: narrative
+    time_budget_minutes: 10
+    red_flags:
+      - "imposed from above without buy-in"
+      - "no metrics for success"
+      - "initiative died after the proof of concept"
+    green_flags:
+      - "built coalition of supporters"
+      - "incremental rollout with proof points"
+      - "measured and communicated impact"
+    source: built-in
+    added_date: "2025-01-01"

@@ -1,0 +1,222 @@
+# Technical interview questions
+# Focus: architecture decisions, code quality, debugging, operational excellence
+
+questions:
+  # --- Architecture & Design ---
+  - id: tech-001
+    text: "You're designing a system that needs to handle 10x current traffic in 6 months. Walk me through your approach."
+    category: technical
+    subcategory: architecture
+    skills_tested: [system-design, scalability, planning]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "Where would the system break first under 10x load?"
+        depth: 2
+      - text: "How would you validate your scaling plan before committing resources?"
+        depth: 3
+    difficulty: 4
+    expected_format: whiteboard
+    time_budget_minutes: 15
+    red_flags:
+      - "jumps to solutions without understanding current system"
+      - "only considers horizontal scaling"
+      - "no mention of cost or timeline tradeoffs"
+    green_flags:
+      - "starts with current bottleneck analysis"
+      - "considers multiple scaling strategies"
+      - "addresses monitoring and validation"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: tech-002
+    text: "How would you approach breaking a monolith into microservices?"
+    category: technical
+    subcategory: architecture
+    skills_tested: [architecture, system-design, migration-strategy]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer, cto]
+    follow_ups:
+      - text: "How do you decide where to draw service boundaries?"
+        depth: 2
+      - text: "What's your strategy for handling the shared database during migration?"
+        depth: 3
+    difficulty: 4
+    expected_format: whiteboard
+    time_budget_minutes: 15
+    red_flags:
+      - "suggests big-bang rewrite"
+      - "no mention of data consistency"
+      - "ignores operational complexity increase"
+    green_flags:
+      - "proposes incremental strangler pattern"
+      - "addresses data ownership and consistency"
+      - "considers team topology impact"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: tech-003
+    text: "Describe how you'd design a caching strategy for a read-heavy application."
+    category: technical
+    subcategory: architecture
+    skills_tested: [system-design, performance, tradeoff-analysis]
+    level: [mid, senior, staff]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you handle cache invalidation?"
+        depth: 2
+      - text: "What's your approach to cache stampede prevention?"
+        depth: 3
+    difficulty: 3
+    expected_format: whiteboard
+    time_budget_minutes: 10
+    red_flags:
+      - "doesn't address cache invalidation"
+      - "single layer caching only"
+      - "no mention of consistency tradeoffs"
+    green_flags:
+      - "discusses multiple caching layers"
+      - "addresses invalidation strategy"
+      - "considers cold start and thundering herd"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Code Quality & Process ---
+  - id: tech-004
+    text: "How do you decide what to test and what not to test?"
+    category: technical
+    subcategory: code-quality
+    skills_tested: [testing-strategy, pragmatism, quality]
+    level: [mid, senior, staff]
+    stages: [phone-screen, technical, onsite]
+    interviewer_types: [staff-engineer, engineering-manager]
+    follow_ups:
+      - text: "Give me an example of something you deliberately chose not to test, and why."
+        depth: 2
+      - text: "How do you handle testing in a legacy codebase with no existing tests?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "100% coverage dogma"
+      - "only tests happy paths"
+      - "no mention of cost-benefit analysis"
+    green_flags:
+      - "risk-based testing strategy"
+      - "discusses test pyramid"
+      - "pragmatic about coverage targets"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: tech-005
+    text: "Walk me through how you'd approach a major refactoring effort."
+    category: technical
+    subcategory: code-quality
+    skills_tested: [refactoring, risk-management, planning]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you keep the refactoring from blocking feature work?"
+        depth: 2
+      - text: "How do you measure whether the refactoring was successful?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "proposes big-bang rewrite"
+      - "no mention of backward compatibility"
+      - "doesn't consider team coordination"
+    green_flags:
+      - "incremental approach with milestones"
+      - "safety net of tests before changing"
+      - "stakeholder alignment on timeline"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: tech-006
+    text: "How do you handle technical debt in a fast-moving codebase?"
+    category: technical
+    subcategory: code-quality
+    skills_tested: [prioritization, pragmatism, communication]
+    level: [senior, staff, principal]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer, cto]
+    follow_ups:
+      - text: "How do you make the business case for paying down technical debt?"
+        depth: 2
+      - text: "Give me an example of tech debt you chose to live with, and why."
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "ignores tech debt entirely"
+      - "gold-plates everything"
+      - "can't communicate debt in business terms"
+    green_flags:
+      - "framework for prioritizing debt"
+      - "communicates in terms of velocity impact"
+      - "balances pragmatism with quality"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Debugging & Operations ---
+  - id: tech-007
+    text: "Production is down. Walk me through your incident response."
+    category: technical
+    subcategory: operations
+    skills_tested: [incident-response, composure, systematic-thinking]
+    level: [mid, senior, staff]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, engineering-manager]
+    follow_ups:
+      - text: "How do you communicate with stakeholders during an incident?"
+        depth: 2
+      - text: "Walk me through how you'd run the post-mortem."
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "starts debugging before assessing impact"
+      - "no mention of communication"
+      - "lone hero approach"
+    green_flags:
+      - "clear triage and communication process"
+      - "mitigate first, root cause after"
+      - "mentions blameless post-mortem"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: tech-008
+    text: "You're seeing intermittent failures in a distributed system. How do you diagnose them?"
+    category: technical
+    subcategory: operations
+    skills_tested: [debugging, distributed-systems, analytical-thinking]
+    level: [senior, staff, principal]
+    stages: [technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "What observability tooling would you want, and why?"
+        depth: 2
+      - text: "How do you reproduce an intermittent failure for testing?"
+        depth: 3
+    difficulty: 4
+    expected_format: narrative
+    time_budget_minutes: 10
+    red_flags:
+      - "tries to reproduce locally only"
+      - "doesn't consider distributed system specifics"
+      - "no mention of correlation or tracing"
+    green_flags:
+      - "starts with logs, metrics, traces"
+      - "considers network, timing, and state issues"
+      - "uses hypothesis-driven investigation"
+    source: built-in
+    added_date: "2025-01-01"

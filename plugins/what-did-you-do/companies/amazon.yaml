@@ -1,0 +1,227 @@
+# Amazon interview profile
+# Based on publicly available information about Amazon's interview process
+
+company: Amazon
+industry: technology
+engineering_culture: ownership-driven
+
+values:
+  - name: Customer Obsession
+    interview_signals:
+      - starts with customer need, works backward
+      - quantifies customer impact
+      - makes tradeoffs in favor of customer experience
+    anti_patterns:
+      - technology-first thinking
+      - internal metrics without customer connection
+      - "the customer doesn't know what they want"
+    question_themes: [customer-focus, empathy, data-driven-decisions]
+
+  - name: Ownership
+    interview_signals:
+      - takes responsibility beyond job description
+      - long-term thinking over short-term wins
+      - never says "that's not my job"
+    anti_patterns:
+      - waiting to be told what to do
+      - blaming other teams
+      - optimizing only for own team
+    question_themes: [initiative, accountability, cross-team-impact]
+
+  - name: Invent and Simplify
+    interview_signals:
+      - novel approaches to old problems
+      - simplification as a goal, not an afterthought
+      - comfortable being misunderstood for a period
+    anti_patterns:
+      - over-engineering
+      - following industry trends without questioning
+      - complexity as a sign of sophistication
+    question_themes: [innovation, simplification, creative-problem-solving]
+
+  - name: Are Right, A Lot
+    interview_signals:
+      - strong judgment with data backing
+      - seeks diverse perspectives before deciding
+      - updates beliefs with new information
+    anti_patterns:
+      - stubbornness disguised as conviction
+      - decision by committee
+      - analysis paralysis
+    question_themes: [decision-making, judgment, adaptability]
+
+  - name: Learn and Be Curious
+    interview_signals:
+      - continuous learning examples
+      - explores outside comfort zone
+      - asks thoughtful questions in the interview
+    anti_patterns:
+      - stagnant skill set
+      - only learns when forced
+      - no questions for the interviewer
+    question_themes: [growth-mindset, learning, curiosity]
+
+  - name: Hire and Develop the Best
+    interview_signals:
+      - mentorship with measurable outcomes
+      - raises the bar for the team
+      - develops talent proactively
+    anti_patterns:
+      - hoards knowledge
+      - only hires people like themselves
+      - no investment in others' growth
+    question_themes: [mentorship, hiring, team-building]
+
+  - name: Insist on the Highest Standards
+    interview_signals:
+      - quality bar examples
+      - pushes back on "good enough"
+      - continuously raises standards
+    anti_patterns:
+      - accepts mediocrity
+      - perfectionism that blocks shipping
+      - standards only for others, not self
+    question_themes: [quality, standards, continuous-improvement]
+
+  - name: Think Big
+    interview_signals:
+      - ambitious scope of thinking
+      - connects tactical work to strategic vision
+      - proposes bold directions
+    anti_patterns:
+      - incremental thinking only
+      - afraid of big bets
+      - scope-limited to immediate team
+    question_themes: [vision, strategy, ambition]
+
+  - name: Bias for Action
+    interview_signals:
+      - speed of decision-making
+      - calculated risk-taking
+      - reversible decisions made quickly
+    anti_patterns:
+      - endless analysis before acting
+      - waiting for permission
+      - avoiding decisions with uncertainty
+    question_themes: [speed, decisiveness, risk-tolerance]
+
+  - name: Frugality
+    interview_signals:
+      - doing more with less
+      - creative resource constraints
+      - builds vs buys thoughtfully
+    anti_patterns:
+      - throws money at problems
+      - waste disguised as investment
+      - doesn't consider cost
+    question_themes: [resourcefulness, efficiency, cost-awareness]
+
+  - name: Earn Trust
+    interview_signals:
+      - admits mistakes openly
+      - listens actively and sincerely
+      - consistency between words and actions
+    anti_patterns:
+      - blames others
+      - takes credit for team work
+      - says what people want to hear
+    question_themes: [integrity, trust, humility]
+
+  - name: Dive Deep
+    interview_signals:
+      - knows the details
+      - metrics-driven
+      - audits regularly
+    anti_patterns:
+      - hand-waves technical details
+      - relies on others for data
+      - disconnected from the work
+    question_themes: [attention-to-detail, data-literacy, technical-depth]
+
+  - name: Have Backbone; Disagree and Commit
+    interview_signals:
+      - respectfully challenges decisions
+      - commits fully once decided
+      - doesn't undermine after disagreeing
+    anti_patterns:
+      - silent disagreement (passive resistance)
+      - agrees then sabotages
+      - never disagrees
+    question_themes: [courage, commitment, constructive-conflict]
+
+  - name: Deliver Results
+    interview_signals:
+      - quantified outcomes
+      - overcomes obstacles to deliver
+      - focuses on key inputs
+    anti_patterns:
+      - all effort, no outcomes
+      - blame for missed targets
+      - delivers the wrong thing on time
+    question_themes: [execution, impact, accountability]
+
+interview_process:
+  - stage: phone-screen
+    format: behavioral
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [culture-fit, communication, motivation]
+    persona: recruiter
+    notes: "Heavy LP (Leadership Principles) questions. Every answer should map to at least one LP."
+
+  - stage: online-assessment
+    format: coding
+    duration_minutes: 90
+    rounds: 1
+    evaluation_focus: [coding-ability, problem-solving, efficiency]
+    persona: null
+    notes: "Two coding problems. Focus on correctness and efficiency."
+
+  - stage: onsite
+    format: mixed
+    duration_minutes: 45
+    rounds: 4
+    evaluation_focus: [leadership-principles, technical-depth, system-design, behavioral]
+    persona: staff-engineer
+    notes: "Each round typically covers 2-3 LPs. STAR format expected."
+
+  - stage: bar-raiser
+    format: behavioral
+    duration_minutes: 60
+    rounds: 1
+    evaluation_focus: [judgment, ownership, long-term-thinking, culture-bar]
+    persona: bar-raiser
+    notes: "Cross-functional interviewer. Not from the hiring team. Veto power."
+
+  - stage: system-design
+    format: whiteboard
+    duration_minutes: 60
+    rounds: 1
+    evaluation_focus: [system-design, scalability, tradeoff-analysis]
+    persona: principal-engineer
+    notes: "Design a system from scratch. Expect deep dive into specific components."
+
+culture_signals:
+  communication_style: data-driven, direct
+  decision_speed: fast for reversible decisions, careful for irreversible
+  meeting_culture: "two-pizza teams, six-page memos"
+  feedback_style: direct and specific
+  work_pace: high-intensity, ownership-driven
+
+level_expectations:
+  sde1:
+    scope: "single project or feature"
+    autonomy: "guided by senior engineers"
+    leadership: "self-management"
+  sde2:
+    scope: "multiple features, cross-component"
+    autonomy: "largely independent"
+    leadership: "mentoring SDE1s"
+  sde3:
+    scope: "team-wide technical direction"
+    autonomy: "drives technical decisions"
+    leadership: "mentoring, technical leadership"
+  principal:
+    scope: "organization-wide"
+    autonomy: "sets technical strategy"
+    leadership: "cross-team influence, raises the bar"

@@ -1,0 +1,123 @@
+# Google interview profile
+# Based on publicly available information about Google's interview process
+
+company: Google
+industry: technology
+engineering_culture: technical-excellence
+
+values:
+  - name: Googleyness
+    interview_signals:
+      - intellectual humility
+      - comfortable with ambiguity
+      - enjoys working with smart people
+      - fun to work with
+    anti_patterns:
+      - arrogance about technical ability
+      - rigid thinking
+      - can't handle disagreement
+    question_themes: [culture-fit, collaboration, intellectual-humility]
+
+  - name: General Cognitive Ability
+    interview_signals:
+      - structured problem-solving
+      - learns and applies quickly
+      - asks clarifying questions before solving
+    anti_patterns:
+      - jumps to solutions without understanding
+      - can't break down complex problems
+      - relies on memorized patterns
+    question_themes: [problem-solving, analytical-thinking, learning-speed]
+
+  - name: Role-Related Knowledge
+    interview_signals:
+      - deep expertise in relevant areas
+      - practical application of knowledge
+      - awareness of current landscape
+    anti_patterns:
+      - theoretical knowledge without application
+      - outdated practices
+      - narrow expertise without breadth
+    question_themes: [technical-depth, practical-experience, domain-knowledge]
+
+  - name: Leadership
+    interview_signals:
+      - leads without authority
+      - navigates ambiguity
+      - drives consensus
+      - steps up when needed, steps back when appropriate
+    anti_patterns:
+      - leadership only with title
+      - always the hero
+      - can't follow or support others' ideas
+    question_themes: [emergent-leadership, collaboration, influence]
+
+interview_process:
+  - stage: phone-screen
+    format: mixed
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [coding, problem-solving, communication]
+    persona: staff-engineer
+    notes: "Coding question with live discussion. Think aloud. Ask clarifying questions."
+
+  - stage: onsite
+    format: coding
+    duration_minutes: 45
+    rounds: 2
+    evaluation_focus: [algorithms, data-structures, code-quality, problem-solving]
+    persona: staff-engineer
+    notes: "Whiteboard or Google Doc coding. Focus on approach and communication."
+
+  - stage: system-design
+    format: whiteboard
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [system-design, scalability, distributed-systems]
+    persona: principal-engineer
+    notes: "Open-ended design problem. Expected to drive the conversation."
+
+  - stage: behavioral
+    format: behavioral
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [googleyness, leadership, collaboration]
+    persona: engineering-manager
+    notes: "Assesses Googleyness and leadership. Mix of behavioral and hypothetical."
+
+  - stage: hiring-committee
+    format: review
+    duration_minutes: null
+    rounds: 1
+    evaluation_focus: [overall-assessment, level-calibration]
+    persona: null
+    notes: "Packet review by committee. No direct interaction. Interviewers provide structured feedback."
+
+culture_signals:
+  communication_style: data-informed, collaborative
+  decision_speed: deliberate, consensus-oriented
+  meeting_culture: "design docs, office hours, tech talks"
+  feedback_style: constructive, specific, data-backed
+  work_pace: project-dependent, emphasis on quality
+
+level_expectations:
+  l3:
+    scope: "well-defined problems within a project"
+    autonomy: "guided by TL"
+    leadership: "self-directed work"
+  l4:
+    scope: "independent feature ownership"
+    autonomy: "designs and implements independently"
+    leadership: "mentors L3s, leads small projects"
+  l5:
+    scope: "cross-project technical leadership"
+    autonomy: "defines technical direction"
+    leadership: "technical leadership across team"
+  l6:
+    scope: "organization-wide technical strategy"
+    autonomy: "shapes technical roadmap"
+    leadership: "cross-team influence, industry impact"
+  l7:
+    scope: "company-wide impact"
+    autonomy: "defines technical vision"
+    leadership: "thought leadership, industry recognition"

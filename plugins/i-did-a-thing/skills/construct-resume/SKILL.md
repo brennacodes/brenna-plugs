@@ -162,4 +162,4 @@ End with actionable advice:
 > 3. **Practice these interview questions** (likely to come up for this role):
 >    - "<question from question bank that tests a key requirement>"
 >
-> Run `/i-did-a-thing:interview-me` to start practicing.
+> Run `/what-did-you-do:practice` to drill specific questions, or `/what-did-you-do:prep-for` to build a full preparation plan for this company.
