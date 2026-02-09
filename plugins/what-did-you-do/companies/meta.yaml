@@ -1,0 +1,124 @@
+# Meta interview profile
+# Based on publicly available information about Meta's interview process
+
+company: Meta
+industry: technology
+engineering_culture: move-fast
+
+values:
+  - name: Move Fast
+    interview_signals:
+      - bias toward shipping
+      - pragmatic tradeoffs for speed
+      - comfortable with iteration over perfection
+    anti_patterns:
+      - analysis paralysis
+      - gold-plating before validation
+      - fear of breaking things
+    question_themes: [speed, iteration, pragmatism]
+
+  - name: Be Bold
+    interview_signals:
+      - takes on ambitious problems
+      - comfortable with risk and uncertainty
+      - proposes unconventional solutions
+    anti_patterns:
+      - plays it safe
+      - waits for permission
+      - incremental thinking only
+    question_themes: [ambition, risk-taking, innovation]
+
+  - name: Focus on Long-Term Impact
+    interview_signals:
+      - balances speed with sustainability
+      - thinks about problems at scale
+      - considers second-order effects
+    anti_patterns:
+      - short-term wins at long-term cost
+      - ignores technical debt
+      - no vision beyond current sprint
+    question_themes: [impact, strategy, sustainability]
+
+  - name: Build Social Value
+    interview_signals:
+      - connects work to user impact
+      - considers diverse user perspectives
+      - thinks about community effects
+    anti_patterns:
+      - builds for engineers, not users
+      - ignores edge cases and minority users
+      - technology for technology's sake
+    question_themes: [user-impact, inclusivity, social-responsibility]
+
+  - name: Be Open
+    interview_signals:
+      - transparent communication
+      - shares context freely
+      - welcomes feedback
+    anti_patterns:
+      - information hoarding
+      - defensive about decisions
+      - surprises stakeholders
+    question_themes: [transparency, communication, feedback]
+
+interview_process:
+  - stage: phone-screen
+    format: coding
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [coding, problem-solving, communication]
+    persona: staff-engineer
+    notes: "Live coding in CoderPad. Focus on working solution, then optimization."
+
+  - stage: coding-rounds
+    format: coding
+    duration_minutes: 45
+    rounds: 2
+    evaluation_focus: [algorithms, data-structures, optimization, code-quality]
+    persona: staff-engineer
+    notes: "Two coding rounds. Expect to write compilable code. Multiple problems per round."
+
+  - stage: system-design
+    format: whiteboard
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [system-design, scalability, real-world-constraints]
+    persona: principal-engineer
+    notes: "Design at Meta's scale. Think billions of users. Address real-world constraints."
+
+  - stage: behavioral
+    format: behavioral
+    duration_minutes: 45
+    rounds: 1
+    evaluation_focus: [culture-fit, leadership, collaboration, impact]
+    persona: engineering-manager
+    notes: "Values-aligned behavioral questions. Focus on impact and collaboration at scale."
+
+culture_signals:
+  communication_style: direct, open, data-informed
+  decision_speed: fast, iterate quickly
+  meeting_culture: "design reviews, hackathons, bootcamp"
+  feedback_style: direct, frequent, peer-driven
+  work_pace: high-velocity, impact-driven
+
+level_expectations:
+  e3:
+    scope: "feature-level work within a team"
+    autonomy: "guided by senior engineers"
+    leadership: "self-management"
+  e4:
+    scope: "independent feature ownership, cross-feature"
+    autonomy: "largely autonomous"
+    leadership: "mentoring E3s, small project leadership"
+  e5:
+    scope: "team-level technical direction"
+    autonomy: "defines and executes strategy"
+    leadership: "technical leadership, cross-team influence"
+  e6:
+    scope: "multi-team impact"
+    autonomy: "shapes org-level strategy"
+    leadership: "organizational influence, raises the bar"
+  e7:
+    scope: "org-wide or company-wide impact"
+    autonomy: "defines technical vision"
+    leadership: "industry-level impact"

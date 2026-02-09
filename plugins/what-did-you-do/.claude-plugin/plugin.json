@@ -1,0 +1,12 @@
+{
+  "name": "what-did-you-do",
+  "version": "1.0.0",
+  "description": "Interview preparation with persona-driven practice, company-specific mock interviews, spaced repetition question selection, and progress tracking powered by your i-did-a-thing arsenal",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["interview", "career", "practice", "mock-interview", "behavioral", "system-design", "preparation"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

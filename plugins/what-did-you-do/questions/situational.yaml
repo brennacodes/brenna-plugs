@@ -1,0 +1,222 @@
+# Situational interview questions
+# Focus: hypothetical scenarios, judgment under pressure, values
+
+questions:
+  # --- Conflict & Pressure ---
+  - id: sit-001
+    text: "Your team lead wants to ship a feature you think has a critical flaw. What do you do?"
+    category: situational
+    subcategory: conflict
+    skills_tested: [communication, courage, judgment]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "What if the team lead disagrees with your assessment after you raise it?"
+        depth: 2
+      - text: "How do you escalate without undermining your team lead?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "ships it silently despite concerns"
+      - "goes over the lead's head immediately"
+      - "refuses to work on it without discussion"
+    green_flags:
+      - "raises concern with data and impact"
+      - "proposes alternatives"
+      - "commits to the outcome either way"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sit-002
+    text: "You're two weeks from a deadline and realize the scope is too large. What's your move?"
+    category: situational
+    subcategory: conflict
+    skills_tested: [prioritization, communication, pragmatism]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, recruiter]
+    follow_ups:
+      - text: "How do you decide what to cut vs what to keep?"
+        depth: 2
+      - text: "How do you rebuild stakeholder confidence after adjusting scope?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "death marches to meet the deadline"
+      - "hides the problem until it's too late"
+      - "cuts quality instead of scope"
+    green_flags:
+      - "raises early with clear options"
+      - "prioritizes by business value"
+      - "proposes phased delivery"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sit-003
+    text: "A colleague takes credit for your work in a meeting. How do you handle it?"
+    category: situational
+    subcategory: conflict
+    skills_tested: [self-advocacy, communication, composure]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite, bar-raiser]
+    interviewer_types: [engineering-manager, bar-raiser]
+    follow_ups:
+      - text: "What if this is a pattern, not a one-time incident?"
+        depth: 2
+      - text: "How do you prevent this without damaging the working relationship?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "lets it go entirely"
+      - "confronts publicly and aggressively"
+      - "passive-aggressive response"
+    green_flags:
+      - "addresses privately and directly"
+      - "focuses on impact, not blame"
+      - "creates visibility for future contributions"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Ambiguity & Change ---
+  - id: sit-004
+    text: "You join a new team with no documentation and a codebase nobody fully understands. What's your first month look like?"
+    category: situational
+    subcategory: ambiguity
+    skills_tested: [onboarding, initiative, learning-speed]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "How do you contribute value while still ramping up?"
+        depth: 2
+      - text: "How do you decide what to document vs what to just learn?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "waits to be told what to do"
+      - "tries to rewrite everything immediately"
+      - "doesn't seek out context from teammates"
+    green_flags:
+      - "systematic exploration plan"
+      - "builds relationships while learning"
+      - "documents findings for future team members"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sit-005
+    text: "Your project's requirements change significantly mid-sprint. How do you adapt?"
+    category: situational
+    subcategory: ambiguity
+    skills_tested: [adaptability, communication, prioritization]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, recruiter]
+    follow_ups:
+      - text: "How do you prevent requirement churn from becoming the norm?"
+        depth: 2
+      - text: "How do you protect team morale when priorities keep shifting?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "complains but complies"
+      - "ignores the change and keeps building"
+      - "no process for managing change"
+    green_flags:
+      - "assesses impact of change transparently"
+      - "renegotiates scope or timeline"
+      - "captures salvageable work"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sit-006
+    text: "You're asked to evaluate a technology you've never used for a critical project. How do you approach it?"
+    category: situational
+    subcategory: ambiguity
+    skills_tested: [learning, evaluation, decision-making]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "How do you separate vendor marketing from real-world suitability?"
+        depth: 2
+      - text: "What's your framework for build-vs-buy decisions?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "evaluates based on blog posts only"
+      - "no hands-on proof of concept"
+      - "ignores operational and team readiness costs"
+    green_flags:
+      - "structured evaluation criteria before starting"
+      - "builds proof of concept for critical paths"
+      - "considers total cost of ownership"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Ethics & Values ---
+  - id: sit-007
+    text: "You discover a security vulnerability that would be expensive to fix. How do you handle it?"
+    category: situational
+    subcategory: ethics
+    skills_tested: [integrity, communication, risk-assessment]
+    level: [mid, senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, bar-raiser, cto]
+    follow_ups:
+      - text: "What if your manager asks you to deprioritize it?"
+        depth: 2
+      - text: "How do you balance disclosure timeline with fix timeline?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "hides it to avoid the cost"
+      - "fixes it silently without reporting"
+      - "no risk assessment"
+    green_flags:
+      - "reports immediately with risk assessment"
+      - "proposes mitigation while fix is in progress"
+      - "documents for future prevention"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: sit-008
+    text: "A shortcut would save weeks but introduces technical debt. What do you do?"
+    category: situational
+    subcategory: ethics
+    skills_tested: [judgment, long-term-thinking, communication]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "How do you make the cost of the debt visible to decision-makers?"
+        depth: 2
+      - text: "When is taking the shortcut the right call?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "always takes the shortcut"
+      - "always refuses the shortcut"
+      - "takes it without documenting the debt"
+    green_flags:
+      - "evaluates context (reversibility, timeline, risk)"
+      - "documents the debt with a plan to pay it back"
+      - "communicates tradeoff to stakeholders"
+    source: built-in
+    added_date: "2025-01-01"

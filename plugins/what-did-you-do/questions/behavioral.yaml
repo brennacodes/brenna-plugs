@@ -1,0 +1,412 @@
+# Behavioral interview questions
+# Focus: past experiences, decision-making patterns, interpersonal skills
+
+questions:
+  # --- Collaboration & Teamwork ---
+  - id: beh-001
+    text: "Tell me about a time you had to work with someone whose approach was very different from yours."
+    category: behavioral
+    subcategory: collaboration
+    skills_tested: [collaboration, communication, adaptability]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, recruiter]
+    follow_ups:
+      - text: "How did you initially react to the difference in approach?"
+        depth: 2
+      - text: "What would you do differently if you encountered a similar situation today?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "blames the other person entirely"
+      - "no concrete resolution described"
+      - "avoids describing the conflict"
+    green_flags:
+      - "acknowledges both perspectives"
+      - "describes specific compromise or synthesis"
+      - "reflects on what they learned"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-002
+    text: "Describe a situation where you had to get buy-in from multiple stakeholders."
+    category: behavioral
+    subcategory: collaboration
+    skills_tested: [influence, communication, stakeholder-management]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, vp-engineering, bar-raiser]
+    follow_ups:
+      - text: "Who was the hardest stakeholder to convince, and why?"
+        depth: 2
+      - text: "How did you handle the stakeholder who never fully bought in?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "only engaged one stakeholder"
+      - "used authority instead of influence"
+      - "no measurable outcome"
+    green_flags:
+      - "tailored message to each audience"
+      - "addressed concerns proactively"
+      - "quantified the result of alignment"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-003
+    text: "Tell me about a time you helped a struggling teammate."
+    category: behavioral
+    subcategory: collaboration
+    skills_tested: [mentorship, empathy, leadership]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "How did you identify that they were struggling?"
+        depth: 2
+      - text: "What was the long-term outcome for that person?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "took over the work instead of coaching"
+      - "framed it as the teammate's fault"
+      - "no follow-through described"
+    green_flags:
+      - "identified root cause of struggle"
+      - "adapted support to the person's needs"
+      - "describes lasting improvement"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-004
+    text: "Describe a project where cross-team coordination was critical."
+    category: behavioral
+    subcategory: collaboration
+    skills_tested: [collaboration, communication, project-management]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, principal-engineer, bar-raiser]
+    follow_ups:
+      - text: "What was the biggest coordination challenge, and how did you address it?"
+        depth: 2
+      - text: "If you had to redo the project, how would you structure the coordination differently?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "vague about their role vs the team's"
+      - "no mention of communication mechanisms"
+      - "blames other teams for friction"
+    green_flags:
+      - "describes specific coordination mechanisms"
+      - "owns their role in cross-team dynamics"
+      - "quantifies outcome across teams"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Problem-Solving ---
+  - id: beh-005
+    text: "Tell me about the hardest bug you've ever tracked down."
+    category: behavioral
+    subcategory: problem-solving
+    skills_tested: [debugging, persistence, technical-depth]
+    level: [mid, senior, staff]
+    stages: [phone-screen, technical, onsite]
+    interviewer_types: [staff-engineer, principal-engineer]
+    follow_ups:
+      - text: "Walk me through your debugging process step by step."
+        depth: 2
+      - text: "What systemic change did you make to prevent similar bugs?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "no systematic debugging approach"
+      - "solved it by luck"
+      - "no prevention measures taken"
+    green_flags:
+      - "describes systematic elimination process"
+      - "explains root cause clearly"
+      - "implemented prevention measures"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-006
+    text: "Describe a time you had to solve a problem with incomplete information."
+    category: behavioral
+    subcategory: problem-solving
+    skills_tested: [problem-solving, decision-making, ambiguity-tolerance]
+    level: [mid, senior, staff, principal]
+    stages: [phone-screen, onsite, bar-raiser]
+    interviewer_types: [engineering-manager, bar-raiser]
+    follow_ups:
+      - text: "How did you decide when you had enough information to act?"
+        depth: 2
+      - text: "What was the cost of the uncertainty you accepted?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "waited for perfect information"
+      - "made a decision without acknowledging risks"
+      - "no framework for handling ambiguity"
+    green_flags:
+      - "describes risk assessment under uncertainty"
+      - "shows iterative decision-making"
+      - "built in reversibility or checkpoints"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-007
+    text: "Tell me about a time you identified a problem before anyone else noticed."
+    category: behavioral
+    subcategory: problem-solving
+    skills_tested: [proactive-thinking, attention-to-detail, ownership]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "What signals tipped you off that something was wrong?"
+        depth: 2
+      - text: "How did you convince others it was worth addressing?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "noticed but didn't act"
+      - "can't articulate what triggered the insight"
+      - "takes credit for team observation"
+    green_flags:
+      - "describes specific signals or patterns"
+      - "took initiative to investigate and resolve"
+      - "quantifies impact of early detection"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-008
+    text: "Describe a situation where your first approach didn't work. What did you do?"
+    category: behavioral
+    subcategory: problem-solving
+    skills_tested: [adaptability, problem-solving, resilience]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, staff-engineer]
+    follow_ups:
+      - text: "At what point did you realize the first approach was failing?"
+        depth: 2
+      - text: "How did the failure change your approach to similar problems going forward?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "doubled down on failing approach"
+      - "blames external factors for failure"
+      - "no learning extracted"
+    green_flags:
+      - "recognized failure signals early"
+      - "pivoted with clear reasoning"
+      - "describes what the failure taught them"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Ownership & Impact ---
+  - id: beh-009
+    text: "Tell me about something you built that you're really proud of."
+    category: behavioral
+    subcategory: ownership
+    skills_tested: [ownership, technical-skill, self-advocacy]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [staff-engineer, engineering-manager, recruiter]
+    follow_ups:
+      - text: "What was the most difficult technical decision you made during this project?"
+        depth: 2
+      - text: "How has it held up over time? What would you change now?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "can't articulate why they're proud"
+      - "describes the team's work, not their contribution"
+      - "no measurable impact"
+    green_flags:
+      - "clearly owns their contribution"
+      - "articulates both technical and business impact"
+      - "shows genuine enthusiasm"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-010
+    text: "Describe a time you went beyond what was asked of you."
+    category: behavioral
+    subcategory: ownership
+    skills_tested: [initiative, ownership, impact]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, bar-raiser]
+    follow_ups:
+      - text: "How did you decide it was worth going beyond the original scope?"
+        depth: 2
+      - text: "How was the extra effort received by your team and management?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "went beyond scope without alignment"
+      - "can't quantify the extra value created"
+      - "sounds like scope creep, not initiative"
+    green_flags:
+      - "identified the gap proactively"
+      - "aligned with team before expanding scope"
+      - "measurable impact from the extra effort"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-011
+    text: "Tell me about a time you had to make a difficult tradeoff."
+    category: behavioral
+    subcategory: ownership
+    skills_tested: [decision-making, prioritization, judgment]
+    level: [senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [staff-engineer, principal-engineer, bar-raiser]
+    follow_ups:
+      - text: "What data or framework did you use to make the decision?"
+        depth: 2
+      - text: "In retrospect, was it the right call? What would you change?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 7
+    red_flags:
+      - "avoided making the decision"
+      - "no framework for evaluating tradeoffs"
+      - "didn't consider second-order effects"
+    green_flags:
+      - "clearly articulates both sides"
+      - "describes decision framework"
+      - "acknowledges what was sacrificed"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-012
+    text: "Describe your biggest professional accomplishment in the last year."
+    category: behavioral
+    subcategory: ownership
+    skills_tested: [self-advocacy, impact, reflection]
+    level: [mid, senior, staff, principal]
+    stages: [phone-screen, onsite]
+    interviewer_types: [recruiter, engineering-manager]
+    follow_ups:
+      - text: "What made this the biggest accomplishment versus other things you did?"
+        depth: 2
+      - text: "How did this accomplishment change your trajectory or the team's direction?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "picks something trivial"
+      - "can't articulate the impact"
+      - "deflects credit entirely"
+    green_flags:
+      - "chooses strategically for the audience"
+      - "quantifies impact clearly"
+      - "connects to career growth"
+    source: built-in
+    added_date: "2025-01-01"
+
+  # --- Failure & Growth ---
+  - id: beh-013
+    text: "Tell me about a time you failed. What did you learn?"
+    category: behavioral
+    subcategory: failure-growth
+    skills_tested: [self-awareness, growth-mindset, resilience]
+    level: [mid, senior, staff, principal]
+    stages: [phone-screen, onsite, bar-raiser]
+    interviewer_types: [engineering-manager, bar-raiser, recruiter]
+    follow_ups:
+      - text: "How did the failure affect your team or project?"
+        depth: 2
+      - text: "How have you applied that lesson since then?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "picks a trivial failure"
+      - "blames others"
+      - "no genuine learning described"
+    green_flags:
+      - "picks a real, meaningful failure"
+      - "owns their part honestly"
+      - "shows concrete behavioral change"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-014
+    text: "Describe a piece of feedback that changed how you work."
+    category: behavioral
+    subcategory: failure-growth
+    skills_tested: [coachability, self-awareness, growth]
+    level: [mid, senior, staff]
+    stages: [phone-screen, onsite]
+    interviewer_types: [engineering-manager, recruiter]
+    follow_ups:
+      - text: "How did you initially receive the feedback?"
+        depth: 2
+      - text: "How do you actively seek feedback now?"
+        depth: 3
+    difficulty: 2
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "dismisses the feedback's value"
+      - "no concrete change described"
+      - "only accepts positive feedback"
+    green_flags:
+      - "describes initial resistance honestly"
+      - "shows specific behavioral change"
+      - "sought feedback proactively afterward"
+    source: built-in
+    added_date: "2025-01-01"
+
+  - id: beh-015
+    text: "Tell me about a time you had to admit you were wrong."
+    category: behavioral
+    subcategory: failure-growth
+    skills_tested: [humility, integrity, communication]
+    level: [mid, senior, staff, principal]
+    stages: [onsite, bar-raiser]
+    interviewer_types: [engineering-manager, bar-raiser]
+    follow_ups:
+      - text: "How did your team react when you admitted the mistake?"
+        depth: 2
+      - text: "How did this experience shape how you approach similar decisions now?"
+        depth: 3
+    difficulty: 3
+    expected_format: narrative
+    time_budget_minutes: 5
+    red_flags:
+      - "minimizes the mistake"
+      - "never actually admits fault"
+      - "blames the situation"
+    green_flags:
+      - "admits the mistake clearly and directly"
+      - "describes the impact of being wrong"
+      - "shows how it built trust"
+    source: built-in
+    added_date: "2025-01-01"

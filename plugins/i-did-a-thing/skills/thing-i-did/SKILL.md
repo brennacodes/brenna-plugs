@@ -142,4 +142,4 @@ End with an encouraging summary:
 >
 > This is your **<nth>** logged accomplishment. <encouraging message based on count/streak>
 >
-> Resume bullets are ready in the log. Run `/i-did-a-thing:interview-me` to practice talking about it.
+> Resume bullets are ready in the log. Run `/what-did-you-do:practice` to practice talking about it in an interview.
