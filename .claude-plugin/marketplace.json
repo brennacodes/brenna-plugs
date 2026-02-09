@@ -6,8 +6,22 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "pluginRoot": "./plugins"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "mark-my-words",
+      "source": "mark-my-words",
+      "description": "Create and manage blog posts for Quartz static sites with guided interview workflows",
+      "version": "1.0.0",
+      "keywords": [
+        "blog",
+        "quartz",
+        "writing",
+        "markdown"
+      ],
+      "category": "content"
+    }
+  ]
 }
