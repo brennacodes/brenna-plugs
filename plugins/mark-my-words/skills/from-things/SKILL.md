@@ -20,6 +20,12 @@ Read `.claude/mark-my-words.local.md` for blog settings. If missing:
 
 Then stop.
 
+#### Load Voice Profile
+
+If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
+
+Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for the interview step.
+
 Read `.claude/i-did-a-thing.local.md` to find the things directory. If missing:
 
 > No i-did-a-thing configuration found. Please run `/i-did-a-thing:setup` first to set up your accomplishment tracking.
@@ -81,14 +87,20 @@ Use AskUserQuestion to present the potential angles from the log(s), plus standa
 - Tutorial/how-to (teach what you learned)
 - Retrospective (reflect on the journey)
 
-### 6. Scan Existing Posts
+### 6. Select Voice
+
+If voice profiles exist in `.claude/voices/`:
+- If a default voice is set, show it and ask if they want to use it, pick a different one, or skip voice for this post
+- If no default is set, list available voices and let them pick one or skip
+
+### 7. Scan Existing Posts
 
 Use Glob and Grep to scan the blog content directory:
 - Find all `.md` files in the target subdirectory
 - Extract existing tags from frontmatter across posts
 - This informs tag suggestions and maintains consistency
 
-### 7. Generate the Post
+### 8. Generate the Post
 
 Transform the log into a blog post following the Quartz format in `../new-post/references/quartz-format.md` and the transformation guide in `references/things-bridge.md`.
 
@@ -108,13 +120,14 @@ Transform the log into a blog post following the Quartz format in `../new-post/r
    - `author`: From mark-my-words config (`default_author`)
 
 **Content quality:**
-- Write in a natural, engaging voice — personal blog, not documentation
+- If a voice profile was selected, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, and things to avoid. The voice shapes how you write — the transformation rules still control what you write (Blog Seed hook, narrative structure, metrics integration). Voice and transformation rules are complementary, not competing.
+- If no voice profile was selected, write in a natural, engaging voice — personal blog, not documentation
 - Use H2 for major sections, H3 for subsections (no H1 in body)
 - One idea per paragraph
 - Use callouts (`> [!tip]`, etc.) sparingly and where they add value
 - End with a clear takeaway
 
-### 8. Present for Review
+### 9. Present for Review
 
 Show the generated post and ask:
 
@@ -125,7 +138,7 @@ Show the generated post and ask:
 - Start over — pick different logs
 
 #### If "Save it":
-Continue to Step 9.
+Continue to Step 10.
 
 #### If "Edit":
 Use AskUserQuestion to identify which sections to revise, then Edit the draft and present again.
@@ -136,13 +149,13 @@ Go back to Step 5.
 #### If "Start over":
 Go back to Step 3.
 
-### 9. Save the File
+### 10. Save the File
 
 - Generate a filename from the title: lowercase, hyphens for spaces, no special characters
 - Write to `<content_root>/<default_subdirectory>/<filename>.md`
 - Tell the user the file path
 
-### 10. Update Source Log Metadata
+### 11. Update Source Log Metadata
 
 Edit the source log(s) in `<things_path>/logs/` to record that a post was created. Add to the log's frontmatter:
 
@@ -153,7 +166,7 @@ blog_post_date: <today's date>
 
 This prevents the same log from being surfaced as "unused" in future runs.
 
-### 11. Handle Git Workflow
+### 12. Handle Git Workflow
 
 Based on the mark-my-words `git_workflow` config setting:
 
@@ -163,7 +176,7 @@ Based on the mark-my-words `git_workflow` config setting:
 
 Only do git operations if the content is in a git repository.
 
-### 12. Suggest Related Posts
+### 13. Suggest Related Posts
 
 Based on the source log's tags and skills, check if other logs could make good companion posts:
 
