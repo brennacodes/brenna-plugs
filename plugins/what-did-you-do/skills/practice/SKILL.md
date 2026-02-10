@@ -28,7 +28,7 @@ Read all files in `<things_path>/arsenal/` to understand logged skills and evide
 
 If no logs exist:
 
-> You haven't logged any accomplishments yet. Run `/i-did-a-thing:thing-i-did` first so I have your arsenal to coach you with. I can still ask questions, but my feedback will be much richer with your wins loaded.
+> You haven't logged any entries yet. Run `/i-did-a-thing:thing-i-did` first so I have your arsenal to coach you with. I can still ask questions, but my feedback will be much richer with your evidence loaded.
 
 ### 3. Load Session History
 
@@ -101,8 +101,16 @@ After the user answers, analyze against five dimensions (from `references/feedba
 
 Check the answer against the question's `red_flags` and `green_flags`.
 
-Cross-reference with arsenal:
-- Find logged accomplishments that could strengthen the answer
+Cross-reference with arsenal, prioritizing evidence types by question theme:
+- If the question asks about failure or challenge → prioritize `lesson` entries from arsenal
+- If the question asks about expertise or technical depth → prioritize `expertise` entries
+- If the question asks about a technical or architectural decision → prioritize `decision` entries
+- If the question asks about influence, leadership without authority, or mentoring → prioritize `influence` entries
+- If the question asks about "what would you do" or vision → prioritize `insight` entries
+- Default to `accomplishment` entries for standard behavioral questions
+
+For each relevant arsenal entry:
+- Find logged entries that could strengthen the answer
 - Identify skills demonstrated but not mentioned
 - Note metrics from logs they could have cited
 
@@ -139,7 +147,7 @@ Use the persona's voice and evaluation weights. Reference `references/feedback-r
 >
 > **To strengthen:** <specific improvement in the persona's voice>
 >
-> **From your arsenal:** <reference to logged accomplishments that could enhance the answer>
+> **From your arsenal:** <reference to logged entries that could enhance the answer, adapted by evidence type — e.g., "Your lesson about X is directly relevant here" or "Your expertise entry on X covers exactly what they're asking about" or "Your decision entry about X demonstrates the tradeoff analysis they want to see">
 >
 > **Anti-patterns detected:** <any from the question's red_flags or references/answer-anti-patterns.md>
 
@@ -215,7 +223,7 @@ Read and update `<things_path>/interview-prep/progress.md`:
 If the user mentioned experiences during their answer that aren't in their arsenal:
 
 > I noticed you mentioned some experiences that aren't logged yet:
-> - <experience summary>
+> - <experience summary> — this sounds like a <evidence type> entry
 >
 > These would strengthen your arsenal. Run `/i-did-a-thing:thing-i-did` when you're ready to log them.
 

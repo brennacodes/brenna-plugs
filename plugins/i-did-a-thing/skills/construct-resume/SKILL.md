@@ -1,6 +1,6 @@
 ---
 name: construct-resume
-description: "Build a tailored resume from your logged accomplishments, matched against a specific job listing"
+description: "Build a tailored resume from your logged evidence — accomplishments, lessons, expertise, decisions, and insights — matched against a specific job listing"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebFetch
 argument-hint: "[job listing URL or paste the listing]"
@@ -8,7 +8,7 @@ argument-hint: "[job listing URL or paste the listing]"
 
 # Construct a Resume
 
-Analyze a job listing, match it against the user's logged accomplishments, and produce a tailored resume that speaks directly to what the role demands.
+Analyze a job listing, match it against the user's logged evidence, and produce a tailored resume that speaks directly to what the role demands. Evidence comes in different types — accomplishments, lessons, expertise, decisions, influence, and insights — and the resume should draw on all of them.
 
 ## Steps
 
@@ -25,11 +25,11 @@ Then stop.
 Read all files in:
 - `<things_path>/arsenal/` — skill summaries with evidence
 - `<things_path>/targets/profile.md` — professional profile
-- `<things_path>/logs/` — all accomplishment logs (read frontmatter of each to build an index)
+- `<things_path>/logs/` — all log entries (read frontmatter of each to build an index)
 
 If fewer than 3 logs exist:
 
-> You only have <n> logged accomplishments. I can work with this, but your resume will be stronger with more evidence. Consider running `/i-did-a-thing:thing-i-did` a few more times to build your arsenal.
+> You only have <n> logged entries. I can work with this, but your resume will be stronger with more evidence. Consider running `/i-did-a-thing:thing-i-did` a few more times to build your arsenal.
 
 ### 3. Get the Job Listing
 
@@ -62,14 +62,20 @@ Present the analysis:
 
 For each required and preferred skill in the listing:
 1. Search arsenal files for matching skills
-2. Search log frontmatter for matching `skills_used`, `tags`, and `category`
-3. Score each log's relevance to the listing
+2. Search log frontmatter for matching `skills_used`, `tags`, `category`, and `evidence_type`
+3. Score each log's relevance to the listing, weighting evidence types by what the listing emphasizes:
+   - Listing asks for "learning agility," "growth mindset," or "adaptability" → weight `lesson` entries higher
+   - Listing asks for "technical depth," "domain expertise," or "subject matter expert" → weight `expertise` entries higher
+   - Listing asks for "sound judgment," "strategic thinking," or "architectural decisions" → weight `decision` entries higher
+   - Listing asks for "influence," "leadership without authority," or "mentorship" → weight `influence` entries higher
+   - Listing asks for "vision," "innovation," or "strategic direction" → weight `insight` entries higher
+   - Standard behavioral requirements → weight `accomplishment` entries as default
 4. Identify **strong matches** (direct evidence), **partial matches** (related evidence), and **gaps** (no evidence)
 
 Present the match analysis:
 
 > **Strong matches** (you have direct evidence):
-> - <skill>: <n> logged accomplishments, best example: "<log title>"
+> - <skill>: <n> entries, best example: "<log title>" (`<evidence_type>`)
 >
 > **Partial matches** (related experience):
 > - <skill>: closest evidence is <description>
@@ -84,7 +90,13 @@ Use the template in `references/resume-format.md` to construct the resume.
 **Resume construction rules:**
 1. **Tailor the summary** to echo the listing's language and priorities
 2. **Order experience sections** by relevance to this role, not chronologically
-3. **Pull resume bullets** directly from log files' "Resume Bullets" sections
+3. **Pull resume bullets** directly from log files' "Resume Bullets" sections, using the type-appropriate format:
+   - Accomplishment entries → STAR-format bullets
+   - Lesson entries → "Learned X from Y, now apply Z" format
+   - Expertise entries → "Deep expertise in X, demonstrated through Y" format
+   - Decision entries → "Evaluated X, Y, Z; chose Z based on A, B, C" format
+   - Influence entries → "Drove adoption of X, resulting in Y" format
+   - Insight entries → "Identified pattern X, proposed Y" format
 4. **Adapt bullets** to use keywords from the job listing where truthful
 5. **Quantify everything possible** using metrics from logs
 6. **Include skills section** ordered by listing priority, only including skills with evidence
@@ -110,6 +122,13 @@ target_company: "<company>"
 listing_url: "<url if provided>"
 date_generated: <date>
 match_score: "<strong_matches>/<total_requirements>"
+evidence_types_used:
+  accomplishment: <n>
+  lesson: <n>
+  expertise: <n>
+  decision: <n>
+  influence: <n>
+  insight: <n>
 logs_referenced:
   - "<log filename>"
   - "<log filename>"
@@ -126,7 +145,7 @@ Present the resume and ask:
 - Looks great — save it
 - I want to adjust some sections
 - Regenerate with a different format
-- Let me add more accomplishments first
+- Let me add more evidence first
 
 If they want adjustments, use AskUserQuestion to identify which sections, then Edit the file.
 
@@ -140,7 +159,7 @@ Use AskUserQuestion:
 - No — just the resume
 
 If yes, generate talking points or a full draft that:
-- References specific accomplishments from logs
+- References specific entries from logs (not just accomplishments)
 - Connects the user's trajectory to the role
 - Uses the company's own language from the listing
 - Emphasizes the strongest matches
@@ -154,12 +173,18 @@ End with actionable advice:
 > **To strengthen your candidacy for this role:**
 >
 > 1. **Log these existing experiences** (you probably have them, just haven't documented them):
->    - <suggested accomplishments to log>
+>    - <suggested entries to log, specifying evidence type>
+>    - e.g., "Log an expertise entry about your distributed systems knowledge"
+>    - e.g., "Log a decision entry about the database migration approach you chose"
 >
 > 2. **Build these skills** (gaps you could fill):
 >    - <skill>: <suggestion for how to build evidence>
 >
-> 3. **Practice these interview questions** (likely to come up for this role):
+> 3. **Diversify your evidence** (types you're missing):
+>    - <e.g., "You have strong accomplishments in distributed systems but no logged expertise entries — consider logging your deep knowledge as an expertise entry">
+>    - <e.g., "For 'sound judgment,' a decision entry would be more compelling than another accomplishment">
+>
+> 4. **Practice these interview questions** (likely to come up for this role):
 >    - "<question from question bank that tests a key requirement>"
 >
 > Run `/what-did-you-do:practice` to drill specific questions, or `/what-did-you-do:prep-for` to build a full preparation plan for this company.

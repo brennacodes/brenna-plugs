@@ -48,20 +48,28 @@ Read all arsenal files and session history. This powers the gap analysis.
 For each company value:
 
 1. Identify the value's `interview_signals` and `question_themes`
-2. Search arsenal files for accomplishments that demonstrate these signals
+2. Search arsenal files for entries that demonstrate these signals, considering all evidence types
 3. Search session history for relevant question answers
 4. Classify each value as:
-   - **Strong:** Multiple arsenal entries with high relevance + strong session scores
-   - **Partial:** Some evidence but gaps in depth or variety
+   - **Strong:** Multiple arsenal entries with high relevance + strong session scores, with diverse evidence types
+   - **Partial:** Some evidence but gaps in depth, variety, or evidence type diversity
    - **Gap:** Little or no evidence in arsenal or sessions
+
+When matching, consider which evidence types are most relevant to each value:
+- Values about learning, adaptability, resilience → `lesson` entries
+- Values about technical depth, expertise → `expertise` entries
+- Values about judgment, ownership → `decision` entries
+- Values about influence, leadership, mentorship → `influence` entries
+- Values about vision, innovation, curiosity → `insight` entries
+- Values about delivery, results, bias for action → `accomplishment` entries
 
 Present the mapping:
 
 > **[Company] Values Alignment**
 >
-> | Value | Status | Evidence | Gap |
-> |-------|--------|----------|-----|
-> | <value> | Strong/Partial/Gap | <best arsenal entry> | <what's missing> |
+> | Value | Status | Evidence | Types | Gap |
+> |-------|--------|----------|-------|-----|
+> | <value> | Strong/Partial/Gap | <best arsenal entry> | <evidence types present> | <what's missing> |
 
 ### 6. Stage-by-Stage Preparation Guide
 
@@ -117,7 +125,7 @@ Generate a preparation plan scaled to the timeline:
 > **Preparation Plan: [Company] [Role] — [Timeline]**
 >
 > **Week 1:**
-> - Day 1-2: Log any unlogged accomplishments that map to [company] values
+> - Day 1-2: Log any unlogged entries that map to [company] values — consider what evidence types you're missing (e.g., "For 'Learn and Be Curious,' log an expertise or lesson entry, not just an accomplishment")
 > - Day 3-4: Practice [weakest category] with [persona] (2-3 questions/day)
 > - Day 5: Mock [first stage] round
 >
@@ -152,7 +160,7 @@ arsenal_gaps:
 Use AskUserQuestion:
 
 **Where do you want to start?**
-- Log accomplishments for my biggest gaps
+- Log entries for my biggest gaps
 - Practice my weakest value area
 - Run a mock for the first stage
 - Review my full readiness
