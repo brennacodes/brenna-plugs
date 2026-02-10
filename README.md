@@ -1,5 +1,7 @@
 # brenna-plugs
 
+![installs](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbrennacodes%2Fbrenna-plugs%2Fmain%2F.github%2Fdata%2Fclones.json&query=%24.total&label=installs&color=brightgreen)
+
 A Claude Code plugin marketplace by [brennacodes](https://github.com/brennacodes).
 
 Three plugins for building a professional reputation from the ground up. Log what you do, practice talking about it, write about it publicly. Each plugin works on its own, but together they create a single source of truth — log an accomplishment once, and it flows into interview prep, resume building, and blog posts without re-telling the story from scratch every time.

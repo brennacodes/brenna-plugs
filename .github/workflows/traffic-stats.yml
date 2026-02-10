@@ -1,0 +1,61 @@
+name: Traffic Stats
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Accumulate clone count
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          DATA_FILE=".github/data/clones.json"
+
+          TOTAL=$(jq -r '.total' "$DATA_FILE")
+          LAST_DATE=$(jq -r '.last_date' "$DATA_FILE")
+
+          CLONES=$(gh api "repos/${REPO}/traffic/clones")
+
+          NEW_CLONES=$(echo "$CLONES" | jq --arg last "$LAST_DATE" '
+            [.clones[] | select((.timestamp | split("T")[0]) > $last) | .uniques] | add // 0
+          ')
+
+          LATEST_DATE=$(echo "$CLONES" | jq -r '
+            [.clones[].timestamp | split("T")[0]] | sort | last // empty
+          ')
+
+          NEW_TOTAL=$((TOTAL + NEW_CLONES))
+
+          if [[ -n "$LATEST_DATE" && "$LATEST_DATE" > "$LAST_DATE" ]]; then
+            NEW_LAST_DATE="$LATEST_DATE"
+          else
+            NEW_LAST_DATE="$LAST_DATE"
+          fi
+
+          jq -n \
+            --argjson total "$NEW_TOTAL" \
+            --arg last_date "$NEW_LAST_DATE" \
+            --arg updated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{total: $total, last_date: $last_date, updated_at: $updated_at}' \
+            > "$DATA_FILE"
+
+      - name: Commit updated count
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/data/clones.json
+          if ! git diff --staged --quiet; then
+            git commit -m "Update install count"
+            git push
+          fi
