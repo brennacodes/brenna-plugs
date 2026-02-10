@@ -42,6 +42,10 @@ Then install plugins:
 /plugin install mark-my-words@brenna-plugs
 ```
 
+```
+/plugin install screenshotr@brenna-plugs
+```
+
 ## Plugins
 
 ### i-did-a-thing
@@ -144,4 +148,31 @@ Write, manage, and publish blog posts on Quartz static sites — with rich media
 
 ```
 /mark-my-words:add-media [post filename or search term]
+```
+
+### screenshotr
+
+Precise screenshot capabilities for macOS — capture screens, windows, regions, or URLs with resize, crop, delay, and format control. Built on macOS-native `screencapture` and `sips`.
+
+**Setup** — Configure output directory, format, naming, and capture preferences.
+
+```
+/screenshotr:setup
+```
+
+**Capture** — Full-control screenshot capture with target selection and post-processing.
+
+```
+/screenshotr:capture                           # fullscreen
+/screenshotr:capture window "Safari"           # specific app window
+/screenshotr:capture region 100,200,800,600    # rectangular region
+/screenshotr:capture url "https://example.com" # open URL and capture
+/screenshotr:capture display 2                 # specific display
+/screenshotr:capture window "Xcode" --format jpg --resize 1280
+```
+
+**List Windows** — List open windows with app names, titles, and window IDs.
+
+```
+/screenshotr:list-windows
 ```
