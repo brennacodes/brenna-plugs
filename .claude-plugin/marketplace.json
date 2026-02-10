@@ -6,18 +6,18 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
     {
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
-      "description": "A build-me-up tool that helps you log accomplishments and build tailored resumes from your personal arsenal of wins",
-      "version": "1.0.0",
+      "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
+      "version": "2.0.0",
       "keywords": [
         "career",
-        "accomplishments",
+        "evidence",
         "resume",
         "self-advocacy",
         "professional-development"
@@ -28,7 +28,7 @@
       "name": "what-did-you-do",
       "source": "./plugins/what-did-you-do",
       "description": "Interview preparation with persona-driven practice, company-specific mocks, spaced repetition, and progress tracking \u2014 powered by your i-did-a-thing arsenal",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "keywords": [
         "interview",
         "practice",
@@ -40,13 +40,16 @@
     {
       "name": "mark-my-words",
       "source": "./plugins/mark-my-words",
-      "description": "Write, manage, and publish blog posts on Quartz static sites",
-      "version": "1.0.0",
+      "description": "Write, manage, and publish blog posts on Quartz static sites \u2014 with rich media support for images, diagrams, and video embeds",
+      "version": "1.2.0",
       "keywords": [
         "blog",
         "quartz",
         "writing",
-        "markdown"
+        "markdown",
+        "media",
+        "images",
+        "diagrams"
       ],
       "category": "content"
     }

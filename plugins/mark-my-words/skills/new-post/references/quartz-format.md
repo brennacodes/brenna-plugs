@@ -164,6 +164,67 @@ Quartz supports Obsidian-style wikilinks for internal linking:
 [Internal Link](/blog/other-post)
 ```
 
+## Images
+
+### Wikilink Syntax (Preferred)
+
+Quartz supports Obsidian-style image embeds:
+
+```markdown
+![[my-image.png]]
+![[my-image.png|Alt text describing the image]]
+![[my-image.png|400x300]]
+![[my-image.png|Alt text|400x300]]
+```
+
+### Standard Markdown Syntax
+
+```markdown
+![Alt text](./path/to/image.png)
+![Alt text](https://example.com/image.png)
+```
+
+### Best Practices
+
+- **Always include alt text** — describes the image content for screen readers and broken image fallbacks.
+- **Use descriptive filenames** — `authentication-flow-diagram.png` over `IMG_4523.png`.
+- **Prefer local images** — store in a media directory within your content folder for reliability.
+- **Specify dimensions** when the image would otherwise render too large: `![[wide-screenshot.png|800x450]]`.
+- **Supported formats**: PNG, JPG, GIF, SVG, WebP.
+
+## GIFs
+
+GIFs use the same syntax as images:
+
+```markdown
+![[demo-animation.gif|Demo of the drag-and-drop interface]]
+```
+
+Keep GIFs under 5MB for fast page loads. For longer recordings, consider a video embed instead.
+
+## Video Embeds
+
+### YouTube
+
+```html
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" title="Video title" frameborder="0" allowfullscreen></iframe>
+```
+
+### Vimeo
+
+```html
+<iframe width="560" height="315" src="https://player.vimeo.com/video/VIDEO_ID" title="Video title" frameborder="0" allowfullscreen></iframe>
+```
+
+### Best Practices
+
+- **Always include a `title` attribute** on iframes for accessibility.
+- **Add a context sentence** before the embed explaining what the video shows.
+- **Provide a fallback link** below the embed for readers in environments that strip iframes:
+  ```markdown
+  [Watch on YouTube](https://www.youtube.com/watch?v=VIDEO_ID)
+  ```
+
 ## Mermaid Diagrams
 
 Quartz renders Mermaid diagrams in fenced code blocks:

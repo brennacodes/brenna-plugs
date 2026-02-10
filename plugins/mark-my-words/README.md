@@ -1,8 +1,8 @@
 # mark-my-words
 
-Write, manage, and publish blog posts on Quartz static sites.
+Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds.
 
-Handles the full lifecycle — drafting new posts, editing existing ones, managing tags and draft status, and publishing. Works with both local Quartz directories and remote git repos. If you use i-did-a-thing, the `from-things` skill can turn your accomplishment logs into blog posts, pulling in the narrative structure, metrics, and reflection you've already captured.
+Handles the full lifecycle — drafting new posts, editing existing ones, managing tags and draft status, and publishing. Works with both local Quartz directories and remote git repos. If you use i-did-a-thing, the `from-things` skill can turn your evidence logs into blog posts, pulling in the narrative structure, metrics, and reflection you've already captured.
 
 ## Installation
 
@@ -50,17 +50,23 @@ Configure your Quartz blog source (local path or git remote), content directory,
 /mark-my-words:update-voice [voice name]
 ```
 
-**From Things** — Transform i-did-a-thing accomplishment logs into blog posts. Pulls in the Blog Seed hook, narrative structure, and metrics from your logs. You choose the angle — tutorial, retrospective, or one of the angles suggested in the log itself.
+**From Things** — Transform i-did-a-thing evidence logs into blog posts. Pulls in the Blog Seed hook, narrative structure, and metrics from your logs. You choose the angle — tutorial, retrospective, or one of the angles suggested in the log itself.
 
 ```
 /mark-my-words:from-things [log filename or search query]
 ```
 
+**Add Media** — Add images, Mermaid diagrams, and video embeds to an existing post. Analyzes your post for visual opportunities and walks you through each one — generate diagrams, provide your own images, search the web, or embed videos.
+
+```
+/mark-my-words:add-media [post filename or search term]
+```
+
 ## How It Works
 
-Posts are written in Quartz-compatible markdown with full frontmatter (title, date, description, tags, draft status, author). The plugin handles git workflows (auto, ask, or manual) based on your configuration.
+Posts are written in Quartz-compatible markdown with full frontmatter (title, date, description, tags, draft status, author). The plugin handles git workflows (auto, ask, or manual) based on your configuration. Rich media — Mermaid diagrams, images, GIFs, and video embeds — can be added during writing or to existing posts.
 
-The `from-things` skill bridges your i-did-a-thing accomplishment logs into narrative blog posts — choose an angle, and it transforms structured log data into an engaging first-person story.
+The `from-things` skill bridges your i-did-a-thing evidence logs into narrative blog posts — choose an angle, and it transforms structured log data into an engaging first-person story.
 
 ## Configuration
 
@@ -70,7 +76,11 @@ Settings are stored in `.claude/mark-my-words.local.md` and include source type,
 
 Voice profiles live at `.claude/voices/<name>.md` and teach mark-my-words how you write. Create profiles from your existing writing samples, then set a default voice so all new posts match your style. You can create multiple profiles and switch between them when creating posts.
 
+### Media Support
+
+Configure a `media_dir` in setup to enable image management. When set, the writing and editing skills can add Mermaid diagrams, download and reference images, and embed videos. Auto-suggest mode detects visual opportunities as you write. AI image generation is available as an opt-in when MCP tools are present.
+
 ## Related Plugins
 
-- **i-did-a-thing** — Log accomplishments that feed into blog posts via `from-things`
+- **i-did-a-thing** — Log professional experiences that feed into blog posts via `from-things`
 - **what-did-you-do** — Practice talking about your work in interviews

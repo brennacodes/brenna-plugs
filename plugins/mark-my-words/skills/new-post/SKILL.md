@@ -2,7 +2,7 @@
 name: new-post
 description: Create a new blog post for your Quartz site via guided interview.
 disable-model-invocation: true
-allowed-tools: Read, Write, Bash, Glob, Grep, AskUserQuestion, WebSearch
+allowed-tools: Read, Write, Bash, Glob, Grep, AskUserQuestion, WebSearch, WebFetch
 argument-hint: "[topic or idea]"
 ---
 
@@ -25,6 +25,10 @@ Then stop.
 If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
 
 Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for the interview step.
+
+#### Resolve Media Directory
+
+If the config has `media_dir` set (not null), resolve the full media path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). Store this path for use in the writing and media processing steps.
 
 ### 2. Resolve Content Location
 
@@ -74,6 +78,15 @@ Use AskUserQuestion for each of these, adapting based on `$ARGUMENTS` if provide
 - Publish immediately (`draft: false`)
 - Save as draft (`draft: true`)
 
+**Visuals** (only if `media_dir` is configured):
+- "I have specific images (file paths or URLs)"
+- "Find relevant images for me"
+- "Generate Mermaid diagrams for visual concepts"
+- "No visuals for this post"
+- "Decide as we write"
+
+If user provides images: collect paths/URLs and descriptions for processing in Step 5.5. If web search: note topics to search during writing. If Mermaid: actively generate diagrams where they fit during Step 5. If "decide as we write": activate auto-suggest behavior for this post regardless of the `auto_suggest_visuals` config setting.
+
 ### 5. Write the Post
 
 Generate the blog post following the Quartz format reference in `references/quartz-format.md`. Key requirements:
@@ -83,6 +96,23 @@ Generate the blog post following the Quartz format reference in `references/quar
 - **Quartz features**: Use callouts (`> [!tip]`, `> [!warning]`, etc.) where they add value. Use proper syntax highlighting in code blocks.
 - **Length**: Match the target length the user selected.
 - **Structure**: Start with a brief intro, organize into logical sections based on the user's key points, end with a conclusion or summary.
+
+#### Inline Visual Integration
+
+When `auto_suggest_visuals` is true in config or the user chose "Decide as we write", integrate visuals as you draft each section. Consult `../add-media/references/media-guide.md` for detection patterns and placement rules.
+
+- **Auto-detection**: As you write each section, detect:
+  - Architecture descriptions → Mermaid flowchart with subgraphs
+  - Workflows and processes → Mermaid flowchart or sequence diagram
+  - Comparisons → table or side-by-side diagram
+  - Data and metrics → formatted table or chart description
+  - Visual concepts that need an actual image → placeholder comment: `<!-- TODO: add image of [description] -->`
+
+- **User-provided images**: If the user gave file paths or URLs in the interview, reference them with wikilink syntax `![[filename.png|alt text]]` at the appropriate point in the narrative. Place images after the text that introduces the concept.
+
+- **Web-searched images**: If the user asked to find images, use WebSearch (try `site:unsplash.com <topic>` or `creative commons <topic> photo`), then use WebFetch to verify the image URL works. Download with `curl -L -o` to the media dir using a descriptive kebab-case filename. Always include alt text.
+
+- **AI-generated images** (only if `ai_image_generation: true` in config): Check for available image generation tools. If available, ask the user to confirm before generating. If no tools are available, gracefully skip and suggest a web search or placeholder instead.
 
 #### Inline Links
 
@@ -111,6 +141,16 @@ After the post's conclusion, add a `---` horizontal rule followed by a section:
 
 Include items that a reader might want to explore further — tools, libraries, articles, people's work, specs, or projects that played a meaningful role in the post. This is a curated list, not an exhaustive index. Skip anything that was only mentioned in passing or that everyone already knows how to find. Aim for 3-8 items; if the post only has 1-2, skip the section entirely.
 
+### 5.5. Process Media Files
+
+Only run this step if the user requested images (provided files, web search, or AI generation) and `media_dir` is configured.
+
+1. **Ensure media directory exists**: `mkdir -p <content_root>/<media_dir>`
+2. **Copy local files**: For each user-provided local file, copy it to the media dir. Rename generic filenames (like `IMG_4523.png`, `Screenshot 2025-01-15.png`) to descriptive kebab-case names based on the image content or context.
+3. **Download remote images**: For each URL collected during writing, download with `curl -L -o <media_dir>/<descriptive-filename> <url>`
+4. **Update image references**: Ensure all image references in the post point to the correct relative paths using wikilink syntax: `![[filename.png|alt text]]`
+5. **Summarize**: Tell the user what was processed — files copied, images downloaded, references updated.
+
 ### 6. Save the File
 
 - Generate a filename from the title: lowercase, hyphens for spaces, no special characters (e.g., `my-first-post.md`)
@@ -124,5 +164,7 @@ Based on the `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this post?" with options: Yes (commit + push), Commit only (no push), No (skip git)
 - **`auto`**: Automatically `git add`, `git commit -m "Add post: <title>"`, and `git push`
 - **`manual`**: Tell the user the file has been written and they can commit when ready
+
+When committing, `git add` both the post file and any media files added to the media directory.
 
 Only do git operations if the content is in a git repository.
