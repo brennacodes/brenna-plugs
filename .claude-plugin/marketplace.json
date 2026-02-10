@@ -13,25 +13,25 @@
     {
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
-      "description": "A build-me-up tool that helps you log accomplishments and build tailored resumes from your personal arsenal of wins",
-      "version": "1.0.0",
-      "keywords": ["career", "accomplishments", "resume", "self-advocacy", "professional-development"],
+      "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
+      "version": "2.0.0",
+      "keywords": ["career", "evidence", "resume", "self-advocacy", "professional-development"],
       "category": "career"
     },
     {
       "name": "what-did-you-do",
       "source": "./plugins/what-did-you-do",
       "description": "Interview preparation with persona-driven practice, company-specific mocks, spaced repetition, and progress tracking — powered by your i-did-a-thing arsenal",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "keywords": ["interview", "practice", "coaching", "career"],
       "category": "career"
     },
     {
       "name": "mark-my-words",
       "source": "./plugins/mark-my-words",
-      "description": "Write, manage, and publish blog posts on Quartz static sites",
-      "version": "1.0.0",
-      "keywords": ["blog", "quartz", "writing", "markdown"],
+      "description": "Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds",
+      "version": "1.2.0",
+      "keywords": ["blog", "quartz", "writing", "markdown", "media", "images", "diagrams"],
       "category": "content"
     }
   ]

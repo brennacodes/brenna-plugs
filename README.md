@@ -108,7 +108,7 @@ Interview preparation with persona-driven practice, company-specific mocks, spac
 
 ### mark-my-words
 
-Write, manage, and publish blog posts on Quartz static sites.
+Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds.
 
 **Setup** — Configure your Quartz blog source, author info, and publishing preferences.
 
@@ -134,8 +134,14 @@ Write, manage, and publish blog posts on Quartz static sites.
 /mark-my-words:manage-post [list, drafts, publish, tags]
 ```
 
-**From Things** — Turn i-did-a-thing accomplishment logs into blog posts.
+**From Things** — Turn i-did-a-thing evidence logs into blog posts.
 
 ```
 /mark-my-words:from-things [log filename or search query]
+```
+
+**Add Media** — Add images, diagrams, and video embeds to an existing post.
+
+```
+/mark-my-words:add-media [post filename or search term]
 ```

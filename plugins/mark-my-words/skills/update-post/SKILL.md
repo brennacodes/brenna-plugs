@@ -2,7 +2,7 @@
 name: update-post
 description: Update an existing blog post on your Quartz site.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebSearch, WebFetch
 argument-hint: "[post filename or search term]"
 ---
 
@@ -25,6 +25,10 @@ Then stop.
 If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user and continue without a voice.
 
 Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for use in full rewrites.
+
+#### Resolve Media Directory
+
+If the config has `media_dir` set (not null), resolve the full media path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). Store this path for use in the "Add visuals" mode.
 
 ### 2. Resolve Content Location
 
@@ -62,6 +66,7 @@ Use AskUserQuestion to determine what the user wants to change. Consult `referen
 - "Append new content" — add a new section or content to the end
 - "Full rewrite" — rewrite the entire post with new content
 - "Frontmatter only" — just update metadata (tags, title, date, draft status)
+- "Add visuals" — add diagrams, images, and media (only shown if `media_dir` is configured)
 
 **Based on the mode chosen**:
 
@@ -82,6 +87,22 @@ For **frontmatter only**: Use AskUserQuestion to ask what to update:
 - Draft status (publish/unpublish)
 - Description
 - Date
+
+For **add visuals**: Analyze the post for visual opportunities using the detection patterns from `../add-media/references/media-guide.md`:
+
+1. Scan the post for diagram candidates (processes → flowcharts, architectures → subgraph diagrams, request flows → sequence diagrams, state changes → state diagrams), image candidates (UI references, visual concepts, results), and table candidates (comparisons, structured data)
+2. Present findings organized by section name and line number, with a suggested visual type for each
+3. Use AskUserQuestion to let the user:
+   - Accept all suggestions
+   - Pick and choose which ones to add
+   - Add their own images instead
+   - Search for images on the web
+
+4. For each accepted item:
+   - **Mermaid diagrams**: Generate the diagram code, show it for approval, then use Edit to insert it after the text that introduces the concept
+   - **User-provided images**: Get the path/URL and description, copy/download to media dir, insert wikilink reference with alt text
+   - **Web-searched images**: Use WebSearch to find relevant images, present options, download selected image to media dir, insert reference
+   - **Video embeds**: Get the URL, generate iframe embed, insert with a context sentence
 
 **Frontmatter date handling**: Ask if they want to:
 - Keep the original date

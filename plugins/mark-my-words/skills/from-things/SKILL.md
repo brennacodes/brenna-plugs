@@ -1,14 +1,14 @@
 ---
 name: from-things
-description: "Create a blog post from i-did-a-thing accomplishment logs — turn your wins into stories"
+description: "Create a blog post from i-did-a-thing evidence logs — turn your wins into stories"
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebSearch, WebFetch
 argument-hint: "[log filename or search query]"
 ---
 
 # Create Post from Things
 
-Source a blog post from one or more i-did-a-thing accomplishment logs. Each log already contains a Blog Seed, narrative structure, and potential angles — this skill transforms them into engaging posts.
+Source a blog post from one or more i-did-a-thing evidence logs. Each log already contains a Blog Seed, narrative structure, and potential angles — this skill transforms them into engaging posts.
 
 ## Steps
 
@@ -25,6 +25,10 @@ Then stop.
 If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
 
 Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for the interview step.
+
+#### Resolve Media Directory
+
+If the config has `media_dir` set (not null), resolve the full media path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). Store this path for use in visual planning and post generation.
 
 Read `.claude/i-did-a-thing.local.md` to find the things directory. If missing:
 
@@ -100,6 +104,26 @@ Use Glob and Grep to scan the blog content directory:
 - Extract existing tags from frontmatter across posts
 - This informs tag suggestions and maintains consistency
 
+### 7.5. Plan Visuals
+
+Only run this step if `media_dir` is configured.
+
+Analyze the selected log(s) for visual content opportunities:
+- **Architecture in Action section** → flowcharts or system diagrams
+- **Process flows** (deployment pipelines, workflows, data flows) → sequence diagrams or flowcharts
+- **Before/after comparisons** → side-by-side images or diagrams
+- **Metrics and results** → tables or formatted data presentations
+
+Use AskUserQuestion:
+
+**How should we handle visuals?**
+- "Generate diagrams where they fit" — create Mermaid diagrams for architecture and flow content
+- "Also find relevant images" — diagrams plus web-searched images for visual concepts
+- "Keep it text-only" — skip visuals entirely
+- "Decide as we write" — suggest visuals inline during generation
+
+Store the user's choice for Step 8.
+
 ### 8. Generate the Post
 
 Transform the log into a blog post following the Quartz format in `../new-post/references/quartz-format.md` and the transformation guide in `references/things-bridge.md`.
@@ -118,6 +142,7 @@ Transform the log into a blog post following the Quartz format in `../new-post/r
    - `tags`: Adapted from log tags, blended with existing blog tags where appropriate
    - `draft`: `true` initially
    - `author`: From mark-my-words config (`default_author`)
+8. **Add visuals if planned in Step 7.5** — generate Mermaid diagrams for architecture and flow content from the log's Action section, insert image references for any downloaded images, place visuals after the text that introduces the concept. Follow placement rules from `../add-media/references/media-guide.md`. If the user chose "Decide as we write", suggest visuals inline and ask before adding each one. If "Also find relevant images", use WebSearch to find and download relevant images to the media dir.
 
 **Content quality:**
 - If a voice profile was selected, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, and things to avoid. The voice shapes how you write — the transformation rules still control what you write (Blog Seed hook, narrative structure, metrics integration). Voice and transformation rules are complementary, not competing.
@@ -173,6 +198,8 @@ Based on the mark-my-words `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this post?" with options: Yes (commit + push), Commit only (no push), No (skip git)
 - **`auto`**: Automatically `git add`, `git commit -m "Add post: <title> (from things)"`, and `git push`
 - **`manual`**: Tell the user the file has been written and they can commit when ready
+
+When committing, `git add` both the post file and any media files added to the media directory.
 
 Only do git operations if the content is in a git repository.
 
