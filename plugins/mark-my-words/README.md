@@ -38,6 +38,18 @@ Configure your Quartz blog source (local path or git remote), content directory,
 /mark-my-words:manage-post [list, drafts, publish, tags]
 ```
 
+**Create Voice** — Build a voice profile from your writing samples. Analyzes your tone, sentence patterns, vocabulary, and habits to create a compact style guide that makes posts sound like you.
+
+```
+/mark-my-words:create-voice [voice name]
+```
+
+**Update Voice** — Refine an existing voice profile with new samples, manual edits, or a full regeneration.
+
+```
+/mark-my-words:update-voice [voice name]
+```
+
 **From Things** — Transform i-did-a-thing accomplishment logs into blog posts. Pulls in the Blog Seed hook, narrative structure, and metrics from your logs. You choose the angle — tutorial, retrospective, or one of the angles suggested in the log itself.
 
 ```
@@ -52,7 +64,11 @@ The `from-things` skill bridges your i-did-a-thing accomplishment logs into narr
 
 ## Configuration
 
-Settings are stored in `.claude/mark-my-words.local.md` and include source type, content directory, author, default tags, and git workflow (auto, ask, or manual). Run setup again to reconfigure.
+Settings are stored in `.claude/mark-my-words.local.md` and include source type, content directory, author, default tags, git workflow (auto, ask, or manual), and default voice profile. Run setup again to reconfigure.
+
+### Voice Profiles
+
+Voice profiles live at `.claude/voices/<name>.md` and teach mark-my-words how you write. Create profiles from your existing writing samples, then set a default voice so all new posts match your style. You can create multiple profiles and switch between them when creating posts.
 
 ## Related Plugins
 

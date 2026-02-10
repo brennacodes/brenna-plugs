@@ -20,6 +20,12 @@ Read `.claude/mark-my-words.local.md` to get the user's settings. If the file do
 
 Then stop.
 
+#### Load Voice Profile
+
+If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user and continue without a voice.
+
+Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for use in full rewrites.
+
 ### 2. Resolve Content Location
 
 - **If `source_type: remote`**: Look for the working directory at `.mark-my-words-workdir/`. If not cloned, clone it. If cloned, pull latest.
@@ -65,6 +71,11 @@ For **append new content**: Ask what new section/content to add and where it sho
 
 For **full rewrite**: Ask for the new direction/focus. Confirm that they want to replace all existing content.
 
+If voice profiles exist in `.claude/voices/`, ask which voice to use for the rewrite:
+- If a default voice is set, offer it as the default choice
+- List other available voices
+- Offer "No voice — write naturally" as an option
+
 For **frontmatter only**: Use AskUserQuestion to ask what to update:
 - Title
 - Tags (add/remove)
@@ -80,7 +91,7 @@ For **frontmatter only**: Use AskUserQuestion to ask what to update:
 ### 6. Apply Changes
 
 - Use the Edit tool for targeted changes to preserve the rest of the file
-- Use Write only for full rewrites
+- Use Write only for full rewrites. If a voice profile was selected for the rewrite, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, structure, and things to avoid.
 - Preserve any frontmatter fields the user didn't ask to change
 - If adding `lastmod`, keep the original `date` field intact
 - Maintain the post's existing voice and style unless the user asked for a tone change
