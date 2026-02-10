@@ -1,14 +1,14 @@
 ---
 name: thing-i-did
-description: "Log a professional experience through a guided interview — accomplishments, lessons, expertise, decisions, influence, or insights — creating a structured and searchable entry in your .things directory"
+description: "Log a professional experience — accomplishments, lessons, expertise, decisions, influence, or insights. Extracts context from arguments or conversation history for fast capture, or runs a full guided interview when context is sparse."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
-argument-hint: "[brief description of what happened]"
+argument-hint: "[description, pasted context, or --interview]"
 ---
 
 # Log a Thing You Did
 
-Walk the user through capturing a professional experience with enough depth and structure to be useful for resumes, interviews, and blog posts later. The interview adapts based on what kind of thing it is — lessons, expertise, decisions, influence, and insights each get their own question flow.
+Walk the user through capturing a professional experience with enough depth and structure to be useful for resumes, interviews, and blog posts later. When the user provides rich context (pasted transcript, decision summary, or detailed description), extract fields automatically and confirm before writing. When context is sparse, fall back to a full guided interview that adapts based on the evidence type.
 
 ## Steps
 
@@ -24,13 +24,100 @@ Then stop.
 
 Read `<things_path>/targets/profile.md` to understand the user's professional goals. This context shapes which follow-up questions to ask and how to tag the entry.
 
-### 3. Start the Interview
+### 3. Assess Available Context
 
-If the user provided an argument (brief description), use it as the starting point. Otherwise, ask:
+Determine whether there is enough context to take a fast path (extract and confirm) or whether a full interview is needed.
+
+#### 3a. Check for Interview Flag
+
+If `$ARGUMENTS` starts with `--interview` or `-i`, strip the flag and jump to **Step 4** (full interview). Use any remaining text after the flag as the brief description / starting point.
+
+#### 3b. Gather Context
+
+Collect context from two sources:
+- **`$ARGUMENTS`**: The text the user passed directly to the skill
+- **Conversation history**: Prior messages in the current session that describe a professional experience
+
+If both sources are empty or contain nothing relevant to a professional experience, jump to **Step 4** (full interview).
+
+**Important — what counts as relevant context:**
+- Descriptions of work done, decisions made, problems solved, lessons learned, expertise applied, influence exercised, or patterns observed
+- Project/task specifics — codebase names, team context, stakeholder interactions, timelines, outcomes
+
+**What does NOT count:**
+- Code debugging sessions or casual chat that isn't about a professional experience
+- Prior skill runs (like `/what-did-you-do:practice`) — these are not themselves loggable events
+- Generic greetings or unrelated conversation
+
+#### 3c. Extract Log Fields
+
+Attempt to extract all log fields from the combined context:
+
+**Required fields** — must be present or inferrable for the fast path:
+- `title` — descriptive title for the entry
+- `evidence_type` — accomplishment, lesson, expertise, decision, influence, or insight
+- `impact` — major, notable, solid, or learning
+- `category` — technical, leadership, communication, problem-solving, process, growth, expertise, decision-making, or influence
+- `skills_used` — cross-reference against the user's `building_skills` and `aspirational_skills` from profile
+- Body section content — the narrative sections for this evidence type (see the table in Step 9)
+
+**Optional fields** — extract if present, skip if not:
+- `description` — 1-2 sentence summary
+- `tags` — searchable tags
+- `skills_developed` — new skills learned or grown
+- `target_alignment` — which professional targets this supports (from profile)
+- `role_at_time` — the user's role when this happened
+- `team_or_org` — team or organization context
+- `duration` — how long this took
+- `metrics` — quantifiable outcomes
+
+**Project/task context preservation:** When the context references a specific project, codebase, tool, or task, capture that specificity in the body sections, in `team_or_org`, and in tags. Don't generalize away the details — "redesigned bivvy's prompt routing system" is better than "improved a system."
+
+Classify each field as:
+- **confident** — clearly stated or directly quotable from the context
+- **inferrable** — reasonably derivable from the context
+- **missing** — not enough information to determine
+
+#### 3d. Decision Gate
+
+Take the **fast path** (continue to 3e) if:
+- `evidence_type` is confident or inferrable, AND
+- At least 3 of the evidence type's body sections have confident content
+
+Otherwise, jump to **Step 4** (full interview), carrying whatever was extracted as a head start so the user doesn't repeat themselves.
+
+#### 3e. Present Summary for Confirmation
+
+Show the user everything extracted using AskUserQuestion. Format as a structured summary:
+
+- Title, evidence type, impact, category
+- Each body section with a preview (first 1-2 sentences)
+- Skills used/developed
+- Tags (auto-generated)
+- Any optional fields that were extracted
+
+Options:
+- **"Looks good"** — proceed to 3f (fill gaps if any) or directly to tag review (Step 8)
+- **"Some changes needed"** — the user provides corrections via free text, then re-present the updated summary
+- **"Full interview instead"** — jump to Step 4 with the extracted title as starting point
+
+#### 3f. Fill Genuine Gaps
+
+For each **required** field or body section still classified as missing, ask ONE focused question — reuse the question text from the evidence-type interview in Step 5. Do not ask situational follow-ups on the fast path. After gaps are filled, proceed to **Step 8** (tag review).
+
+**Multiple loggable events:** If the context contains several distinct professional experiences, identify the primary one and mention the others. Offer to log the rest afterward (by running the skill again).
+
+### 4. Start the Interview
+
+This is the full interview path — used when context is sparse, when the user passes `--interview`, or when the user opts out of the fast path at the summary step.
+
+If context assessment (Step 3) produced a partial extraction, use it as the starting point. Acknowledge what you already know: "I have some context already — let me fill in the details." Skip questions whose answers are already confident.
+
+If no context was extracted, ask the opening question:
 
 > What's on your mind? Could be something you built, a lesson you learned, a topic you went deep on, a decision you shaped — anything worth remembering.
 
-### 4. Classify the Evidence Type
+### 5. Classify the Evidence Type
 
 After the user describes the headline, determine the type. Use AskUserQuestion:
 
@@ -44,9 +131,11 @@ After the user describes the headline, determine the type. Use AskUserQuestion:
 
 Map the selection to an `evidence_type` value: `accomplishment`, `lesson`, `expertise`, `decision`, `influence`, or `insight`.
 
-### 5. Conduct the Deep-Dive Interview
+If context assessment already determined the evidence type confidently, skip this step.
 
-Ask follow-up questions one at a time using AskUserQuestion. Adapt questions based on previous answers and the evidence type. The goal is to extract a rich, specific log entry.
+### 6. Conduct the Deep-Dive Interview
+
+Ask follow-up questions one at a time using AskUserQuestion. Adapt questions based on previous answers and the evidence type. The goal is to extract a rich, specific log entry. Skip any questions whose answers are already known from context assessment.
 
 #### Accomplishment
 
@@ -136,7 +225,9 @@ Ask follow-up questions one at a time using AskUserQuestion. Adapt questions bas
 - If it's contrarian: "Do others see this differently? What's the conventional view?"
 - If it spans systems: "Does this pattern show up in other contexts too?"
 
-### 6. Classify the Entry
+### 7. Classify the Entry
+
+If coming from the fast path (Step 3), impact and category are already set — skip this step.
 
 Use AskUserQuestion to ask:
 
@@ -157,9 +248,11 @@ Use AskUserQuestion to ask:
 - `decision-making` — evaluated tradeoffs, made judgment calls
 - `influence` — shaped others' decisions, advocated for change
 
-### 7. Generate Tags
+### 8. Generate Tags
 
-Auto-generate tags by combining:
+If coming from the fast path, tags are already generated — present them for review rather than generating from scratch.
+
+Otherwise, auto-generate tags by combining:
 - User's `default_tags` from config
 - Skills mentioned in the interview
 - Category from classification
@@ -169,7 +262,7 @@ Auto-generate tags by combining:
 
 Present the generated tags and let the user add, remove, or modify them.
 
-### 8. Compose the Log Entry
+### 9. Compose the Log Entry
 
 Create the log file at `<things_path>/logs/<date>-<slugified-title>.md` using the format defined in `references/log-format.md`.
 
@@ -224,7 +317,7 @@ The log must include:
 | Influence | "How I convinced my team to..." hook |
 | Insight | "A pattern I keep seeing..." hook |
 
-### 9. Update the Index
+### 10. Update the Index
 
 Read `<things_path>/index.md` and update it:
 - Increment `total_entries` in frontmatter
@@ -233,7 +326,7 @@ Read `<things_path>/index.md` and update it:
 - Add under the appropriate impact level
 - Add under the appropriate evidence type (create the grouping if it doesn't exist yet)
 
-### 10. Update the Arsenal
+### 11. Update the Arsenal
 
 Read `<things_path>/arsenal/` and check if a summary file exists for each skill used. If not, create one. If it exists, append this entry as supporting evidence.
 
@@ -258,14 +351,14 @@ proficiency_trend: "building" | "established" | "expert"
 - [Full log](../logs/<filename>)
 ```
 
-### 11. Handle Git Workflow
+### 12. Handle Git Workflow
 
 Based on the `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this log entry?"
 - **`auto`**: Automatically `git add`, `git commit -m "log: <title>"`, and `git push`
 - **`manual`**: Tell the user the file has been saved and they can commit when ready
 
-### 12. Celebrate
+### 13. Celebrate
 
 End with an encouraging summary:
 

@@ -20,10 +20,10 @@ Configure your .things directory (project-local or global), git remote, professi
 
 ## Skills
 
-**Log a Thing** — Capture a professional experience through a guided deep-dive. The interview adapts based on what kind of thing it is: accomplishments get Context-Action-Result questions, lessons explore what went wrong and what you took from it, expertise entries dig into depth and teaching, decisions walk through options and tradeoffs, influence entries cover advocacy and outcomes, and insights explore observations and theses. Classifies by impact level and category, auto-generates tags, and writes a structured log with resume bullets, interview talking points, and a blog seed.
+**Log a Thing** — Capture a professional experience with context-aware speed. If you paste a rich transcript, decision summary, or detailed description — or if the conversation already has relevant context — the skill extracts log fields automatically, shows you a summary, and confirms before writing. Only asks about genuinely missing details. For sparse context, it falls back to a full guided deep-dive that adapts based on what kind of thing it is: accomplishments get Context-Action-Result questions, lessons explore what went wrong and what you took from it, expertise entries dig into depth and teaching, decisions walk through options and tradeoffs, influence entries cover advocacy and outcomes, and insights explore observations and theses. Classifies by impact level and category, auto-generates tags, and writes a structured log with resume bullets, interview talking points, and a blog seed. Use `--interview` to force the full interview even when context is available.
 
 ```
-/i-did-a-thing:thing-i-did [brief description]
+/i-did-a-thing:thing-i-did [description, pasted context, or --interview]
 ```
 
 **Build Resume** — Analyze a job listing (URL or pasted text), match it against your logged evidence, and produce a tailored resume. Weights evidence types by what the listing emphasizes — technical depth surfaces expertise entries, learning agility surfaces lessons, sound judgment surfaces decisions. Shows you strong matches, partial matches, and gaps. Pulls resume bullets directly from your logs in their type-appropriate format. Optionally generates cover letter talking points and a gap action plan that suggests specific evidence types to log.
