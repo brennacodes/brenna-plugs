@@ -4,15 +4,15 @@
 
 A Claude Code plugin marketplace by [brennacodes](https://github.com/brennacodes).
 
-Three plugins for building a professional reputation from the ground up. Log what you do, practice talking about it, write about it publicly. Each plugin works on its own, but together they create a single source of truth — log an accomplishment once, and it flows into interview prep, resume building, and blog posts without re-telling the story from scratch every time.
+Three plugins for building a professional reputation from the ground up. Log what you do, practice talking about it, write about it publicly. Each plugin works on its own, but together they create a single source of truth — log an experience once, and it flows into interview prep, resume building, and blog posts without re-telling the story from scratch every time.
 
-**i-did-a-thing** is the foundation. You log accomplishments through a guided deep-dive, and the plugin builds a searchable arsenal of evidence — tagged, classified, and pre-formatted for reuse. Every log generates resume bullets, interview talking points, and a blog seed automatically.
+**i-did-a-thing** is the foundation. You log professional experiences — accomplishments, lessons learned, expertise developed, decisions made, influence exercised, and insights formed — through a guided deep-dive, and the plugin builds a searchable arsenal of evidence tagged, classified, and pre-formatted for reuse. Every entry generates resume bullets, interview talking points, and a blog seed automatically.
 
-**what-did-you-do** reads that arsenal and uses it to coach you. When you practice an interview question, it cross-references your logged accomplishments, points out evidence you forgot to mention, and flags skills you've demonstrated but never articulated. When you run a mock interview for Amazon, it maps your arsenal to their Leadership Principles and shows where you're strong and where you have gaps.
+**what-did-you-do** reads that arsenal and uses it to coach you. When you practice an interview question, it cross-references your logged evidence — matching question themes to the right evidence types (lessons for failure questions, decisions for tradeoff questions, expertise for depth questions). When you run a mock interview for Amazon, it maps your arsenal to their Leadership Principles and shows where you're strong and where you have gaps.
 
 **mark-my-words** turns the same logs into public writing. The `from-things` skill pulls a log's narrative structure and metrics into a blog post draft — you choose the angle, and it handles the transformation from structured career evidence to an engaging first-person story on your Quartz site.
 
-The loop compounds: logging more accomplishments makes your interviews sharper and your writing richer. Practicing interviews exposes gaps to log. Writing about what you've done forces you to articulate impact clearly — which makes you better at interviews.
+The loop compounds: logging more evidence makes your interviews sharper and your writing richer. Practicing interviews exposes gaps to log. Writing about what you've done forces you to articulate impact clearly — which makes you better at interviews.
 
 ## Installation
 
@@ -46,7 +46,7 @@ Then install plugins:
 
 ### i-did-a-thing
 
-Log accomplishments and build tailored resumes from your personal arsenal of wins.
+Log professional experiences — accomplishments, lessons, expertise, decisions, influence, and insights — and build tailored resumes from your evidence arsenal.
 
 **Setup** — Configure your .things directory, git remote, professional goals, and preferences.
 
@@ -54,13 +54,13 @@ Log accomplishments and build tailored resumes from your personal arsenal of win
 /i-did-a-thing:setup [reconfigure]
 ```
 
-**Log a Thing** — Capture an accomplishment through a guided deep-dive that extracts context, action, result, and reflection.
+**Log a Thing** — Capture a professional experience through a guided deep-dive. The interview adapts based on what kind of thing it is — accomplishment, lesson, expertise, decision, influence, or insight.
 
 ```
 /i-did-a-thing:thing-i-did [brief description]
 ```
 
-**Build Resume** — Analyze a job listing, match it against your logged accomplishments, and produce a tailored resume.
+**Build Resume** — Analyze a job listing, match it against your logged evidence, and produce a tailored resume.
 
 ```
 /i-did-a-thing:construct-resume [job listing URL or text]

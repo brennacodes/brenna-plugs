@@ -1,12 +1,12 @@
 {
   "name": "i-did-a-thing",
-  "version": "1.0.0",
-  "description": "A build-me-up tool that helps you log accomplishments and construct tailored resumes from your personal arsenal of wins",
+  "version": "2.0.0",
+  "description": "Log professional experiences — accomplishments, lessons, expertise, decisions, influence, and insights — and build tailored resumes from your evidence arsenal",
   "author": {
     "name": "brennacodes",
     "email": "brennacodes@users.noreply.github.com"
   },
-  "keywords": ["career", "accomplishments", "resume", "self-advocacy", "professional-development"],
+  "keywords": ["career", "accomplishments", "resume", "self-advocacy", "professional-development", "lessons-learned", "expertise", "decisions", "influence", "insights", "evidence"],
   "license": "MIT",
   "repository": "https://github.com/brennacodes/brenna-plugs"
 }

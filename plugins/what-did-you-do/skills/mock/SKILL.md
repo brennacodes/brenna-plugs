@@ -117,7 +117,7 @@ Then per-question breakdown:
 
 > **Q1: "<question>"**
 > Score: x/5 | Strengths: <brief> | To improve: <brief>
-> Arsenal suggestion: <relevant log>
+> Arsenal suggestion: <relevant log> (`<evidence_type>`) — e.g., "Your lesson about X is directly relevant" or "Your decision entry on Y demonstrates the tradeoff analysis they want"
 
 Finally:
 
@@ -139,7 +139,7 @@ Update `<things_path>/interview-prep/progress.md` with new scores and session en
 If the user mentioned experiences not in their arsenal during the mock:
 
 > During the mock, you referenced some experiences I don't see in your logs:
-> - <experience>
+> - <experience> — this sounds like a <evidence type> entry
 >
 > Logging these would strengthen your arsenal. Run `/i-did-a-thing:thing-i-did` when ready.
 
