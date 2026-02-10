@@ -7,9 +7,16 @@
 
 set -euo pipefail
 
-FILE_PATH="${1:-}"
+# Read hook input from stdin
+INPUT=$(cat)
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
 if [[ -z "$FILE_PATH" ]]; then
+  exit 0
+fi
+
+# Only validate files matching */logs/*.md
+if [[ ! "$FILE_PATH" =~ /logs/[^/]*\.md$ ]]; then
   exit 0
 fi
 

@@ -1,26 +1,28 @@
 {
-  "hooks": [
-    {
-      "name": "validate-session-format",
-      "description": "Validate that session log entries have required frontmatter before writing",
-      "event": "PreToolUse",
-      "matcher": {
-        "tool": "Write",
-        "path_pattern": "*/interview-prep/sessions/*.md"
-      },
-      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-session.sh \"${TOOL_INPUT_FILE_PATH}\"",
-      "timeout_ms": 3000
-    },
-    {
-      "name": "auto-rebuild-question-index",
-      "description": "Rebuild the question index after new questions are added or modified",
-      "event": "PostToolUse",
-      "matcher": {
-        "tool": "Write",
-        "path_pattern": "*/questions/*.yaml"
-      },
-      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/rebuild-question-index.sh",
-      "timeout_ms": 5000
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-session.sh",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/rebuild-question-index.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
 }

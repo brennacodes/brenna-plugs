@@ -9,9 +9,16 @@
 
 set -euo pipefail
 
-LOG_FILE="${1:-}"
+# Read hook input from stdin
+INPUT=$(cat)
+LOG_FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
-if [[ -z "$LOG_FILE" || ! -f "$LOG_FILE" ]]; then
+# Only update arsenal for writes to */logs/*.md
+if [[ -z "$LOG_FILE" || ! "$LOG_FILE" =~ /logs/[^/]*\.md$ ]]; then
+  exit 0
+fi
+
+if [[ ! -f "$LOG_FILE" ]]; then
   exit 0
 fi
 
