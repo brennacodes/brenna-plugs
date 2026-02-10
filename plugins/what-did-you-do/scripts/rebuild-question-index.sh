@@ -7,6 +7,15 @@
 
 set -euo pipefail
 
+# Read hook input from stdin
+INPUT=$(cat)
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+
+# Only rebuild index for writes to */questions/*.yaml
+if [[ -z "$FILE_PATH" || ! "$FILE_PATH" =~ /questions/[^/]*\.yaml$ ]]; then
+  exit 0
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 QUESTIONS_DIR="$(cd "$SCRIPT_DIR/../questions" && pwd)"
 INDEX_FILE="$QUESTIONS_DIR/_index.yaml"

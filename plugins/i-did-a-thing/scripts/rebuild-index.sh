@@ -7,6 +7,15 @@
 
 set -euo pipefail
 
+# Read hook input from stdin
+INPUT=$(cat)
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+
+# Only rebuild index for writes to */logs/*.md
+if [[ -z "$FILE_PATH" || ! "$FILE_PATH" =~ /logs/[^/]*\.md$ ]]; then
+  exit 0
+fi
+
 CONFIG_FILE=".claude/i-did-a-thing.local.md"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
