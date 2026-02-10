@@ -1,0 +1,12 @@
+{
+  "name": "screenshotr",
+  "version": "1.0.0",
+  "description": "Precise screenshot capabilities for macOS — capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["screenshot", "macos", "capture", "screencapture", "image", "window"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

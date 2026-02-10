@@ -33,6 +33,14 @@
       "version": "1.2.0",
       "keywords": ["blog", "quartz", "writing", "markdown", "media", "images", "diagrams"],
       "category": "content"
+    },
+    {
+      "name": "screenshotr",
+      "source": "./plugins/screenshotr",
+      "description": "Precise screenshot capabilities for macOS — capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
+      "version": "1.0.0",
+      "keywords": ["screenshot", "macos", "capture", "image", "window"],
+      "category": "utilities"
     }
   ]
 }
