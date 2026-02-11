@@ -14,7 +14,7 @@
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
       "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
-      "version": "2.0.0",
+      "version": "2.1.1",
       "keywords": ["career", "evidence", "resume", "self-advocacy", "professional-development"],
       "category": "career"
     },
