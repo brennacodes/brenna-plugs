@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
       "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
-      "version": "2.0.0",
+      "version": "2.1.1",
       "keywords": [
         "career",
         "evidence",

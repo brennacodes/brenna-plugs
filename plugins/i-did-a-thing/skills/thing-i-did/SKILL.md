@@ -1,7 +1,7 @@
 ---
 name: thing-i-did
 description: "Log a professional experience — accomplishments, lessons, expertise, decisions, influence, or insights. Extracts context from arguments or conversation history for fast capture, or runs a full guided interview when context is sparse."
-disable-model-invocation: true
+disable-model-invocation: false
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[description, pasted context, or --interview]"
 ---
