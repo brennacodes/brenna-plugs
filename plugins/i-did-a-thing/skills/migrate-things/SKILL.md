@@ -18,12 +18,26 @@ Guide the user through migrating from per-plugin configs (`<home>/.claude/i-did-
 
 Check if `<home>/.claude/things.local.md` exists. If it does, read it to get `things_path` (if `things_path` starts with `~`, replace with `<home>`) and check if `<things_path>/config.yml` also exists.
 
-If both exist:
+If both exist, check for plugin cache updates before reporting:
 
-> You're already using the centralized shared config. No migration needed.
+1. Check if `<home>/.claude/plugins/cache/brenna-plugs/` exists. If yes:
+   - List plugin directories: `ls <home>/.claude/plugins/cache/brenna-plugs/`
+   - For each plugin in the cache, find the latest version: `ls <home>/.claude/plugins/cache/brenna-plugs/<plugin>/ | sort -V | tail -1`
+   - Read `<home>/.claude/plugins/installed_plugins.json`
+   - For each `<plugin>@brenna-plugs` entry, compare installed version to latest cached version
+   - If a newer version exists: update `installPath` to `<home>/.claude/plugins/cache/brenna-plugs/<plugin>/<latest>`, `version` to `<latest>`, and `lastUpdated` to current ISO 8601 timestamp
+   - If `$ARGUMENTS` contains `--dry-run`, show what would change but don't write
+   - Otherwise write the updated JSON back
+
+2. Then report:
+
+> Already using the centralized shared config. No migration needed.
 >
 > - Bootstrap: `<home>/.claude/things.local.md`
 > - Config: `<things_path>/config.yml`
+>
+> [If any plugin versions were updated: list each plugin with old → new version, then: "**Restart Claude Code** to use the updated plugin versions."]
+> [If all current: "All brenna-plugs plugins already at latest cached versions."]
 >
 > Run `/i-did-a-thing:setup` to reconfigure.
 
@@ -118,7 +132,7 @@ If the pull fails due to conflicts, tell the user:
 
 Then stop.
 
-If `<things_path>` is not a git repo yet, that's fine — step 16 will handle initializing it if the user configured a remote.
+If `<things_path>` is not a git repo yet, that's fine — step 17 will handle initializing it if the user configured a remote.
 
 ### 7. Merge Config Fields
 
@@ -248,7 +262,34 @@ mv ~/.claude/mark-my-words.local.md ~/.claude/mark-my-words.local.md.bak 2>/dev/
 
 Tell the user: "Old configs renamed to `.bak` — you can delete them once you're confident everything works."
 
-### 16. Handle Git
+### 16. Update Plugin Cache
+
+Check if `<home>/.claude/plugins/cache/brenna-plugs/` exists. If not, skip to next step.
+
+1. List all plugin directories under the cache:
+   ```bash
+   ls <home>/.claude/plugins/cache/brenna-plugs/
+   ```
+
+2. For each plugin found, get the latest cached version:
+   ```bash
+   ls <home>/.claude/plugins/cache/brenna-plugs/<plugin>/ | sort -V | tail -1
+   ```
+
+3. Read `<home>/.claude/plugins/installed_plugins.json`
+
+4. For each `<plugin>@brenna-plugs` entry, compare the installed version to the latest cached version. If a newer version exists in the cache:
+   - Update `installPath` to `<home>/.claude/plugins/cache/brenna-plugs/<plugin>/<latest>`
+   - Update `version` to `<latest>`
+   - Update `lastUpdated` to current ISO 8601 timestamp
+
+5. If in dry-run mode, show what would change but do not write. Otherwise, write the updated JSON back to `<home>/.claude/plugins/installed_plugins.json`.
+
+6. Report:
+   - If versions were updated: list each plugin and old → new version, then: "**Restart Claude Code** to use the updated plugin versions."
+   - If all current: "All brenna-plugs plugins already at latest cached versions."
+
+### 17. Handle Git
 
 Read the `git_workflow` from the new config.
 
@@ -256,7 +297,7 @@ Read the `git_workflow` from the new config.
 - **`ask`**: Ask the user if they want to commit and push
 - **`manual`**: Tell the user what files to commit
 
-### 17. Done
+### 18. Done
 
 > Migration complete! All four plugins now share a single config at `<things_path>/config.yml`.
 >
