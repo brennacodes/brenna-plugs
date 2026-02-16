@@ -127,6 +127,12 @@ For tag modifications:
 
 ### 5. Git Workflow
 
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <content_root> pull --rebase 2>/dev/null || true
+```
+
 After any modifications, handle git based on `git_workflow` config:
 - **`ask`**: Use AskUserQuestion to confirm commit/push
 - **`auto`**: Auto commit with descriptive message and push

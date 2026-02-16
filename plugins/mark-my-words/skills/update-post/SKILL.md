@@ -130,6 +130,12 @@ After making changes, read the updated file and show the user:
 
 ### 8. Handle Git Workflow
 
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <content_root> pull --rebase 2>/dev/null || true
+```
+
 Based on the `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this update?" with options: Yes (commit + push), Commit only, No
 - **`auto`**: Automatically `git add`, `git commit -m "Update post: <title>"`, and `git push`

@@ -193,6 +193,12 @@ This prevents the same log from being surfaced as "unused" in future runs.
 
 ### 12. Handle Git Workflow
 
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <content_root> pull --rebase 2>/dev/null || true
+```
+
 Based on the mark-my-words `git_workflow` config setting:
 
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this post?" with options: Yes (commit + push), Commit only (no push), No (skip git)

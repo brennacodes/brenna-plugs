@@ -332,6 +332,12 @@ python3 <plugin_root>/scripts/rebuild-data.py <things_path>
 
 ### 11. Handle Git Workflow
 
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
 Based on the `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this log entry?"
 - **`auto`**: Automatically `git add`, `git commit -m "log: <title>"`, and `git push`

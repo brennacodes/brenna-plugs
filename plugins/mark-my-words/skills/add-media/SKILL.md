@@ -162,6 +162,12 @@ If "Start over": re-read the original post content (from git or backup) and retu
 
 ### 7. Handle Git Workflow
 
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <content_root> pull --rebase 2>/dev/null || true
+```
+
 Based on the `git_workflow` config setting:
 
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push these media changes?" with options: Yes (commit + push), Commit only, No
