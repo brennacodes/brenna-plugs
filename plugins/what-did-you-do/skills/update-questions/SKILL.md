@@ -124,7 +124,20 @@ Read the existing `custom.yaml`, append the new questions, and write it back.
 
 Run: `bash <plugin_root>/scripts/rebuild-question-index.sh`
 
-### 9. Confirm
+### 9. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push the updated question bank?"
+- **`auto`**: Automatically `git add` the custom.yaml, `git commit -m "questions: add <N> custom questions"`, and `git push`
+- **`manual`**: Tell the user the questions have been saved and they can commit when ready
+
+### 10. Confirm
 
 > Added [N] new questions to your custom question bank.
 >

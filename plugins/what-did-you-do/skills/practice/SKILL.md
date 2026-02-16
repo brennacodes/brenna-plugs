@@ -220,7 +220,20 @@ Read and update `<things_path>/interview-prep/progress.md`:
 - Add to recent sessions list
 - Recalculate strongest/weakest categories
 
-### 13. Suggest Logging Unlogged Accomplishments
+### 13. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push this practice session?"
+- **`auto`**: Automatically `git add` the session file and progress.md, `git commit -m "practice: <question-id>"`, and `git push`
+- **`manual`**: Tell the user the session has been saved and they can commit when ready
+
+### 14. Suggest Logging Unlogged Accomplishments
 
 If the user mentioned experiences during their answer that aren't in their arsenal:
 
@@ -229,7 +242,7 @@ If the user mentioned experiences during their answer that aren't in their arsen
 >
 > These would strengthen your arsenal. Run `/i-did-a-thing:thing-i-did` when you're ready to log them.
 
-### 14. Offer Next Steps
+### 15. Offer Next Steps
 
 Use AskUserQuestion:
 

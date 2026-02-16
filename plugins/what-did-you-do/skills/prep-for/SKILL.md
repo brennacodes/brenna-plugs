@@ -159,7 +159,20 @@ arsenal_gaps:
 ---
 ```
 
-### 10. Offer Next Steps
+### 10. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push this prep plan?"
+- **`auto`**: Automatically `git add` the prep plan, `git commit -m "prep: <company>"`, and `git push`
+- **`manual`**: Tell the user the prep plan has been saved and they can commit when ready
+
+### 11. Offer Next Steps
 
 Use AskUserQuestion:
 

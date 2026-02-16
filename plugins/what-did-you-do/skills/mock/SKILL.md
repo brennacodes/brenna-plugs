@@ -138,7 +138,20 @@ Write session file at `<things_path>/interview-prep/sessions/<date>-mock-<compan
 
 Update `<things_path>/interview-prep/progress.md` with new scores and session entry.
 
-### 10. Suggest Unlogged Accomplishments
+### 10. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push this mock session?"
+- **`auto`**: Automatically `git add` the session file and progress.md, `git commit -m "mock: <company> <stage>"`, and `git push`
+- **`manual`**: Tell the user the session has been saved and they can commit when ready
+
+### 11. Suggest Unlogged Accomplishments
 
 If the user mentioned experiences not in their arsenal during the mock:
 
@@ -147,7 +160,7 @@ If the user mentioned experiences not in their arsenal during the mock:
 >
 > Logging these would strengthen your arsenal. Run `/i-did-a-thing:thing-i-did` when ready.
 
-### 11. Offer Next Steps
+### 12. Offer Next Steps
 
 Use AskUserQuestion:
 

@@ -142,7 +142,20 @@ If company-specific:
 
 Write the updated assessment to `<things_path>/interview-prep/progress.md`.
 
-### 9. Offer Next Steps
+### 9. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push the updated progress?"
+- **`auto`**: Automatically `git add` progress.md, `git commit -m "review: update readiness assessment"`, and `git push`
+- **`manual`**: Tell the user the progress dashboard has been updated and they can commit when ready
+
+### 10. Offer Next Steps
 
 Use AskUserQuestion:
 

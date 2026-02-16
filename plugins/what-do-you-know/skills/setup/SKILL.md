@@ -215,7 +215,20 @@ learning:
 
 Use Edit to update only the `learning:` section, preserving all other config.
 
-### 9. Confirm Setup
+### 9. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push the setup files?"
+- **`auto`**: Automatically `git add` the new files (config.yml, progress.md, knowledge-map.md, seeded personas/companies), `git commit -m "setup: what-do-you-know"`, and `git push`
+- **`manual`**: Tell the user the setup files have been created and they can commit when ready
+
+### 10. Confirm Setup
 
 Tell the user:
 

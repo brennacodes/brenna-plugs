@@ -153,7 +153,20 @@ arsenal_references:
 
 Followed by the full plan content in markdown.
 
-### 8. Offer to Start
+### 8. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push this learning plan?"
+- **`auto`**: Automatically `git add` the study plan, `git commit -m "bridge: <topic>"`, and `git push`
+- **`manual`**: Tell the user the plan has been saved and they can commit when ready
+
+### 9. Offer to Start
 
 Use AskUserQuestion:
 

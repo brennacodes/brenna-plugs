@@ -207,7 +207,20 @@ Read and update `<things_path>/learning/progress.md`:
 - Update topic breakdown
 - Add to recent sessions list
 
-### 15. Suggest Next Steps
+### 15. Handle Git Workflow
+
+Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+
+```bash
+git -C <things_path> pull --rebase 2>/dev/null || true
+```
+
+Based on the `git_workflow` config setting:
+- **`ask`**: Use AskUserQuestion — "Would you like to commit and push this explore session?"
+- **`auto`**: Automatically `git add` the session file, knowledge-map.md, and progress.md, `git commit -m "explore: <topic>"`, and `git push`
+- **`manual`**: Tell the user the session has been saved and they can commit when ready
+
+### 16. Suggest Next Steps
 
 > **Next steps for [topic]:**
 > - Quiz yourself: `/what-do-you-know:quiz --topic <topic>` — test retention with spaced repetition
