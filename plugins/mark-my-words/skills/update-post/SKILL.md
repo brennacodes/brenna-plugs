@@ -1,6 +1,6 @@
 ---
 name: update-post
-description: Update an existing blog post on your Quartz site.
+description: Update an existing blog post.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebSearch, WebFetch
 argument-hint: "[post filename or search term]"
@@ -8,7 +8,7 @@ argument-hint: "[post filename or search term]"
 
 # Update Existing Blog Post
 
-You are helping the user update an existing blog post on their Quartz site. Find the post, understand what they want to change, and apply the updates carefully.
+You are helping the user update an existing blog post. Find the post, understand what they want to change, and apply the updates carefully.
 
 ## Steps
 
@@ -23,6 +23,10 @@ Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` sta
 Then stop.
 
 Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
+
+#### Load Platform Template
+
+Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines frontmatter field names, content syntax, and formatting conventions. Follow it for all content modifications.
 
 #### Load Voice Profile
 
@@ -94,7 +98,7 @@ For **frontmatter only**: Use AskUserQuestion to ask what to update:
 
 For **add visuals**: Analyze the post for visual opportunities using the detection patterns from `../add-media/references/media-guide.md`:
 
-1. Scan the post for diagram candidates (processes → flowcharts, architectures → subgraph diagrams, request flows → sequence diagrams, state changes → state diagrams), image candidates (UI references, visual concepts, results), and table candidates (comparisons, structured data)
+1. Scan the post for diagram candidates (processes → flowcharts, architectures → subgraph diagrams, request flows → sequence diagrams, state changes → state diagrams), image candidates (UI references, visual concepts, results), and table candidates (comparisons, structured data). Only suggest Mermaid diagrams if the platform template indicates Mermaid support.
 2. Present findings organized by section name and line number, with a suggested visual type for each
 3. Use AskUserQuestion to let the user:
    - Accept all suggestions
@@ -104,21 +108,21 @@ For **add visuals**: Analyze the post for visual opportunities using the detecti
 
 4. For each accepted item:
    - **Mermaid diagrams**: Generate the diagram code, show it for approval, then use Edit to insert it after the text that introduces the concept
-   - **User-provided images**: Get the path/URL and description, copy/download to media dir, insert wikilink reference with alt text
+   - **User-provided images**: Get the path/URL and description, copy/download to media dir, insert image reference using the platform's syntax from the template
    - **Web-searched images**: Use WebSearch to find relevant images, present options, download selected image to media dir, insert reference
-   - **Video embeds**: Get the URL, generate iframe embed, insert with a context sentence
+   - **Video embeds**: Get the URL, generate iframe embed (or platform shortcode if available), insert with a context sentence
 
-**Frontmatter date handling**: Ask if they want to:
+**Frontmatter date handling**: Use the platform's field names from the template. Ask if they want to:
 - Keep the original date
 - Update to today's date
-- Add a `lastmod` field with today's date (recommended for edits)
+- Add an "updated" field with today's date (field name varies by platform: `lastmod` for Quartz/Hugo, `last_modified_at` for Jekyll, `updatedDate` for Astro, `updated` for Zola, `last_update` object for Docusaurus)
 
 ### 6. Apply Changes
 
 - Use the Edit tool for targeted changes to preserve the rest of the file
 - Use Write only for full rewrites. If a voice profile was selected for the rewrite, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, structure, and things to avoid.
 - Preserve any frontmatter fields the user didn't ask to change
-- If adding `lastmod`, keep the original `date` field intact
+- When adding an updated-date field, keep the original date field intact
 - Maintain the post's existing voice and style unless the user asked for a tone change
 
 ### 7. Show the Result

@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -40,16 +40,22 @@
     {
       "name": "mark-my-words",
       "source": "./plugins/mark-my-words",
-      "description": "Write, manage, and publish blog posts on Quartz static sites \u2014 with rich media support for images, diagrams, and video embeds",
-      "version": "2.1.0",
+      "description": "Write, manage, and publish blog posts on any markdown-based platform \u2014 Quartz, Hugo, Jekyll, Astro, Eleventy, Docusaurus, and Zola",
+      "version": "3.0.0",
       "keywords": [
         "blog",
-        "quartz",
         "writing",
         "markdown",
         "media",
         "images",
-        "diagrams"
+        "diagrams",
+        "hugo",
+        "jekyll",
+        "astro",
+        "eleventy",
+        "docusaurus",
+        "zola",
+        "quartz"
       ],
       "category": "content"
     },

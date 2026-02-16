@@ -1,12 +1,12 @@
 {
   "name": "mark-my-words",
-  "version": "2.1.0",
-  "description": "Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds",
+  "version": "3.0.0",
+  "description": "Write, manage, and publish blog posts on any markdown-based platform — Quartz, Hugo, Jekyll, Astro, Eleventy, Docusaurus, and Zola",
   "author": {
     "name": "brennacodes",
     "email": "brennacodes@users.noreply.github.com"
   },
-  "keywords": ["blog", "quartz", "writing", "markdown", "media", "images", "diagrams"],
+  "keywords": ["blog", "writing", "markdown", "media", "images", "diagrams", "hugo", "jekyll", "astro", "eleventy", "docusaurus", "zola", "quartz"],
   "license": "MIT",
   "repository": "https://github.com/brennacodes/brenna-plugs"
 }

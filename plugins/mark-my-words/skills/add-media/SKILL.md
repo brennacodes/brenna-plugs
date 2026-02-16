@@ -8,7 +8,7 @@ argument-hint: "[post filename or search term]"
 
 # Add Media to Blog Post
 
-You are adding rich media — Mermaid diagrams, images, and video embeds — to an existing blog post. Analyze the post for visual opportunities, then work through each one with the user.
+You are adding rich media — diagrams, images, and video embeds — to an existing blog post. Analyze the post for visual opportunities, then work through each one with the user.
 
 Consult `references/media-guide.md` for visual detection patterns, Mermaid syntax, file naming conventions, alt text guidelines, and placement rules.
 
@@ -25,6 +25,10 @@ Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` sta
 Then stop.
 
 Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
+
+#### Load Platform Template
+
+Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines the platform's image syntax, diagram support, and video embed conventions. Use it for all media insertion.
 
 Resolve `media_dir`: if configured, compute the full path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). If `media_dir` is null, ask the user:
 
@@ -56,7 +60,7 @@ If no posts match, tell the user and suggest checking the filename or trying a d
 Read the full post content and scan for visual opportunities using the detection patterns from `references/media-guide.md`.
 
 Look for:
-- **Diagram candidates**: processes, architectures, workflows, decision logic, state changes, request/response flows, data models
+- **Diagram candidates**: processes, architectures, workflows, decision logic, state changes, request/response flows, data models (only suggest Mermaid diagrams if the platform template indicates Mermaid support)
 - **Image candidates**: UI references, visual concepts, results/screenshots, before/after comparisons
 - **Table candidates**: comparisons, structured data, feature lists
 - **Video candidates**: references to talks, demos, tutorials, recordings
@@ -90,6 +94,8 @@ Work through each selected item one at a time.
 
 #### Mermaid Diagrams
 
+Only available if the platform template indicates Mermaid support (native or plugin-based).
+
 1. Read the relevant section carefully
 2. Generate Mermaid diagram code following the syntax in `references/media-guide.md`
 3. Show the diagram code to the user for review
@@ -104,7 +110,7 @@ Work through each selected item one at a time.
 3. Generate concise alt text from the description
 4. If it's a local file: copy to media dir with `cp`
 5. If it's a URL: download with `curl -L -o <media_dir>/<filename> <url>`
-6. Insert the image reference using wikilink syntax: `![[filename|alt text]]`
+6. Insert the image reference using the platform's syntax from the template (e.g., `![[filename|alt text]]` for Quartz, `![alt text](path/filename)` for others)
 7. Place it following the placement rules in `references/media-guide.md`
 
 #### Images (Web Search)
@@ -113,7 +119,7 @@ Work through each selected item one at a time.
 2. Use WebSearch to find relevant images (search `site:unsplash.com <topic>` or `creative commons <topic> photo`)
 3. Present 2-3 options with descriptions
 4. Download the selected image with `curl -L -o <media_dir>/<descriptive-filename> <url>`
-5. Generate alt text and insert the reference
+5. Generate alt text and insert the reference using the platform's image syntax
 6. Always include alt text describing the image content
 
 #### Images (AI Generated)
@@ -125,7 +131,7 @@ Only offer this if `ai_image_generation: true` in config.
 3. If tools available: ask the user to describe what they want
 4. Use AskUserQuestion to confirm before generating: "Generate an image of [description]?"
 5. Generate the image and save to media dir
-6. Insert the reference with alt text
+6. Insert the reference with alt text using the platform's image syntax
 
 If `ai_image_generation` is false or not set, do not offer this option.
 
@@ -133,9 +139,10 @@ If `ai_image_generation` is false or not set, do not offer this option.
 
 1. Ask for the video URL (YouTube or Vimeo)
 2. Extract the video ID from the URL
-3. Generate the appropriate iframe embed:
-   - YouTube: `<iframe width="560" height="315" src="https://www.youtube.com/embed/<ID>" title="<title>" frameborder="0" allowfullscreen></iframe>`
-   - Vimeo: `<iframe width="560" height="315" src="https://player.vimeo.com/video/<ID>" title="<title>" frameborder="0" allowfullscreen></iframe>`
+3. Check the platform template for built-in shortcodes:
+   - **Hugo**: `{{</* youtube VIDEO_ID */>}}` or `{{</* vimeo VIDEO_ID */>}}`
+   - **Zola**: `{{ youtube(id="VIDEO_ID") }}` or `{{ vimeo(id="VIDEO_ID") }}`
+   - **All others**: Use HTML iframe embed
 4. Ask the user for a title/description for the video
 5. Insert a context sentence before the embed and a fallback link after it
 6. Use Edit to place the embed in the post

@@ -161,7 +161,7 @@ Alt text should describe the **content and purpose** of the image, not its forma
 - **Concise but complete** — one sentence, rarely two
 - **Describe content, not format** — "authentication flow" not "flowchart"
 - **Include key details** — if a screenshot shows an error message, mention the error
-- **Skip decorative images** — if an image is purely decorative, use empty alt: `![[divider.png|]]`
+- **Skip decorative images** — if an image is purely decorative, use empty alt text
 
 ## Media Placement Rules
 
@@ -176,6 +176,6 @@ Alt text should describe the **content and purpose** of the image, not its forma
 
 - **At the very top of the post** — the opening paragraph should set context first
 - **Back-to-back** — two consecutive images/diagrams without text between them feels like a slideshow
-- **Inside callouts** — images in `> [!tip]` blocks render inconsistently
+- **Inside callout/admonition blocks** — some platforms render images inconsistently inside callouts
 - **After "Mentioned in this post"** — the references section is the end; nothing goes after it
 - **In the middle of a paragraph** — break the paragraph at a natural point and place the image between

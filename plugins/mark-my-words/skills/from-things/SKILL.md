@@ -24,6 +24,10 @@ Then stop.
 
 Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
 
+#### Load Platform Template
+
+Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines all platform-specific formatting rules — frontmatter fields, content syntax, image format, callouts, code blocks, and file naming conventions.
+
 #### Load Voice Profile
 
 If the config has `blog.default_voice` set (not null), read the voice profile from `<things_path>/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
@@ -109,7 +113,7 @@ Use Glob and Grep to scan the blog content directory:
 Only run this step if `media_dir` is configured.
 
 Analyze the selected log(s) for visual content opportunities:
-- **Architecture in Action section** → flowcharts or system diagrams
+- **Architecture in Action section** → flowcharts or system diagrams (only if platform supports Mermaid)
 - **Process flows** (deployment pipelines, workflows, data flows) → sequence diagrams or flowcharts
 - **Before/after comparisons** → side-by-side images or diagrams
 - **Metrics and results** → tables or formatted data presentations
@@ -117,7 +121,7 @@ Analyze the selected log(s) for visual content opportunities:
 Use AskUserQuestion:
 
 **How should we handle visuals?**
-- "Generate diagrams where they fit" — create Mermaid diagrams for architecture and flow content
+- "Generate diagrams where they fit" — create Mermaid diagrams for architecture and flow content (only offered if platform supports Mermaid)
 - "Also find relevant images" — diagrams plus web-searched images for visual concepts
 - "Keep it text-only" — skip visuals entirely
 - "Decide as we write" — suggest visuals inline during generation
@@ -126,30 +130,32 @@ Store the user's choice for Step 8.
 
 ### 8. Generate the Post
 
-Transform the log into a blog post following the Quartz format in `../new-post/references/quartz-format.md` and the transformation guide in `references/things-bridge.md`.
+Transform the log into a blog post following the platform template loaded in Step 1 and the transformation guide in `references/things-bridge.md`.
 
 **Transformation rules:**
 1. **Open with the Blog Seed** hook, adapted to the chosen angle
 2. **Rewrite the title** — engaging and blog-appropriate, not resume-like
 3. **Transform Context → Action → Result** into narrative prose with a natural, first-person voice
-4. **Include code/technical details** if the log has them, using proper Quartz code blocks with language identifiers
+4. **Include code/technical details** if the log has them, using proper code blocks with language identifiers and any platform-specific code block features (titles, line highlighting) where appropriate
 5. **Pull metrics** from frontmatter and contextualize them (not just numbers, but why they matter)
 6. **Expand the Reflection** into a genuine takeaway for readers
-7. **Generate Quartz-compatible frontmatter:**
+7. **Generate platform-compatible frontmatter** following the template:
+   - Use the platform's frontmatter format (YAML `---` or TOML `+++`)
+   - Use the platform's field names (e.g., `pubDate` for Astro, `date` for most others)
    - `title`: Rewritten for a blog audience
-   - `date`: Today's date (when the post is written)
+   - Date: Today's date (when the post is written)
    - `description`: 1-2 sentence preview for SEO/social
-   - `tags`: Adapted from log tags, blended with existing blog tags where appropriate
-   - `draft`: `true` initially
-   - `author`: From mark-my-words config (`default_author`)
-8. **Add visuals if planned in Step 7.5** — generate Mermaid diagrams for architecture and flow content from the log's Action section, insert image references for any downloaded images, place visuals after the text that introduces the concept. Follow placement rules from `../add-media/references/media-guide.md`. If the user chose "Decide as we write", suggest visuals inline and ask before adding each one. If "Also find relevant images", use WebSearch to find and download relevant images to the media dir.
+   - Tags: Adapted from log tags, blended with existing blog tags, using platform format
+   - Draft: `true` initially (or platform equivalent)
+   - Author: From config, placed in the platform's expected field
+8. **Add visuals if planned in Step 7.5** — generate Mermaid diagrams for architecture and flow content from the log's Action section (only if platform supports Mermaid), insert image references using the platform's image syntax, place visuals after the text that introduces the concept. Follow placement rules from `../add-media/references/media-guide.md`. If the user chose "Decide as we write", suggest visuals inline and ask before adding each one. If "Also find relevant images", use WebSearch to find and download relevant images to the media dir.
 
 **Content quality:**
 - If a voice profile was selected, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, and things to avoid. The voice shapes how you write — the transformation rules still control what you write (Blog Seed hook, narrative structure, metrics integration). Voice and transformation rules are complementary, not competing.
 - If no voice profile was selected, write in a natural, engaging voice — personal blog, not documentation
 - Use H2 for major sections, H3 for subsections (no H1 in body)
 - One idea per paragraph
-- Use callouts (`> [!tip]`, etc.) sparingly and where they add value
+- Use the platform's native callout/admonition syntax if supported, sparingly and where they add value. If the platform doesn't support callouts, use blockquotes or emphasized text.
 - End with a clear takeaway
 
 ### 9. Present for Review
@@ -176,9 +182,15 @@ Go back to Step 3.
 
 ### 10. Save the File
 
-- Generate a filename from the title: lowercase, hyphens for spaces, no special characters
-- Write to `<content_root>/<default_subdirectory>/<filename>.md`
-- Tell the user the file path
+Generate a filename following the platform's naming convention:
+- **Jekyll**: `YYYY-MM-DD-slug.md` (date prefix required)
+- **All others**: `slug.md` (lowercase, hyphens for spaces, no special characters)
+
+Write to `<content_root>/<default_subdirectory>/<filename>.md`.
+
+For Jekyll drafts: write to `<content_root>/../_drafts/<slug>.md` (no date prefix needed in `_drafts/`).
+
+Tell the user the file path.
 
 ### 11. Update Source Log Metadata
 

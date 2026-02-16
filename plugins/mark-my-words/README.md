@@ -1,8 +1,8 @@
 # mark-my-words
 
-Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds.
+Write, manage, and publish blog posts on any markdown-based platform — Quartz, Hugo, Jekyll, Astro, Eleventy, Docusaurus, and Zola.
 
-Handles the full lifecycle — drafting new posts, editing existing ones, managing tags and draft status, and publishing. Works with both local Quartz directories and remote git repos. If you use i-did-a-thing, the `from-things` skill can turn your evidence logs into blog posts, pulling in the narrative structure, metrics, and reflection you've already captured.
+Handles the full lifecycle — drafting new posts, editing existing ones, managing tags and draft status, and publishing. Works with both local directories and remote git repos. Each platform gets native support for its frontmatter format, content features, and conventions. If you use i-did-a-thing, the `from-things` skill can turn your evidence logs into blog posts, pulling in the narrative structure, metrics, and reflection you've already captured.
 
 ## Installation
 
@@ -12,7 +12,7 @@ claude plugin:add mark-my-words
 
 ## Setup
 
-Configure your Quartz blog source (local path or git remote), content directory, default tags, and git workflow preferences. Updates the shared shared config.
+Configure your blog platform, source location (local path or git remote), content directory, default tags, and git workflow preferences. Updates the shared config.
 
 ```
 /mark-my-words:setup
@@ -20,9 +20,21 @@ Configure your Quartz blog source (local path or git remote), content directory,
 
 Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
 
+### Supported Platforms
+
+| Platform | Frontmatter | Callouts | Mermaid | Key Feature |
+|----------|-------------|----------|---------|-------------|
+| **Quartz** | YAML | `> [!type]` | Native | Obsidian-compatible wikilinks |
+| **Hugo** | YAML | — | Theme-dependent | Figure shortcodes, ref links |
+| **Jekyll** | YAML | — | Plugin-dependent | Date-prefixed filenames, `_drafts/` |
+| **Astro** | YAML | — | Plugin-dependent | Content collections, `pubDate` |
+| **Eleventy** | YAML | — | Plugin-dependent | Flexible structure, tag collections |
+| **Docusaurus** | YAML | `:::type` | Official plugin | MDX, rich author metadata |
+| **Zola** | TOML `+++` | — | Theme-dependent | Taxonomies, page bundles |
+
 ## Skills
 
-**New Post** — Write a new blog post. Walks you through title, length, key points, tags, and draft status, then generates a Quartz-compatible post with proper frontmatter and structure.
+**New Post** — Write a new blog post. Walks you through title, length, key points, tags, and draft status, then generates a platform-compatible post with proper frontmatter and structure.
 
 ```
 /mark-my-words:new-post [topic or idea]
@@ -58,7 +70,7 @@ Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
 /mark-my-words:from-things [log filename or search query]
 ```
 
-**Add Media** — Add images, Mermaid diagrams, and video embeds to an existing post. Analyzes your post for visual opportunities and walks you through each one — generate diagrams, provide your own images, search the web, or embed videos.
+**Add Media** — Add images, diagrams, and video embeds to an existing post. Analyzes your post for visual opportunities and walks you through each one — generate diagrams, provide your own images, search the web, or embed videos.
 
 ```
 /mark-my-words:add-media [post filename or search term]
@@ -66,7 +78,9 @@ Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
 
 ## How It Works
 
-Posts are written in Quartz-compatible markdown with full frontmatter (title, date, description, tags, draft status, author). The plugin handles git workflows (auto, ask, or manual) based on your configuration. Rich media — Mermaid diagrams, images, GIFs, and video embeds — can be added during writing or to existing posts.
+Posts are written in your platform's native markdown format with full frontmatter. Each platform has a dedicated template (`platforms/<name>.md`) that defines its frontmatter fields, content syntax (callouts, code blocks, image format), and conventions. The plugin loads the right template based on your config and follows it throughout.
+
+The plugin handles git workflows (auto, ask, or manual) based on your configuration. Rich media — Mermaid diagrams, images, GIFs, and video embeds — can be added during writing or to existing posts, using your platform's native syntax.
 
 The `from-things` skill bridges your i-did-a-thing evidence logs into narrative blog posts — it uses the JSON index to find high-potential entries, then transforms structured log data into an engaging first-person story.
 
@@ -77,7 +91,7 @@ Settings are stored in the centralized shared config shared by all career plugin
 - **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
 - **Full config**: `<things_path>/config.yml` (git-tracked, `blog:` section)
 
-Run `/mark-my-words:setup` to reconfigure blog settings.
+The `blog:` section includes a `platform:` field that determines which platform template to use. Run `/mark-my-words:setup` to reconfigure blog settings.
 
 ### Voice Profiles
 
@@ -85,7 +99,7 @@ Voice profiles live at `<things_path>/voices/<name>.md` and teach mark-my-words 
 
 ### Media Support
 
-Configure a `media_dir` in setup to enable image management. When set, the writing and editing skills can add Mermaid diagrams, download and reference images, and embed videos. Auto-suggest mode detects visual opportunities as you write. AI image generation is available as an opt-in when MCP tools are present.
+Configure a `media_dir` in setup to enable image management. When set, the writing and editing skills can add diagrams, download and reference images, and embed videos. Auto-suggest mode detects visual opportunities as you write. AI image generation is available as an opt-in when MCP tools are present.
 
 ## Related Plugins
 

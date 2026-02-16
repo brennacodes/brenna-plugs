@@ -173,6 +173,6 @@ Before finalizing a post from a thing log:
 - [ ] Tags blend log tags with existing blog tags
 - [ ] No internal jargon left unexplained
 - [ ] Description works as a social media preview
-- [ ] Heading hierarchy follows Quartz conventions (H2 → H3)
+- [ ] Heading hierarchy is clean (H2 → H3)
 - [ ] Code blocks have language identifiers
-- [ ] Callouts used sparingly and appropriately
+- [ ] Platform-specific features (callouts, admonitions) used sparingly and appropriately

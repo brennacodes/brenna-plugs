@@ -1,6 +1,6 @@
 ---
 name: new-post
-description: Create a new blog post for your Quartz site via guided interview.
+description: Create a new blog post via guided interview.
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Glob, Grep, AskUserQuestion, WebSearch, WebFetch
 argument-hint: "[topic or idea]"
@@ -8,7 +8,7 @@ argument-hint: "[topic or idea]"
 
 # Create New Blog Post
 
-You are creating a new blog post for the user's Quartz-powered blog. Use a structured interview to gather requirements, then generate a well-crafted post.
+You are creating a new blog post for the user. Use a structured interview to gather requirements, then generate a well-crafted post following their platform's conventions.
 
 ## Steps
 
@@ -27,6 +27,10 @@ Read `<things_path>/config.yml` for all settings. Extract the `blog:` section fo
 > Blog not configured yet. Please run `/mark-my-words:setup` first to configure your blog settings.
 
 Then stop.
+
+#### Load Platform Template
+
+Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines all platform-specific formatting rules — frontmatter fields, content syntax, image format, callouts, code blocks, and file naming conventions. Follow the template's rules throughout post generation.
 
 #### Load Voice Profile
 
@@ -53,7 +57,7 @@ If the config has `media_dir` set (not null), resolve the full media path as `<c
 
 Use Glob and Grep to scan the content directory:
 - Find all `.md` files in the target subdirectory
-- Extract existing tags from frontmatter across posts (look for `tags:` in YAML frontmatter)
+- Extract existing tags from frontmatter across posts (look for `tags:` in YAML frontmatter, or `tags = [` for TOML platforms like Zola)
 - Note the directory structure for suggesting where to place the new post
 - This informs tag suggestions and helps maintain consistency
 
@@ -83,13 +87,13 @@ Use AskUserQuestion for each of these, adapting based on `$ARGUMENTS` if provide
 - If only one voice exists, just confirm they want to use it
 
 **Draft status**:
-- Publish immediately (`draft: false`)
-- Save as draft (`draft: true`)
+- Publish immediately (`draft: false`, or platform-specific equivalent like `published: true` for Jekyll)
+- Save as draft (`draft: true`, or place in `_drafts/` for Jekyll)
 
 **Visuals** (only if `media_dir` is configured):
 - "I have specific images (file paths or URLs)"
 - "Find relevant images for me"
-- "Generate Mermaid diagrams for visual concepts"
+- "Generate Mermaid diagrams for visual concepts" (only if the platform template indicates Mermaid support)
 - "No visuals for this post"
 - "Decide as we write"
 
@@ -97,11 +101,11 @@ If user provides images: collect paths/URLs and descriptions for processing in S
 
 ### 5. Write the Post
 
-Generate the blog post following the Quartz format reference in `references/quartz-format.md`. Key requirements:
+Generate the blog post following the platform template loaded in Step 1. Key requirements:
 
-- **Frontmatter**: Include `title`, `date` (today in YYYY-MM-DD format), `description` (1-2 sentence summary), `tags`, and `draft` status. Add `author` if configured.
+- **Frontmatter**: Use the platform's frontmatter format and field names. Include all required fields from the platform template, plus optional fields as appropriate. Use the platform's date field name (`date`, `pubDate`, etc.) with today's date in the expected format. For Zola, use TOML frontmatter between `+++` delimiters. For all others, use YAML between `---` delimiters.
 - **Content quality**: If a voice profile was selected, follow its guidance for tone, sentence patterns, vocabulary, rhetorical habits, structure, and things to avoid. The voice profile takes precedence over generic style defaults — write as the profile describes, not in a generic "natural, engaging" voice. If no voice profile was selected, write in a natural, engaging voice. Use clear heading hierarchy (h2 for sections, h3 for subsections). Include code blocks with language identifiers when relevant.
-- **Quartz features**: Use callouts (`> [!tip]`, `> [!warning]`, etc.) where they add value. Use proper syntax highlighting in code blocks.
+- **Platform features**: Use the platform's native content features as documented in the template. If the platform supports callouts/admonitions (e.g., Quartz `> [!type]`, Docusaurus `:::type`), use them where they add value. If the platform doesn't support callouts, use emphasized text or blockquotes instead. Use the platform's native code block features (title, line highlighting) where appropriate.
 - **Length**: Match the target length the user selected.
 - **Structure**: Start with a brief intro, organize into logical sections based on the user's key points, end with a conclusion or summary.
 
@@ -110,13 +114,13 @@ Generate the blog post following the Quartz format reference in `references/quar
 When `auto_suggest_visuals` is true in config or the user chose "Decide as we write", integrate visuals as you draft each section. Consult `../add-media/references/media-guide.md` for detection patterns and placement rules.
 
 - **Auto-detection**: As you write each section, detect:
-  - Architecture descriptions → Mermaid flowchart with subgraphs
-  - Workflows and processes → Mermaid flowchart or sequence diagram
+  - Architecture descriptions → Mermaid flowchart with subgraphs (only if platform supports Mermaid)
+  - Workflows and processes → Mermaid flowchart or sequence diagram (only if platform supports Mermaid)
   - Comparisons → table or side-by-side diagram
   - Data and metrics → formatted table or chart description
   - Visual concepts that need an actual image → placeholder comment: `<!-- TODO: add image of [description] -->`
 
-- **User-provided images**: If the user gave file paths or URLs in the interview, reference them with wikilink syntax `![[filename.png|alt text]]` at the appropriate point in the narrative. Place images after the text that introduces the concept.
+- **User-provided images**: If the user gave file paths or URLs in the interview, reference them using the platform's image syntax (from the template). Place images after the text that introduces the concept.
 
 - **Web-searched images**: If the user asked to find images, use WebSearch (try `site:unsplash.com <topic>` or `creative commons <topic> photo`), then use WebFetch to verify the image URL works. Download with `curl -L -o` to the media dir using a descriptive kebab-case filename. Always include alt text.
 
@@ -156,14 +160,20 @@ Only run this step if the user requested images (provided files, web search, or 
 1. **Ensure media directory exists**: `mkdir -p <content_root>/<media_dir>`
 2. **Copy local files**: For each user-provided local file, copy it to the media dir. Rename generic filenames (like `IMG_4523.png`, `Screenshot 2025-01-15.png`) to descriptive kebab-case names based on the image content or context.
 3. **Download remote images**: For each URL collected during writing, download with `curl -L -o <media_dir>/<descriptive-filename> <url>`
-4. **Update image references**: Ensure all image references in the post point to the correct relative paths using wikilink syntax: `![[filename.png|alt text]]`
+4. **Update image references**: Ensure all image references in the post use the platform's image syntax from the template (e.g., wikilinks for Quartz, standard markdown for others).
 5. **Summarize**: Tell the user what was processed — files copied, images downloaded, references updated.
 
 ### 6. Save the File
 
-- Generate a filename from the title: lowercase, hyphens for spaces, no special characters (e.g., `my-first-post.md`)
-- Write to `<content_root>/<target_subdirectory>/<filename>.md`
-- Tell the user the file path
+Generate a filename following the platform's naming convention from the template:
+- **Jekyll**: `YYYY-MM-DD-slug.md` (date prefix required)
+- **All others**: `slug.md` (lowercase, hyphens for spaces, no special characters)
+
+Write to `<content_root>/<target_subdirectory>/<filename>.md`.
+
+For Jekyll drafts: if the user chose draft status and the platform is Jekyll, write to `<content_root>/../_drafts/<slug>.md` (no date prefix needed in `_drafts/`).
+
+Tell the user the file path.
 
 ### 7. Handle Git Workflow
 
