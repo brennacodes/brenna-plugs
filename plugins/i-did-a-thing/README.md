@@ -12,13 +12,13 @@ claude plugin:add i-did-a-thing
 
 ## Setup
 
-Configure your .things directory (project-local or global), git remote, professional profile (current role, target roles, skills you're building), and preferences. This creates the shared trio config used by i-did-a-thing, what-did-you-do, and mark-my-words.
+Configure your .things directory (project-local or global), git remote, professional profile (current role, target roles, skills you're building), and preferences. This creates the shared shared config used by i-did-a-thing, what-did-you-do, and mark-my-words.
 
 ```
 /i-did-a-thing:setup [reconfigure]
 ```
 
-**Migrating from v2.x?** Run `/i-did-a-thing:migrate-things` to move from per-plugin configs to the centralized trio config.
+**Migrating from v2.x?** Run `/i-did-a-thing:migrate-things` to move from per-plugin configs to the centralized shared config.
 
 ## Skills
 
@@ -34,7 +34,7 @@ Configure your .things directory (project-local or global), git remote, professi
 /i-did-a-thing:construct-resume [job listing URL or text]
 ```
 
-**Migrate** — Move from per-plugin configs to the centralized trio config. Run this after updating to v3.0.0.
+**Migrate** — Move from per-plugin configs to the centralized shared config. Run this after updating to v3.0.0.
 
 ```
 /i-did-a-thing:migrate-things [--dry-run]
@@ -68,7 +68,7 @@ Logs include a Blog Seed section for use with `/mark-my-words:from-things`, and 
 
 ```
 <things_path>/
-├── config.yml      # Shared config for all trio plugins
+├── config.yml      # Shared config for all career plugins
 ├── logs/           # Individual log entries
 ├── arsenal/        # Synthesized skill summaries (auto-regenerated)
 ├── voices/         # Voice profiles for blog writing
@@ -82,9 +82,9 @@ A PostToolUse hook automatically regenerates `index.json`, `tags.json`, and all 
 
 ## Configuration
 
-Settings are stored in a centralized config shared by all trio plugins:
+Settings are stored in a centralized config shared by all career plugins:
 
-- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
 - **Full config**: `<things_path>/config.yml` (git-tracked, all settings)
 
 Run `/i-did-a-thing:setup` to reconfigure.

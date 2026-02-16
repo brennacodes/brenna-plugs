@@ -14,7 +14,7 @@ Generate concept questions dynamically from your arsenal and index, present them
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If missing:
+Read `~/.claude/things.local.md` to get `things_path`. If missing:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

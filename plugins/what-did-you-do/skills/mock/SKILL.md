@@ -14,7 +14,7 @@ Run a realistic interview round: multiple questions, consistent persona, timed p
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+Read `~/.claude/things.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
 
 Read `<things_path>/config.yml` for all settings — professional profile and interview prep preferences.
 

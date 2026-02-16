@@ -7,17 +7,17 @@ allowed-tools: Read, Write, Edit, Bash, Glob, AskUserQuestion
 
 # mark-my-words Setup
 
-You are configuring the mark-my-words plugin for the user's Quartz blog. Your job is to gather their settings and update the shared trio config.
+You are configuring the mark-my-words plugin for the user's Quartz blog. Your job is to gather their settings and update the shared config.
 
-This setup uses the centralized trio config shared by all trio plugins. See `references/trio-setup.md` for the full config architecture.
+This setup uses the shared config used by all career plugins. See `references/things-setup.md` for the full config architecture.
 
 ## Steps
 
 ### 1. Check for Existing Configuration
 
-Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
+Follow the **Bootstrap Detection Flow** from `references/things-setup.md`:
 
-1. Check if `.claude/trio.local.md` exists
+1. Check if `~/.claude/things.local.md` exists
 2. If yes, read `things_path` from it
 3. Check if `<things_path>/config.yml` exists
 

@@ -12,7 +12,7 @@ claude plugin:add what-do-you-know
 
 ## Setup
 
-Link to your shared trio config, set learning depth, default persona, session length, and focus areas.
+Link to your shared shared config, set learning depth, default persona, session length, and focus areas.
 
 ```
 /what-do-you-know:setup [reconfigure]
@@ -108,9 +108,9 @@ Stored alongside your i-did-a-thing data:
 
 ## Configuration
 
-Settings are stored in the centralized trio config shared by all trio plugins:
+Settings are stored in the centralized shared config shared by all career plugins:
 
-- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
 - **Full config**: `<things_path>/config.yml` (git-tracked, `learning:` section)
 
 Run `/what-do-you-know:setup` to reconfigure learning preferences.

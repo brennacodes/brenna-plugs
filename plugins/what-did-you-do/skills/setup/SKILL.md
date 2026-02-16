@@ -1,6 +1,6 @@
 ---
 name: setup
-description: "Configure what-did-you-do plugin: link to shared trio config, set interview preferences, and initialize session tracking"
+description: "Configure what-did-you-do plugin: link to shared config, set interview preferences, and initialize session tracking"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
@@ -10,15 +10,15 @@ argument-hint: "[reconfigure]"
 
 Configure the plugin to use your i-did-a-thing arsenal for interview preparation, practice sessions, and company-specific mock interviews. Seeds shared personas and company profiles to the things repo.
 
-This setup uses the centralized trio config shared by all trio plugins. See `references/trio-setup.md` for the full config architecture.
+This setup uses the shared config used by all career plugins. See `references/things-setup.md` for the full config architecture.
 
 ## Steps
 
 ### 1. Check for Existing Configuration
 
-Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
+Follow the **Bootstrap Detection Flow** from `references/things-setup.md`:
 
-1. Check if `.claude/trio.local.md` exists
+1. Check if `~/.claude/things.local.md` exists
 2. If yes, read `things_path` from it
 3. Check if `<things_path>/config.yml` exists
 

@@ -1,6 +1,6 @@
 ---
 name: migrate-things
-description: "Migrate from per-plugin configs to centralized trio config. Run this after updating to v3.0.0."
+description: "Migrate from per-plugin configs to centralized shared config. Run this after updating to v3.0.0."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[--dry-run]"
@@ -8,19 +8,19 @@ argument-hint: "[--dry-run]"
 
 # Migrate to Centralized Trio Config
 
-Guide the user through migrating from per-plugin configs (`.claude/i-did-a-thing.local.md`, `.claude/what-did-you-do.local.md`, `.claude/mark-my-words.local.md`) to the centralized trio config system (`.claude/trio.local.md` + `<things_path>/config.yml`), including seeding shared personas and company profiles.
+Guide the user through migrating from per-plugin configs (`~/.claude/i-did-a-thing.local.md`, `~/.claude/what-did-you-do.local.md`, `~/.claude/mark-my-words.local.md`) to the centralized shared config system (`~/.claude/things.local.md` + `<things_path>/config.yml`), including seeding shared personas and company profiles.
 
 ## Steps
 
 ### 1. Check if Already Migrated
 
-Check if `.claude/trio.local.md` exists. If it does, read it to get `things_path` and check if `<things_path>/config.yml` also exists.
+Check if `~/.claude/things.local.md` exists. If it does, read it to get `things_path` and check if `<things_path>/config.yml` also exists.
 
 If both exist:
 
-> You're already using the centralized trio config. No migration needed.
+> You're already using the centralized shared config. No migration needed.
 >
-> - Bootstrap: `.claude/trio.local.md`
+> - Bootstrap: `~/.claude/things.local.md`
 > - Config: `<things_path>/config.yml`
 >
 > Run `/i-did-a-thing:setup` to reconfigure.
@@ -30,9 +30,9 @@ Then stop.
 ### 2. Detect Existing Configs
 
 Read whichever of these exist:
-- `.claude/i-did-a-thing.local.md`
-- `.claude/what-did-you-do.local.md`
-- `.claude/mark-my-words.local.md`
+- `~/.claude/i-did-a-thing.local.md`
+- `~/.claude/what-did-you-do.local.md`
+- `~/.claude/mark-my-words.local.md`
 
 If none exist:
 
@@ -48,7 +48,7 @@ Tell the user what will happen:
 >
 > I'll merge your existing configs into a centralized system:
 >
-> 1. Create `.claude/trio.local.md` (machine-local bootstrap)
+> 1. Create `~/.claude/things.local.md` (machine-local bootstrap)
 > 2. Create `<things_path>/config.yml` (full config, git-tracked)
 > 3. Generate `index.json` from your logs (replaces `index.md`)
 > 4. Generate `tags.json` for quick tag lookups
@@ -142,7 +142,7 @@ Use the `default_author` from mark-my-words config, or the GitHub username capit
 
 ### 8. Write Bootstrap Config
 
-Write `.claude/trio.local.md`:
+Write `~/.claude/things.local.md`:
 
 ```yaml
 things_path: <things_path>
@@ -151,17 +151,17 @@ github_username: <username>
 
 ### 9. Write Full Config
 
-Write `<things_path>/config.yml` with all merged fields using the schema from `../setup/references/trio-setup.md`.
+Write `<things_path>/config.yml` with all merged fields using the schema from `../setup/references/things-setup.md`.
 
 For any plugin-specific section where the plugin wasn't previously configured, write sensible defaults.
 
 ### 10. Copy Voice Profiles
 
-Check if `.claude/voices/` exists and has any `.md` files.
+Check if `~/.claude/voices/` exists and has any `.md` files.
 
 If yes:
 1. Create `<things_path>/voices/` directory
-2. Copy each voice file from `.claude/voices/` to `<things_path>/voices/`
+2. Copy each voice file from `~/.claude/voices/` to `<things_path>/voices/`
 3. Tell the user: "Copied N voice profile(s) to `<things_path>/voices/`"
 
 ### 11. Seed Shared Personas
@@ -215,7 +215,7 @@ Capture the output to show the user entry and tag counts.
 > - Companies: N seeded to `<things_path>/companies/`
 >
 > **New config locations:**
-> - Bootstrap: `.claude/trio.local.md`
+> - Bootstrap: `~/.claude/things.local.md`
 > - Full config: `<things_path>/config.yml`
 > - Index: `<things_path>/index.json`
 > - Tags: `<things_path>/tags.json`
@@ -239,9 +239,9 @@ If something's off, help the user investigate.
 Rename the old config files to `.bak`:
 
 ```bash
-mv .claude/i-did-a-thing.local.md .claude/i-did-a-thing.local.md.bak 2>/dev/null || true
-mv .claude/what-did-you-do.local.md .claude/what-did-you-do.local.md.bak 2>/dev/null || true
-mv .claude/mark-my-words.local.md .claude/mark-my-words.local.md.bak 2>/dev/null || true
+mv ~/.claude/i-did-a-thing.local.md ~/.claude/i-did-a-thing.local.md.bak 2>/dev/null || true
+mv ~/.claude/what-did-you-do.local.md ~/.claude/what-did-you-do.local.md.bak 2>/dev/null || true
+mv ~/.claude/mark-my-words.local.md ~/.claude/mark-my-words.local.md.bak 2>/dev/null || true
 ```
 
 Tell the user: "Old configs renamed to `.bak` — you can delete them once you're confident everything works."

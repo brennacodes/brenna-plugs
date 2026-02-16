@@ -27,7 +27,7 @@ Log it                     Practice it                 Learn from it            
    interview talking points  gap identification          learning plans            blog with metrics
 ```
 
-All four read from `<things_path>/config.yml` (git-tracked) with a machine-local bootstrap at `.claude/trio.local.md`. Set up once with `/i-did-a-thing:setup`, then configure each plugin's section with its own setup skill.
+All four read from `<things_path>/config.yml` (git-tracked) with a machine-local bootstrap at `~/.claude/things.local.md`. Set up once with `/i-did-a-thing:setup`, then configure each plugin's section with its own setup skill.
 
 ## Installation
 
@@ -54,7 +54,7 @@ Log professionally-relevant experiences — accomplishments, lessons, expertise,
 | `/i-did-a-thing:setup` | Configure .things directory, git remote, professional profile |
 | `/i-did-a-thing:thing-i-did` | Log an experience (context-aware — extracts from conversation or runs full interview) |
 | `/i-did-a-thing:construct-resume` | Match your evidence against a job listing and build a tailored resume |
-| `/i-did-a-thing:migrate-things` | Migrate from v2.x per-plugin configs to centralized trio config |
+| `/i-did-a-thing:migrate-things` | Migrate from v2.x per-plugin configs to centralized shared config |
 
 Six evidence types: accomplishment, lesson, expertise, decision, influence, insight. Each gets tailored interview questions, resume bullet formats, and body section structures.
 

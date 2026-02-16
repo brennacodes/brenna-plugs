@@ -12,7 +12,7 @@ claude plugin:add what-did-you-do
 
 ## Setup
 
-Link to your shared trio config, set follow-up depth (concise, detailed, or coaching), default interview stage, and trusted sources for question bank updates.
+Link to your shared shared config, set follow-up depth (concise, detailed, or coaching), default interview stage, and trusted sources for question bank updates.
 
 ```
 /what-did-you-do:setup [reconfigure]
@@ -107,9 +107,9 @@ Stored alongside your i-did-a-thing data:
 
 ## Configuration
 
-Settings are stored in the centralized trio config shared by all trio plugins:
+Settings are stored in the centralized shared config shared by all career plugins:
 
-- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
 - **Full config**: `<things_path>/config.yml` (git-tracked, `interview_prep:` section)
 
 Run `/what-did-you-do:setup` to reconfigure interview preferences.

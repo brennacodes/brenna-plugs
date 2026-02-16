@@ -16,7 +16,7 @@ Consult `references/media-guide.md` for visual detection patterns, Mermaid synta
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If missing:
+Read `~/.claude/things.local.md` to get `things_path`. If missing:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

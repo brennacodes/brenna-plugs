@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Thin wrapper called by PostToolUse hook after a Write.
-# Reads things_path from the centralized trio config and triggers
+# Reads things_path from the shared config and triggers
 # rebuild-data.py only when the written file is a log.
 
 set -euo pipefail
@@ -14,13 +14,13 @@ if [[ -z "$FILE_PATH" || ! "$FILE_PATH" =~ /logs/[^/]*\.md$ ]]; then
   exit 0
 fi
 
-CONFIG_FILE=".claude/trio.local.md"
+CONFIG_FILE="$HOME/.claude/things.local.md"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   exit 0
 fi
 
-# Extract things_path from trio bootstrap config
+# Extract things_path from things bootstrap config
 THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)
 
 if [[ -z "$THINGS_PATH" ]]; then

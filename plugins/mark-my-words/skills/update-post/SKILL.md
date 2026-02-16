@@ -14,7 +14,7 @@ You are helping the user update an existing blog post on their Quartz site. Find
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If missing:
+Read `~/.claude/things.local.md` to get `things_path`. If missing:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

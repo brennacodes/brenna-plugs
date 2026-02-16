@@ -12,7 +12,7 @@ claude plugin:add mark-my-words
 
 ## Setup
 
-Configure your Quartz blog source (local path or git remote), content directory, default tags, and git workflow preferences. Updates the shared trio config.
+Configure your Quartz blog source (local path or git remote), content directory, default tags, and git workflow preferences. Updates the shared shared config.
 
 ```
 /mark-my-words:setup
@@ -72,9 +72,9 @@ The `from-things` skill bridges your i-did-a-thing evidence logs into narrative 
 
 ## Configuration
 
-Settings are stored in the centralized trio config shared by all trio plugins:
+Settings are stored in the centralized shared config shared by all career plugins:
 
-- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
 - **Full config**: `<things_path>/config.yml` (git-tracked, `blog:` section)
 
 Run `/mark-my-words:setup` to reconfigure blog settings.

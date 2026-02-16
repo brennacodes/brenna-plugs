@@ -14,7 +14,7 @@ Analyze all practice and mock sessions to produce a comprehensive readiness asse
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+Read `~/.claude/things.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
 
 Read `<things_path>/config.yml` for all settings — professional profile and interview prep preferences.
 

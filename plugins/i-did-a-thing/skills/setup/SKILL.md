@@ -10,15 +10,15 @@ argument-hint: "[reconfigure]"
 
 Configure the plugin so your accomplishments are tracked, searchable, and ready to fuel resumes, interviews, and blog posts.
 
-This setup uses the centralized trio config shared by i-did-a-thing, what-did-you-do, mark-my-words, and what-do-you-know. See `references/trio-setup.md` for the full config architecture.
+This setup uses the shared config used by i-did-a-thing, what-did-you-do, mark-my-words, and what-do-you-know. See `references/things-setup.md` for the full config architecture.
 
 ## Steps
 
 ### 1. Check for Existing Configuration
 
-Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
+Follow the **Bootstrap Detection Flow** from `references/things-setup.md`:
 
-1. Check if `.claude/trio.local.md` exists
+1. Check if `~/.claude/things.local.md` exists
 2. If yes, read `things_path` from it
 3. Check if `<things_path>/config.yml` exists
 4. If both exist → show current settings and ask if they want to reconfigure
@@ -45,7 +45,7 @@ gh api user -q .login 2>/dev/null || git config user.name
 
 Confirm with user via AskUserQuestion.
 
-Write `.claude/trio.local.md`:
+Write `~/.claude/things.local.md`:
 
 ```yaml
 things_path: <chosen_path>
@@ -134,7 +134,7 @@ git checkout -b <branch>
 
 ### 8. Write Full Config
 
-Write `<things_path>/config.yml` with all gathered fields. Use the schema from `references/trio-setup.md`. Include sensible defaults for what-did-you-do and mark-my-words sections that the user hasn't configured yet:
+Write `<things_path>/config.yml` with all gathered fields. Use the schema from `references/things-setup.md`. Include sensible defaults for what-did-you-do and mark-my-words sections that the user hasn't configured yet:
 
 ```yaml
 # Identity

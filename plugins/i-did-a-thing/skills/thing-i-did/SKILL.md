@@ -14,7 +14,7 @@ Walk the user through capturing a professional experience with enough depth and 
 
 ### 1. Load Configuration
 
-Read `.claude/trio.local.md` to get `things_path`. If the file doesn't exist, tell the user:
+Read `~/.claude/things.local.md` to get `things_path`. If the file doesn't exist, tell the user:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

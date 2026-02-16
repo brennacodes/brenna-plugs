@@ -1,12 +1,12 @@
-# Trio Shared Setup Reference
+# Things Shared Setup Reference
 
-All four trio plugins (i-did-a-thing, what-did-you-do, mark-my-words, what-do-you-know) share a centralized config system. This document defines the bootstrap and config flows used by all setup skills.
+All four career plugins (i-did-a-thing, what-did-you-do, mark-my-words, what-do-you-know) share a centralized config system. This document defines the bootstrap and config flows used by all setup skills.
 
 ## Config Architecture
 
 ### Bootstrap Config (machine-local)
 
-File: `.claude/trio.local.md`
+File: `~/.claude/things.local.md`
 
 Contains only machine-specific settings. Not committed to git.
 
@@ -31,7 +31,7 @@ things_repo: <remote_url>
 things_branch: main
 git_workflow: auto
 
-# Professional Profile (shared by all trio plugins)
+# Professional Profile (shared by all career plugins)
 current_role: <role>
 target_roles:
   - <role>
@@ -100,7 +100,7 @@ Company profiles (amazon.yaml, google.yaml, meta.yaml + user-created) shared acr
 
 Used by all setup skills to determine current state:
 
-1. Check if `.claude/trio.local.md` exists
+1. Check if `~/.claude/things.local.md` exists
 2. If yes, read `things_path` from it
 3. Check if `<things_path>/config.yml` exists
 4. If both exist → config is complete, show current settings and offer reconfigure
@@ -109,7 +109,7 @@ Used by all setup skills to determine current state:
 
 ## Bootstrap Creation Flow
 
-When no `.claude/trio.local.md` exists:
+When no `~/.claude/things.local.md` exists:
 
 1. **Detect GitHub username**: Try `gh api user -q .login`, fall back to `git config user.name`
 2. **Confirm username** with user via AskUserQuestion
@@ -117,7 +117,7 @@ When no `.claude/trio.local.md` exists:
    - `~/.things` (home directory — recommended, single source of truth)
    - `./things` (project-local)
    - Custom path
-4. **Write `.claude/trio.local.md`**:
+4. **Write `~/.claude/things.local.md`**:
    ```yaml
    things_path: <chosen_path>
    github_username: <username>
