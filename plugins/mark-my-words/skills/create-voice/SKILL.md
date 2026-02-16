@@ -14,15 +14,17 @@ You are creating a voice profile from the user's writing samples. The profile wi
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` to get the user's settings. If the file doesn't exist, tell the user:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
+Read `<things_path>/config.yml` for all settings. If config.yml is missing, tell the user to run setup.
+
 ### 2. Ensure Voices Directory
 
-Check if `.claude/voices/` exists. If not, create it.
+Check if `<things_path>/voices/` exists. If not, create it.
 
 ### 3. Get Voice Name
 
@@ -36,7 +38,7 @@ Suggest names based on common patterns: `casual-tech`, `professional`, `personal
 
 ### 4. Check for Existing Profile
 
-Check if `.claude/voices/<name>.md` already exists. If it does, tell the user:
+Check if `<things_path>/voices/<name>.md` already exists. If it does, tell the user:
 
 > A voice profile named "<name>" already exists. Use `/mark-my-words:update-voice <name>` to refine it, or choose a different name.
 
@@ -134,7 +136,7 @@ Go back to Step 6.
 
 ### 9. Save the Profile
 
-Write the profile to `.claude/voices/<name>.md` using the format from `references/voice-profile-format.md`. Include:
+Write the profile to `<things_path>/voices/<name>.md` using the format from `references/voice-profile-format.md`. Include:
 
 - Frontmatter with name, description, created date (today), last_updated (today), and sample_sources
 - All six body sections with the distilled analysis
@@ -147,13 +149,13 @@ Use AskUserQuestion:
 > - Yes — use this voice by default
 > - No — I'll pick a voice when I need one
 
-If yes, read `.claude/mark-my-words.local.md`, update the `default_voice` field to `<name>`, and write the file back.
+If yes, read `<things_path>/config.yml`, update `blog.default_voice` to `<name>`, and write the file back.
 
 ### 11. Confirm
 
 Tell the user:
 
-> Voice profile "<name>" saved to `.claude/voices/<name>.md`.
+> Voice profile "<name>" saved to `<things_path>/voices/<name>.md`.
 
 If set as default:
 

@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-log.sh",
-            "timeout": 3
+            "timeout": 5
           }
         ]
       }
@@ -18,12 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/rebuild-index.sh",
-            "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/update-arsenal.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/run-rebuild.sh",
             "timeout": 5
           }
         ]

@@ -2,177 +2,120 @@
 
 ![installs](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbrennacodes%2Fbrenna-plugs%2Fmain%2F.github%2Fdata%2Fclones.json&query=%24.total&label=installs&color=brightgreen)
 
-A Claude Code plugin marketplace by [brennacodes](https://github.com/brennacodes).
-
-Three plugins for building a professional reputation from the ground up. Log what you do, practice talking about it, write about it publicly. Each plugin works on its own, but together they create a single source of truth — log an experience once, and it flows into interview prep, resume building, and blog posts without re-telling the story from scratch every time.
-
-**i-did-a-thing** is the foundation. You log professional experiences — accomplishments, lessons learned, expertise developed, decisions made, influence exercised, and insights formed — through a guided deep-dive, and the plugin builds a searchable arsenal of evidence tagged, classified, and pre-formatted for reuse. Every entry generates resume bullets, interview talking points, and a blog seed automatically.
-
-**what-did-you-do** reads that arsenal and uses it to coach you. When you practice an interview question, it cross-references your logged evidence — matching question themes to the right evidence types (lessons for failure questions, decisions for tradeoff questions, expertise for depth questions). When you run a mock interview for Amazon, it maps your arsenal to their Leadership Principles and shows where you're strong and where you have gaps.
-
-**mark-my-words** turns the same logs into public writing. The `from-things` skill pulls a log's narrative structure and metrics into a blog post draft — you choose the angle, and it handles the transformation from structured career evidence to an engaging first-person story on your Quartz site.
-
-The loop compounds: logging more evidence makes your interviews sharper and your writing richer. Practicing interviews exposes gaps to log. Writing about what you've done forces you to articulate impact clearly — which makes you better at interviews.
-
-## Installation
-
-Add the marketplace from GitHub:
-
-```
-/plugin marketplace add brennacodes/brenna-plugs
-```
-
-Or from a local clone:
-
-```
-/plugin marketplace add <path_to_brenna_plugs>
-```
-
-Then install plugins:
-
-```
-/plugin install i-did-a-thing@brenna-plugs
-```
-
-```
-/plugin install what-did-you-do@brenna-plugs
-```
-
-```
-/plugin install mark-my-words@brenna-plugs
-```
-
-```
-/plugin install screenshotr@brenna-plugs
-```
+Claude Code plugins by [brennacodes](https://github.com/brennacodes).
 
 ## Plugins
 
+| Plugin | What it does |
+|--------|-------------|
+| [**i-did-a-thing**](#i-did-a-thing) | Log professionally-relevant experiences, build a searchable evidence arsenal, generate tailored resumes |
+| [**what-did-you-do**](#what-did-you-do) | Practice interviews with persona-driven coaching, powered by your logged evidence |
+| [**what-do-you-know**](#what-do-you-know) | Deepen understanding through concept quizzing, gap analysis, and learning plans |
+| [**mark-my-words**](#mark-my-words) | Write and publish Quartz blog posts — standalone or from your evidence logs |
+| [**screenshotr**](#screenshotr) | Precise macOS screenshots with crop, resize, and format control |
+
+## The Quartet
+
+All four career plugins share a single config and data layer — including a shared arsenal, personas, and company profiles. Log an experience once, and it flows into interview prep, knowledge reinforcement, resume building, and blog posts without re-telling the story.
+
+```
+Log it                     Practice it                 Learn from it              Write about it
+/i-did-a-thing:thing-i-did → /what-did-you-do:practice → /what-do-you-know:explore → /mark-my-words:from-things
+         ↓                          ↓                          ↓                          ↓
+   evidence arsenal          coached feedback            concept maps              published post
+   resume bullets            readiness scores            gap analysis              first-person story
+   interview talking points  gap identification          learning plans            blog with metrics
+```
+
+All four read from `<things_path>/config.yml` (git-tracked) with a machine-local bootstrap at `.claude/trio.local.md`. Set up once with `/i-did-a-thing:setup`, then configure each plugin's section with its own setup skill.
+
+## Installation
+
+```bash
+# Add the marketplace
+/plugin marketplace add brennacodes/brenna-plugs
+
+# Install what you need
+/plugin install i-did-a-thing@brenna-plugs
+/plugin install what-did-you-do@brenna-plugs
+/plugin install mark-my-words@brenna-plugs
+/plugin install what-do-you-know@brenna-plugs
+/plugin install screenshotr@brenna-plugs
+```
+
+---
+
 ### i-did-a-thing
 
-Log professional experiences — accomplishments, lessons, expertise, decisions, influence, and insights — and build tailored resumes from your evidence arsenal.
+Log professionally-relevant experiences — accomplishments, lessons, expertise, decisions, influence, and insights — through guided deep-dives. Every entry auto-generates resume bullets, interview talking points, and a blog seed. A PostToolUse hook rebuilds the JSON index and skill arsenal after every log.
 
-**Setup** — Configure your .things directory, git remote, professional goals, and preferences.
+| Skill | Description |
+|-------|-------------|
+| `/i-did-a-thing:setup` | Configure .things directory, git remote, professional profile |
+| `/i-did-a-thing:thing-i-did` | Log an experience (context-aware — extracts from conversation or runs full interview) |
+| `/i-did-a-thing:construct-resume` | Match your evidence against a job listing and build a tailored resume |
+| `/i-did-a-thing:migrate-things` | Migrate from v2.x per-plugin configs to centralized trio config |
 
-```
-/i-did-a-thing:setup [reconfigure]
-```
+Six evidence types: accomplishment, lesson, expertise, decision, influence, insight. Each gets tailored interview questions, resume bullet formats, and body section structures.
 
-**Log a Thing** — Capture a professional experience through a guided deep-dive. The interview adapts based on what kind of thing it is — accomplishment, lesson, expertise, decision, influence, or insight.
-
-```
-/i-did-a-thing:thing-i-did [brief description]
-```
-
-**Build Resume** — Analyze a job listing, match it against your logged evidence, and produce a tailored resume.
-
-```
-/i-did-a-thing:construct-resume [job listing URL or text]
-```
+---
 
 ### what-did-you-do
 
-Interview preparation with persona-driven practice, company-specific mocks, spaced repetition, and progress tracking — powered by your i-did-a-thing arsenal.
+Interview prep that knows what you've actually done. Cross-references your arsenal when coaching answers — matching question themes to evidence types (lessons for failure questions, decisions for tradeoff questions, expertise for depth questions). Spaced repetition targets weak areas over time.
 
-**Setup** — Link to your i-did-a-thing data, set interview preferences, and initialize session tracking.
+| Skill | Description |
+|-------|-------------|
+| `/what-did-you-do:setup` | Set follow-up depth, default stage, trusted question sources |
+| `/what-did-you-do:practice` | Drill a single question with persona-driven feedback |
+| `/what-did-you-do:mock` | Full interview round simulation (Amazon, Google, Meta, custom) |
+| `/what-did-you-do:review` | Readiness assessment with trends, gaps, and anti-pattern tracking |
+| `/what-did-you-do:prep-for` | Company-specific prep plan with value mapping and timeline |
+| `/what-did-you-do:update-questions` | Add questions from trusted sources or manual entry |
 
-```
-/what-did-you-do:setup [reconfigure]
-```
+7 interviewer personas. 45 built-in questions. 5 scoring dimensions. Company profiles for Amazon (14 LPs), Google, and Meta.
 
-**Practice** — Drill a single question with a selected interviewer persona and arsenal-powered feedback.
-
-```
-/what-did-you-do:practice [behavioral|technical|leadership|situational|system-design]
-```
-
-**Mock Interview** — Simulate a full interview round with timed questions and an end-of-round debrief.
-
-```
-/what-did-you-do:mock [amazon|google|meta] [--stage phone-screen|onsite|bar-raiser]
-```
-
-**Review Readiness** — Assess interview readiness with trend analysis and gap identification.
-
-```
-/what-did-you-do:review [--company amazon|google|meta] [--since YYYY-MM-DD]
-```
-
-**Prep For** — Build a company-specific preparation plan with value mapping and a practice timeline.
-
-```
-/what-did-you-do:prep-for <company> [--role <target role>] [--level <level>]
-```
-
-**Update Questions** — Add new questions from trusted sources or manual entry.
-
-```
-/what-did-you-do:update-questions <url or 'manual'>
-```
+---
 
 ### mark-my-words
 
-Write, manage, and publish blog posts on Quartz static sites — with rich media support for images, diagrams, and video embeds.
+Write, edit, and publish blog posts on Quartz static sites. Supports voice profiles (teach it how you write), Mermaid diagrams, images, and video embeds. The `from-things` skill finds high-potential evidence logs via the JSON index and transforms them into first-person stories.
 
-**Setup** — Configure your Quartz blog source, author info, and publishing preferences.
+| Skill | Description |
+|-------|-------------|
+| `/mark-my-words:setup` | Configure blog source, content directory, media, git workflow |
+| `/mark-my-words:new-post` | Write a new post via guided interview |
+| `/mark-my-words:update-post` | Edit sections, append, rewrite, or update metadata |
+| `/mark-my-words:manage-post` | List posts, manage drafts, organize tags |
+| `/mark-my-words:from-things` | Turn evidence logs into blog posts |
+| `/mark-my-words:create-voice` | Build a voice profile from writing samples |
+| `/mark-my-words:update-voice` | Refine a voice profile |
+| `/mark-my-words:add-media` | Add images, diagrams, video embeds to a post |
 
-```
-/mark-my-words:setup
-```
+---
 
-**New Post** — Write a new blog post. Walks you through topic, angle, length, and tags, then generates the post.
+### what-do-you-know
 
-```
-/mark-my-words:new-post [topic or idea]
-```
+Knowledge reinforcement that draws from your actual experience. Explore topics with probing dialogue grounded in your arsenal, quiz yourself with dynamically generated questions referencing your real projects, identify knowledge gaps by cross-referencing skills against evidence, and build personalized learning plans that bridge from what you know to what you need.
 
-**Update Post** — Edit an existing post — revise sections, append content, rewrite, or update metadata.
+| Skill | Description |
+|-------|-------------|
+| `/what-do-you-know:setup` | Set learning depth, session length, default persona, focus areas |
+| `/what-do-you-know:explore` | Topic-driven deep dive with persona-driven probing and concept mapping |
+| `/what-do-you-know:quiz` | Dynamic concept questions from your index.json with spaced repetition |
+| `/what-do-you-know:gaps` | Knowledge gap analysis across building and aspirational skills |
+| `/what-do-you-know:bridge` | Personalized learning plan from existing knowledge to gap topics |
 
-```
-/mark-my-words:update-post [filename or search term]
-```
+5 learning dimensions: Depth, Accuracy, Connections, Application, Articulation. Same 7 personas shared with what-did-you-do. Questions generated dynamically — no static question bank.
 
-**Manage Posts** — List, search, and organize posts — drafts, tags, publishing status.
-
-```
-/mark-my-words:manage-post [list, drafts, publish, tags]
-```
-
-**From Things** — Turn i-did-a-thing evidence logs into blog posts.
-
-```
-/mark-my-words:from-things [log filename or search query]
-```
-
-**Add Media** — Add images, diagrams, and video embeds to an existing post.
-
-```
-/mark-my-words:add-media [post filename or search term]
-```
+---
 
 ### screenshotr
 
 Precise screenshot capabilities for macOS — capture screens, windows, regions, or URLs with resize, crop, delay, and format control. Built on macOS-native `screencapture` and `sips`.
 
-**Setup** — Configure output directory, format, naming, and capture preferences.
-
-```
-/screenshotr:setup
-```
-
-**Capture** — Full-control screenshot capture with target selection and post-processing.
-
-```
-/screenshotr:capture                           # fullscreen
-/screenshotr:capture window "Safari"           # specific app window
-/screenshotr:capture region 100,200,800,600    # rectangular region
-/screenshotr:capture url "https://example.com" # open URL and capture
-/screenshotr:capture display 2                 # specific display
-/screenshotr:capture window "Xcode" --format jpg --resize 1280
-```
-
-**List Windows** — List open windows with app names, titles, and window IDs.
-
-```
-/screenshotr:list-windows
-```
+| Skill | Description |
+|-------|-------------|
+| `/screenshotr:setup` | Configure output directory, format, naming preferences |
+| `/screenshotr:capture` | Full-control screenshot (fullscreen, window, region, URL, display) |
+| `/screenshotr:list-windows` | List open windows with app names and IDs |

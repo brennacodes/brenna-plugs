@@ -14,15 +14,17 @@ Walk the user through capturing a professional experience with enough depth and 
 
 ### 1. Load Configuration
 
-Read `.claude/i-did-a-thing.local.md` to get the user's settings. If the file doesn't exist, tell the user:
+Read `.claude/trio.local.md` to get `things_path`. If the file doesn't exist, tell the user:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
+Read `<things_path>/config.yml` for all settings (professional profile, default tags, git workflow, etc.). If missing, tell the user to run setup.
+
 ### 2. Load Professional Context
 
-Read `<things_path>/targets/profile.md` to understand the user's professional goals. This context shapes which follow-up questions to ask and how to tag the entry.
+Read the professional profile from `<things_path>/config.yml` — the `current_role`, `target_roles`, `career_direction`, `building_skills`, and `aspirational_skills` fields. This context shapes which follow-up questions to ask and how to tag the entry.
 
 ### 3. Assess Available Context
 
@@ -317,48 +319,23 @@ The log must include:
 | Influence | "How I convinced my team to..." hook |
 | Insight | "A pattern I keep seeing..." hook |
 
-### 10. Update the Index
+### 10. Update Index and Arsenal
 
-Read `<things_path>/index.md` and update it:
-- Increment `total_entries` in frontmatter
-- Add the new entry under "By Date" (most recent first)
-- Add/update tags under "By Tag"
-- Add under the appropriate impact level
-- Add under the appropriate evidence type (create the grouping if it doesn't exist yet)
+The PostToolUse hook automatically runs `rebuild-data.py` after writing a log file, which regenerates `index.json`, `tags.json`, and all arsenal files from scratch. No manual index or arsenal updates are needed.
 
-### 11. Update the Arsenal
-
-Read `<things_path>/arsenal/` and check if a summary file exists for each skill used. If not, create one. If it exists, append this entry as supporting evidence.
-
-Arsenal files live at `<things_path>/arsenal/<skill-slug>.md`:
-
-```markdown
----
-skill: "<Skill Name>"
-evidence_count: <n>
-last_demonstrated: <date>
-proficiency_trend: "building" | "established" | "expert"
----
-
-# <Skill Name>
-
-## Evidence
-
-### <date> — <log title>
-- <1-line summary of how this skill was demonstrated>
-- Impact: <impact level>
-- Type: <evidence type>
-- [Full log](../logs/<filename>)
+If for some reason the hook doesn't fire, the rebuild can be run manually:
+```bash
+python3 <plugin_root>/scripts/rebuild-data.py <things_path>
 ```
 
-### 12. Handle Git Workflow
+### 11. Handle Git Workflow
 
 Based on the `git_workflow` config setting:
 - **`ask`**: Use AskUserQuestion — "Would you like to commit and push this log entry?"
 - **`auto`**: Automatically `git add`, `git commit -m "log: <title>"`, and `git push`
 - **`manual`**: Tell the user the file has been saved and they can commit when ready
 
-### 13. Celebrate
+### 12. Celebrate
 
 End with an encouraging summary:
 

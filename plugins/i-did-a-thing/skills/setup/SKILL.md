@@ -10,31 +10,49 @@ argument-hint: "[reconfigure]"
 
 Configure the plugin so your accomplishments are tracked, searchable, and ready to fuel resumes, interviews, and blog posts.
 
+This setup uses the centralized trio config shared by i-did-a-thing, what-did-you-do, mark-my-words, and what-do-you-know. See `references/trio-setup.md` for the full config architecture.
+
 ## Steps
 
 ### 1. Check for Existing Configuration
 
-Read `.claude/i-did-a-thing.local.md`. If it exists, tell the user:
+Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
 
-> Found existing configuration. I'll walk you through updating it — your current settings will be shown as defaults.
+1. Check if `.claude/trio.local.md` exists
+2. If yes, read `things_path` from it
+3. Check if `<things_path>/config.yml` exists
+4. If both exist → show current settings and ask if they want to reconfigure
+5. If bootstrap exists but no config.yml → need to create full config (skip to Step 4)
+6. If neither exists → fresh setup (continue to Step 2)
+
+If reconfiguring, show current settings as defaults throughout.
 
 ### 2. Gather Storage Settings
 
 Use AskUserQuestion to ask:
 
 **Where should your .things directory live?**
+- `~/.things` (home directory — recommended, single source of truth across projects)
 - `./things` (current project — good for project-specific logs)
-- `~/.things` (home directory — single source of truth across projects)
 - Custom path
 
-Then ask:
+### 3. Create Bootstrap Config
 
-**How do you want to manage git for your things?**
-- `auto` — automatically commit and push after each log entry
-- `ask` — ask me each time whether to commit/push
-- `manual` — I'll handle git myself
+Detect GitHub username:
+```bash
+gh api user -q .login 2>/dev/null || git config user.name
+```
 
-### 3. Gather Git Remote Settings
+Confirm with user via AskUserQuestion.
+
+Write `.claude/trio.local.md`:
+
+```yaml
+things_path: <chosen_path>
+github_username: <username>
+```
+
+### 4. Gather Git Remote Settings
 
 Use AskUserQuestion to ask:
 
@@ -47,11 +65,19 @@ If yes, ask for:
 - **Remote URL** (e.g., `git@github.com:username/my-things.git`)
 - **Branch** (default: `main`)
 
-### 4. Gather Professional Profile
+**How do you want to manage git for your things?**
+- `auto` — automatically commit and push after each log entry
+- `ask` — ask me each time whether to commit/push
+- `manual` — I'll handle git myself
+
+### 5. Gather Professional Profile
 
 Use AskUserQuestion to ask:
 
 **What's your current role/title?**
+(Free text input)
+
+**What's your name?** (for blog posts and logs)
 (Free text input)
 
 **What are you targeting professionally?** (Select all that apply)
@@ -67,29 +93,35 @@ Then ask as free text:
 - **Key skills you're building** — Comma-separated list of skills you're actively developing
 - **Skills you want to develop** — Comma-separated list of aspirational skills
 
-### 5. Gather Preferences
+### 6. Gather i-did-a-thing Preferences
 
 Use AskUserQuestion to ask:
 
 **Default tags for your logs?** (comma-separated, e.g., `engineering, python, leadership`)
 
-### 6. Initialize the .things Directory
+### 7. Initialize the .things Directory
 
 Based on the chosen path, create the directory structure:
 
 ```
 <things_path>/
-├── .gitkeep
-├── logs/           # Individual accomplishment logs
-├── arsenal/        # Synthesized skill summaries (auto-generated)
-├── targets/        # Professional goal tracking
-└── index.md        # Auto-generated index of all logs
+├── logs/
+├── arsenal/
+├── voices/
+├── personas/
+├── companies/
+├── index.json
+├── tags.json
+└── config.yml
 ```
 
 Run via Bash:
 ```bash
-mkdir -p <things_path>/{logs,arsenal,targets}
-touch <things_path>/.gitkeep
+mkdir -p <things_path>/logs
+mkdir -p <things_path>/arsenal
+mkdir -p <things_path>/voices
+mkdir -p <things_path>/personas
+mkdir -p <things_path>/companies
 ```
 
 If git remote was configured, initialize git:
@@ -100,101 +132,86 @@ git remote add origin <remote_url>
 git checkout -b <branch>
 ```
 
-### 7. Create the Index File
+### 8. Write Full Config
 
-Write `<things_path>/index.md`:
-
-```markdown
----
-title: "My Things Index"
-description: "Auto-generated index of accomplishments"
-last_updated: <current_date>
-total_entries: 0
----
-
-# Things I've Done
-
-This index is automatically maintained by the i-did-a-thing plugin.
-
-## By Date
-
-_No entries yet. Run `/i-did-a-thing:thing-i-did` to log your first accomplishment!_
-
-## By Tag
-
-_Tags will appear here as you log things._
-
-## By Impact
-
-_Impact levels will be summarized here._
-```
-
-### 8. Create Professional Targets File
-
-Write `<things_path>/targets/profile.md`:
-
-```markdown
----
-current_role: "<role>"
-target_roles:
-  - "<target>"
-career_direction:
-  - "<direction>"
-building_skills:
-  - "<skill>"
-aspirational_skills:
-  - "<skill>"
-last_updated: <current_date>
----
-
-# Professional Profile
-
-This file tracks your professional goals and is used by the
-construct-resume skill and what-did-you-do plugin to give you targeted advice.
-
-## Current Focus
-
-<populated from user input>
-
-## Gap Analysis
-
-_This section is auto-updated as you log accomplishments and practice interviews._
-```
-
-### 9. Write Configuration
-
-Write `.claude/i-did-a-thing.local.md`:
+Write `<things_path>/config.yml` with all gathered fields. Use the schema from `references/trio-setup.md`. Include sensible defaults for what-did-you-do and mark-my-words sections that the user hasn't configured yet:
 
 ```yaml
----
-things_path: "<chosen_path>"
-git_remote: "<remote_url or none>"
-git_branch: "<branch>"
-git_workflow: "<auto|ask|manual>"
-default_tags:
-  - "<tag>"
-current_role: "<role>"
+# Identity
+github_username: <username>
+author_name: <name>
+
+# Git
+things_repo: <remote_url or none>
+things_branch: <branch>
+git_workflow: <auto|ask|manual>
+
+# Professional Profile
+current_role: <role>
 target_roles:
-  - "<target>"
+  - <target>
 career_direction:
-  - "<direction>"
+  - <direction>
 building_skills:
-  - "<skill>"
+  - <skill>
 aspirational_skills:
-  - "<skill>"
-last_updated: <current_date>
----
+  - <skill>
 
-# i-did-a-thing Configuration
+# i-did-a-thing
+logging:
+  default_tags:
+    - <tag>
 
-Generated by `/i-did-a-thing:setup`. Run it again to reconfigure.
+# what-did-you-do (defaults — configured by /what-did-you-do:setup)
+interview_prep:
+  follow_up_depth: coaching
+  default_stage: no-default
+  trusted_sources:
+    domains: []
+    urls: []
 
-These settings are used by all i-did-a-thing skills:
-- `thing-i-did` — log accomplishments
-- `construct-resume` — build tailored resumes
+# mark-my-words (defaults — configured by /mark-my-words:setup)
+blog:
+  source_type: remote
+  repo_url: ""
+  repo_branch: main
+  content_dir: content
+  default_subdirectory: ""
+  default_tags: []
+  git_workflow: auto
+  default_voice: null
+  media_dir: null
+  auto_suggest_visuals: false
+  ai_image_generation: false
 
-Use `/mark-my-words:from-things` to turn your logs into blog posts.
-Use `/what-did-you-do:practice` to practice interview questions powered by your arsenal.
+# what-do-you-know (defaults — configured by /what-do-you-know:setup)
+learning:
+  default_depth: exploratory
+  default_persona: staff-engineer
+  session_length: medium
+  focus_areas: []
+```
+
+### 9. Create Initial Index Files
+
+Write `<things_path>/index.json`:
+
+```json
+{
+  "version": 1,
+  "last_updated": "<current_date>",
+  "total_entries": 0,
+  "entries": []
+}
+```
+
+Write `<things_path>/tags.json`:
+
+```json
+{
+  "last_updated": "<current_date>",
+  "tags": {}
+}
 ```
 
 ### 10. Confirm Setup
@@ -205,8 +222,11 @@ Tell the user:
 >
 > - Things directory: `<path>`
 > - Git: `<remote status>`
+> - Config: `<things_path>/config.yml`
 >
 > **Quick start:**
 > - `/i-did-a-thing:thing-i-did` — Log something you did
 > - `/i-did-a-thing:construct-resume` — Build a resume for a job listing
-> - `/what-did-you-do:practice` — Practice interview questions with your arsenal
+> - `/what-did-you-do:setup` — Set up interview prep (uses your shared config)
+> - `/what-do-you-know:setup` — Set up knowledge reinforcement (uses your shared config)
+> - `/mark-my-words:setup` — Set up blogging (uses your shared config)

@@ -14,11 +14,13 @@ Generate a tailored preparation plan for a specific company's interview process,
 
 ### 1. Load Configuration
 
-Read `.claude/what-did-you-do.local.md` and `.claude/i-did-a-thing.local.md`. If either is missing, direct to setup.
+Read `.claude/trio.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+
+Read `<things_path>/config.yml` for all settings — professional profile and interview prep preferences.
 
 ### 2. Load Company Profile
 
-If the user provided a company argument, load from `<plugin_root>/companies/<company>.yaml` (built-in) or `<things_path>/interview-prep/companies/<company>.yaml` (custom).
+If the user provided a company argument, load from `<things_path>/companies/<company>.yaml`.
 
 If no company specified, use AskUserQuestion:
 

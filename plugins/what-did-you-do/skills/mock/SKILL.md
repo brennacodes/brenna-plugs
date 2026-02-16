@@ -14,16 +14,18 @@ Run a realistic interview round: multiple questions, consistent persona, timed p
 
 ### 1. Load Configuration
 
-Read `.claude/what-did-you-do.local.md` and `.claude/i-did-a-thing.local.md`. If either is missing, direct the user to the appropriate setup.
+Read `.claude/trio.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+
+Read `<things_path>/config.yml` for all settings — professional profile and interview prep preferences.
 
 ### 2. Load Arsenal and Session History
 
-Read `<things_path>/arsenal/` and `<things_path>/targets/profile.md`.
+Read `<things_path>/arsenal/` and professional goals from `<things_path>/config.yml`.
 Run `bash <plugin_root>/scripts/search-sessions.sh --type mock --recent 5` to load recent mock history.
 
 ### 3. Select Company and Stage
 
-If the user provided a company argument, load the company profile from `<plugin_root>/companies/<company>.yaml` or `<things_path>/interview-prep/companies/<company>.yaml` for custom profiles.
+If the user provided a company argument, load the company profile from `<things_path>/companies/<company>.yaml`.
 
 If no company specified, use AskUserQuestion:
 
@@ -52,7 +54,7 @@ Based on company profile and stage, determine:
 - **Evaluation focus**: from company profile or stage defaults
 - **Question categories**: from company values → question_themes mapping
 
-Load the selected persona from `<plugin_root>/personas/<persona>.md`.
+Load the selected persona from `<things_path>/personas/<persona>.md`.
 
 ### 5. Brief the User
 

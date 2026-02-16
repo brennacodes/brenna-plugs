@@ -14,17 +14,17 @@ Select a question using spaced repetition, adopt an interviewer persona, coach t
 
 ### 1. Load Configuration
 
-Read `.claude/what-did-you-do.local.md` to get settings. If missing:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/what-did-you-do:setup` first.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
-Read `.claude/i-did-a-thing.local.md` to get `things_path`. Extract `building_skills`, `aspirational_skills`, `current_role`, and `target_roles`.
+Read `<things_path>/config.yml` for all settings. Extract `building_skills`, `aspirational_skills`, `current_role`, `target_roles` from the shared profile, and `follow_up_depth`, `default_stage` from `interview_prep:`. If config.yml is missing or `interview_prep:` has only defaults, suggest running `/what-did-you-do:setup`.
 
 ### 2. Load the User's Arsenal
 
-Read all files in `<things_path>/arsenal/` to understand logged skills and evidence. Read `<things_path>/targets/profile.md` for professional goals.
+Read all files in `<things_path>/arsenal/` to understand logged skills and evidence. Read professional goals from `<things_path>/config.yml`.
 
 If no logs exist:
 
@@ -38,7 +38,7 @@ Use recent session data for spaced repetition: avoid recently asked questions, w
 
 ### 4. Select Persona
 
-If the user specified `--persona`, load that persona file from `<plugin_root>/personas/<persona>.md`.
+If the user specified `--persona`, load that persona file from `<things_path>/personas/<persona>.md`.
 
 If not, select based on the question's `interviewer_types` field. If no question yet, use AskUserQuestion:
 

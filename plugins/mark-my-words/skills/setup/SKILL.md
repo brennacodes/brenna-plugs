@@ -2,99 +2,126 @@
 name: setup
 description: Configure mark-my-words for your Quartz blog. Sets up source location, author info, and preferences.
 disable-model-invocation: true
-allowed-tools: Read, Write, Bash, Glob, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash, Glob, AskUserQuestion
 ---
 
 # mark-my-words Setup
 
-You are configuring the mark-my-words plugin for the user's Quartz blog. Your job is to gather their settings and write a config file.
+You are configuring the mark-my-words plugin for the user's Quartz blog. Your job is to gather their settings and update the shared trio config.
+
+This setup uses the centralized trio config shared by all trio plugins. See `references/trio-setup.md` for the full config architecture.
 
 ## Steps
 
-1. **Check for existing config**: Read `.claude/mark-my-words.local.md` if it exists. If it does, tell the user their current settings and ask if they want to reconfigure.
+### 1. Check for Existing Configuration
 
-2. **Gather blog source info**: Use AskUserQuestion to ask where their Quartz blog content lives:
+Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
 
-   Ask about **source type**:
-   - "Remote git repo" — they'll provide a repo URL and branch
-   - "Local directory" — they'll provide a path to their Quartz content root
+1. Check if `.claude/trio.local.md` exists
+2. If yes, read `things_path` from it
+3. Check if `<things_path>/config.yml` exists
 
-3. **If remote**: Use AskUserQuestion to ask for:
-   - Repository URL (e.g., `git@github.com:user/blog.git` or HTTPS URL)
-   - Branch name (suggest `main` as default)
+**If both exist**: Read `config.yml` and check the `blog:` section. If it has non-default values (e.g., `repo_url` is not empty), tell the user their current settings and ask if they want to reconfigure.
 
-4. **If local**: Use AskUserQuestion to ask for the path to their Quartz content root directory.
+**If bootstrap exists but no config.yml**: Tell the user:
 
-5. **Gather content preferences**: Use AskUserQuestion for each:
-   - **Content directory name**: The root content directory (e.g., `content`). This is the top-level folder Quartz reads from.
-   - **Default subdirectory**: Where new posts go within the content directory (e.g., `blog`, `notes`, or empty for root). Suggest common options.
-   - **Default author name**: Their name as it should appear in posts.
-   - **Default tags**: Comma-separated list of tags they commonly use. These will be suggested when creating posts.
+> Found your bootstrap config but no full config. Please run `/i-did-a-thing:setup` first to create the shared config.
 
-6. **Git workflow preference**: Use AskUserQuestion:
-   - "Always ask" — prompt before each commit/push
-   - "Auto-commit" — automatically commit and push after changes
-   - "Manual" — never auto-commit, user handles git themselves
+Then stop.
 
-7. **Media preferences**: Use AskUserQuestion for each:
+**If neither exists**: Tell the user:
 
-   **Media directory**: "Where should images and media files be stored? This is a path relative to your content directory (e.g., `assets/images`). If you skip this, media features will be limited to inline content like Mermaid diagrams."
-   - Provide a path (e.g., `assets/images`, `media`, `img`)
-   - Skip — no local media management
+> No configuration found. Please run `/i-did-a-thing:setup` first to set up your shared config.
 
-   If they provide a path, set `media_dir` to it. If they skip, set `media_dir: null`.
+Then stop.
 
-   **Auto-suggest visuals**: "Should mark-my-words proactively suggest diagrams and images as it writes? When enabled, it will detect opportunities for Mermaid diagrams, tables, and image placeholders while drafting."
-   - Yes → `auto_suggest_visuals: true`
-   - No → `auto_suggest_visuals: false`
+### 2. Gather Blog Source Info
 
-   **AI image generation**: "Do you want the option to generate images with AI tools? This requires MCP image generation tools to be available (like Hugging Face). It's always opt-in per image — this just enables the option to appear."
-   - Yes → `ai_image_generation: true`
-   - No → `ai_image_generation: false`
+Use AskUserQuestion to ask where their Quartz blog content lives:
 
-8. **Write the config file**: Create `.claude/mark-my-words.local.md` with the gathered settings in YAML frontmatter. Ensure the `.claude/` directory exists first.
+Ask about **source type**:
+- "Remote git repo" — they'll provide a repo URL and branch
+- "Local directory" — they'll provide a path to their Quartz content root
 
-## Config File Format
+### 3. Source Details
 
-Write the file at `.claude/mark-my-words.local.md` with this structure:
+**If remote**: Use AskUserQuestion to ask for:
+- Repository URL (e.g., `git@github.com:user/blog.git` or HTTPS URL)
+- Branch name (suggest `main` as default)
 
-```markdown
----
-source_type: remote  # or "local"
-repo_url: ""  # git remote URL, used when source_type is "remote"
-repo_branch: main  # branch to use for remote repos
-local_path: ""  # absolute path, used when source_type is "local"
-content_dir: content  # root content directory name
-default_subdirectory: blog  # subdirectory within content_dir for new posts
-default_author: ""
-default_tags: []
-git_workflow: ask  # "ask", "auto", or "manual"
-default_voice: null  # voice profile name from .claude/voices/, or null for none
-media_dir: null  # relative path from content_dir (e.g., "assets/images"), null = no local media management
-auto_suggest_visuals: false  # proactively suggest diagrams/images during writing
-ai_image_generation: false  # offer AI image gen when tools are available
----
+**If local**: Use AskUserQuestion to ask for the path to their Quartz content root directory.
 
-# mark-my-words Configuration
+### 4. Gather Content Preferences
 
-This file was generated by `/mark-my-words:setup`. Run it again to reconfigure.
+Use AskUserQuestion for each:
+- **Content directory name**: The root content directory (e.g., `content`). This is the top-level folder Quartz reads from.
+- **Default subdirectory**: Where new posts go within the content directory (e.g., `blog`, `notes`, or empty for root). Suggest common options.
+- **Default tags**: Comma-separated list of tags they commonly use. These will be suggested when creating posts.
 
-Settings are used by the new-post, update-post, and manage-post skills.
+### 5. Git Workflow Preference
+
+Use AskUserQuestion:
+- "Always ask" — prompt before each commit/push
+- "Auto-commit" — automatically commit and push after changes
+- "Manual" — never auto-commit, user handles git themselves
+
+### 6. Media Preferences
+
+Use AskUserQuestion for each:
+
+**Media directory**: "Where should images and media files be stored? This is a path relative to your content directory (e.g., `assets/images`). If you skip this, media features will be limited to inline content like Mermaid diagrams."
+- Provide a path (e.g., `assets/images`, `media`, `img`)
+- Skip — no local media management
+
+If they provide a path, set `media_dir` to it. If they skip, set `media_dir: null`.
+
+**Auto-suggest visuals**: "Should mark-my-words proactively suggest diagrams and images as it writes?"
+- Yes → `auto_suggest_visuals: true`
+- No → `auto_suggest_visuals: false`
+
+**AI image generation**: "Do you want the option to generate images with AI tools?"
+- Yes → `ai_image_generation: true`
+- No → `ai_image_generation: false`
+
+### 7. Update Config
+
+Read `<things_path>/config.yml` and update the `blog:` section with the user's preferences:
+
+```yaml
+blog:
+  source_type: <remote|local>
+  repo_url: <url>
+  repo_branch: <branch>
+  content_dir: <dir>
+  default_subdirectory: <subdir>
+  default_tags:
+    - <tag>
+  git_workflow: <ask|auto|manual>
+  default_voice: null
+  media_dir: <path or null>
+  auto_suggest_visuals: <true|false>
+  ai_image_generation: <true|false>
 ```
 
-9. **Voice profile (optional)**: Use AskUserQuestion:
+Use Edit to update only the `blog:` section, preserving all other config.
 
-   > **Would you like to create a voice profile?** Voice profiles teach mark-my-words how you actually write, so posts sound like you instead of generic AI.
-   > - Yes — set one up now
-   > - Later — I'll run `/mark-my-words:create-voice` when I'm ready
-   > - No thanks — I'll skip voice profiles
+### 8. Voice Profile (optional)
 
-   If "Yes": Tell the user to run `/mark-my-words:create-voice` after setup completes — it needs writing samples and works best as its own step. Note that they can create multiple voice profiles and switch between them.
+Use AskUserQuestion:
 
-   If "Later" or "No thanks": Move on.
+> **Would you like to create a voice profile?** Voice profiles teach mark-my-words how you actually write, so posts sound like you instead of generic AI.
+> - Yes — set one up now
+> - Later — I'll run `/mark-my-words:create-voice` when I'm ready
+> - No thanks — I'll skip voice profiles
 
-10. **Confirm**: Tell the user their config has been saved and they can now use `/mark-my-words:new-post`, `/mark-my-words:update-post`, `/mark-my-words:manage-post`, and `/mark-my-words:add-media`.
+If "Yes": Tell the user to run `/mark-my-words:create-voice` after setup completes — it needs writing samples and works best as its own step. Note that they can create multiple voice profiles and switch between them.
 
-   If they said yes to voice profiles, remind them:
+If "Later" or "No thanks": Move on.
 
-   > Run `/mark-my-words:create-voice` to set up your writing voice.
+### 9. Confirm
+
+Tell the user their config has been saved and they can now use `/mark-my-words:new-post`, `/mark-my-words:update-post`, `/mark-my-words:manage-post`, and `/mark-my-words:add-media`.
+
+If they said yes to voice profiles, remind them:
+
+> Run `/mark-my-words:create-voice` to set up your writing voice. Voice profiles are stored in `<things_path>/voices/` for cross-machine sync.

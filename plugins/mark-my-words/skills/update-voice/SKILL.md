@@ -14,15 +14,17 @@ You are helping the user refine an existing voice profile. They might want to ad
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` to get the user's settings. If the file doesn't exist, tell the user:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
+Read `<things_path>/config.yml` for all settings. If config.yml is missing, tell the user to run setup.
+
 ### 2. List Available Voices
 
-Use Glob to find all `.md` files in `.claude/voices/`. If none exist:
+Use Glob to find all `.md` files in `<things_path>/voices/`. If none exist:
 
 > No voice profiles found. Run `/mark-my-words:create-voice` to create one.
 
@@ -30,13 +32,13 @@ Then stop.
 
 ### 3. Select Voice
 
-If `$ARGUMENTS` was provided, look for a matching profile in `.claude/voices/<argument>.md`. If no exact match, try fuzzy matching against available voice names.
+If `$ARGUMENTS` was provided, look for a matching profile in `<things_path>/voices/<argument>.md`. If no exact match, try fuzzy matching against available voice names.
 
 If no arguments or no match, use AskUserQuestion to present the available voices. Show each voice's name and description (read from frontmatter).
 
 ### 4. Show Current Profile
 
-Read the selected voice profile from `.claude/voices/<name>.md`. Display it to the user in full — frontmatter and all body sections.
+Read the selected voice profile from `<things_path>/voices/<name>.md`. Display it to the user in full — frontmatter and all body sections.
 
 ### 5. Choose Update Mode
 
@@ -107,7 +109,7 @@ Tell the user:
 
 > Voice profile "<name>" updated.
 
-Check if this voice is set as the `default_voice` in config. If so:
+Check if this voice is set as `blog.default_voice` in `<things_path>/config.yml`. If so:
 
 > This is your default voice — new posts will use the updated style.
 

@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-CONFIG_FILE=".claude/i-did-a-thing.local.md"
+CONFIG_FILE=".claude/trio.local.md"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Config not found" >&2

@@ -14,20 +14,23 @@ Analyze a job listing, match it against the user's logged evidence, and produce 
 
 ### 1. Load Configuration
 
-Read `.claude/i-did-a-thing.local.md` to get settings. If missing:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
+Read `<things_path>/config.yml` for all settings (professional profile, etc.). If missing, tell the user to run setup.
+
 ### 2. Load the Arsenal
 
-Read all files in:
+Read:
+- `<things_path>/index.json` — full index with all entry data (frontmatter, resume bullets, body sections)
 - `<things_path>/arsenal/` — skill summaries with evidence
-- `<things_path>/targets/profile.md` — professional profile
-- `<things_path>/logs/` — all log entries (read frontmatter of each to build an index)
 
-If fewer than 3 logs exist:
+The index.json contains all log data inline — no need to open individual log files. Use the professional profile from `config.yml` (`current_role`, `target_roles`, `building_skills`, etc.).
+
+If fewer than 3 entries in index.json:
 
 > You only have <n> logged entries. I can work with this, but your resume will be stronger with more evidence. Consider running `/i-did-a-thing:thing-i-did` a few more times to build your arsenal.
 

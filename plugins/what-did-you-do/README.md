@@ -12,11 +12,13 @@ claude plugin:add what-did-you-do
 
 ## Setup
 
-Link to your i-did-a-thing data, set follow-up depth (concise, detailed, or coaching), default interview stage, and trusted sources for question bank updates.
+Link to your shared trio config, set follow-up depth (concise, detailed, or coaching), default interview stage, and trusted sources for question bank updates.
 
 ```
 /what-did-you-do:setup [reconfigure]
 ```
+
+Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
 
 ## Skills
 
@@ -54,7 +56,7 @@ Link to your i-did-a-thing data, set follow-up depth (concise, detailed, or coac
 
 ### Personas
 
-Seven interviewer personas shape how questions are asked and feedback is delivered. Each persona has distinct evaluation weights, follow-up patterns, and anti-pattern detection:
+Seven interviewer personas shape how questions are asked and feedback is delivered. Personas are shared with what-do-you-know and stored at `<things_path>/personas/`. Each persona has distinct evaluation weights, follow-up patterns, and anti-pattern detection:
 
 - **Staff Engineer** — technical depth, tradeoffs, system thinking
 - **Engineering Manager** — collaboration, communication, growth
@@ -72,7 +74,7 @@ Questions are selected using spaced repetition — weighted toward your weak are
 
 ### Company Profiles
 
-Built-in profiles for Amazon (14 Leadership Principles), Google, and Meta define each company's values with interview signals and anti-patterns, full interview process with stage-by-stage format and persona mappings, and level expectations. Custom company profiles are supported.
+Built-in profiles for Amazon (14 Leadership Principles), Google, and Meta are shared across plugins and stored at `<things_path>/companies/`. Each defines company values with interview signals and anti-patterns, full interview process with stage-by-stage format and persona mappings, and level expectations. Custom company profiles are supported — add them to the same directory.
 
 ### Scoring
 
@@ -100,15 +102,20 @@ Stored alongside your i-did-a-thing data:
 <things_path>/interview-prep/
 ├── sessions/           # One file per practice or mock session
 ├── progress.md         # Rolling readiness dashboard
-├── companies/          # User-created company profiles
 └── question-overrides/ # Custom questions
 ```
 
 ## Configuration
 
-Settings are stored in `.claude/what-did-you-do.local.md`. Run setup again to reconfigure.
+Settings are stored in the centralized trio config shared by all trio plugins:
+
+- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Full config**: `<things_path>/config.yml` (git-tracked, `interview_prep:` section)
+
+Run `/what-did-you-do:setup` to reconfigure interview preferences.
 
 ## Related Plugins
 
 - **i-did-a-thing** — Log the accomplishments that power your interview feedback
+- **what-do-you-know** — Deepen your understanding through concept quizzing and learning plans, using the same personas
 - **mark-my-words** — Turn your accomplishments into blog posts

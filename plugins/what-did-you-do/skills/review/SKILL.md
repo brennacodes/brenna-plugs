@@ -14,7 +14,9 @@ Analyze all practice and mock sessions to produce a comprehensive readiness asse
 
 ### 1. Load Configuration
 
-Read `.claude/what-did-you-do.local.md` and `.claude/i-did-a-thing.local.md`. If either is missing, direct to setup.
+Read `.claude/trio.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+
+Read `<things_path>/config.yml` for all settings — professional profile and interview prep preferences.
 
 ### 2. Load All Session Data
 
@@ -28,7 +30,7 @@ Then stop.
 
 ### 3. Load Arsenal and Profile
 
-Read `<things_path>/arsenal/` and `<things_path>/targets/profile.md` for context.
+Read `<things_path>/arsenal/` for skill evidence. Professional profile comes from `<things_path>/config.yml` (already loaded in Step 1).
 
 ### 4. Compute Readiness Assessment
 

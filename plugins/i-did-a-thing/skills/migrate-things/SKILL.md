@@ -1,0 +1,233 @@
+---
+name: migrate-things
+description: "Migrate from per-plugin configs to centralized trio config. Run this after updating to v3.0.0."
+disable-model-invocation: true
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
+argument-hint: "[--dry-run]"
+---
+
+# Migrate to Centralized Trio Config
+
+Guide the user through migrating from per-plugin configs (`.claude/i-did-a-thing.local.md`, `.claude/what-did-you-do.local.md`, `.claude/mark-my-words.local.md`) to the centralized trio config system (`.claude/trio.local.md` + `<things_path>/config.yml`), including seeding shared personas and company profiles.
+
+## Steps
+
+### 1. Check if Already Migrated
+
+Check if `.claude/trio.local.md` exists. If it does, read it to get `things_path` and check if `<things_path>/config.yml` also exists.
+
+If both exist:
+
+> You're already using the centralized trio config. No migration needed.
+>
+> - Bootstrap: `.claude/trio.local.md`
+> - Config: `<things_path>/config.yml`
+>
+> Run `/i-did-a-thing:setup` to reconfigure.
+
+Then stop.
+
+### 2. Detect Existing Configs
+
+Read whichever of these exist:
+- `.claude/i-did-a-thing.local.md`
+- `.claude/what-did-you-do.local.md`
+- `.claude/mark-my-words.local.md`
+
+If none exist:
+
+> No existing configs found. Run `/i-did-a-thing:setup` to set up from scratch — it uses the new centralized config automatically.
+
+Then stop.
+
+### 3. Show Migration Plan
+
+Tell the user what will happen:
+
+> **Migration Plan**
+>
+> I'll merge your existing configs into a centralized system:
+>
+> 1. Create `.claude/trio.local.md` (machine-local bootstrap)
+> 2. Create `<things_path>/config.yml` (full config, git-tracked)
+> 3. Generate `index.json` from your logs (replaces `index.md`)
+> 4. Generate `tags.json` for quick tag lookups
+> 5. Regenerate arsenal files from scratch
+> 6. Copy voice profiles to `<things_path>/voices/` (if any exist)
+> 7. Seed shared personas to `<things_path>/personas/`
+> 8. Seed shared company profiles to `<things_path>/companies/`
+> 9. Rename old configs to `.bak` (non-destructive)
+>
+> Your logs and existing data are not modified.
+
+Use AskUserQuestion: **Ready to proceed?**
+- Yes — let's do it
+- Dry run — show me what would change without writing anything
+
+If `$ARGUMENTS` contains `--dry-run`, treat as dry run mode.
+
+### 4. Detect GitHub Username
+
+Try to detect the username:
+
+```bash
+gh api user -q .login 2>/dev/null || git config user.name
+```
+
+Use AskUserQuestion to confirm: **Is this your GitHub username: `<detected>`?**
+- Yes
+- No — I'll provide it
+
+### 5. Extract things_path
+
+Read `things_path` from the i-did-a-thing config. If not found there, check what-did-you-do config. If still not found:
+
+Use AskUserQuestion: **Where is your .things directory?**
+- `~/.things`
+- Custom path
+
+### 6. Merge Config Fields
+
+Collect fields from all existing configs:
+
+**From i-did-a-thing config:**
+- `things_path`, `git_remote`, `git_branch`, `git_workflow`
+- `current_role`, `target_roles`, `career_direction`
+- `building_skills`, `aspirational_skills`
+- `default_tags`
+
+**From what-did-you-do config** (if exists):
+- `follow_up_depth`, `default_stage`, `trusted_sources`
+
+**From mark-my-words config** (if exists):
+- `source_type`, `repo_url`, `repo_branch`, `content_dir`
+- `default_subdirectory`, `default_tags` (as blog tags)
+- `git_workflow` (as blog git_workflow)
+- `default_voice`, `media_dir`, `auto_suggest_visuals`, `ai_image_generation`
+
+**Detect author name:**
+Use the `default_author` from mark-my-words config, or the GitHub username capitalized.
+
+### 7. Write Bootstrap Config
+
+Write `.claude/trio.local.md`:
+
+```yaml
+things_path: <things_path>
+github_username: <username>
+```
+
+### 8. Write Full Config
+
+Write `<things_path>/config.yml` with all merged fields using the schema from `../setup/references/trio-setup.md`.
+
+For any plugin-specific section where the plugin wasn't previously configured, write sensible defaults.
+
+### 9. Copy Voice Profiles
+
+Check if `.claude/voices/` exists and has any `.md` files.
+
+If yes:
+1. Create `<things_path>/voices/` directory
+2. Copy each voice file from `.claude/voices/` to `<things_path>/voices/`
+3. Tell the user: "Copied N voice profile(s) to `<things_path>/voices/`"
+
+### 10. Seed Shared Personas
+
+Create the shared personas directory and seed default persona files:
+
+```bash
+mkdir -p <things_path>/personas
+mkdir -p <things_path>/companies
+```
+
+Check if the what-did-you-do plugin is installed by looking for `<plugin_root>/../what-did-you-do/personas/`. If it exists, copy each persona file to `<things_path>/personas/` **only if not already present** (never overwrite user customizations):
+
+```bash
+for f in <plugin_root>/../what-did-you-do/personas/*.md; do
+  dest="<things_path>/personas/$(basename "$f")"
+  [ -f "$dest" ] || cp "$f" "$dest"
+done
+```
+
+Similarly, seed company profiles:
+
+```bash
+for f in <plugin_root>/../what-did-you-do/companies/*.yaml; do
+  dest="<things_path>/companies/$(basename "$f")"
+  [ -f "$dest" ] || cp "$f" "$dest"
+done
+```
+
+Tell the user how many personas and companies were seeded.
+
+### 11. Generate JSON Index and Arsenal
+
+Run the rebuild script:
+
+```bash
+python3 <plugin_root>/scripts/rebuild-data.py <things_path>
+```
+
+Capture the output to show the user entry and tag counts.
+
+### 12. Show Summary
+
+> **Migration complete!**
+>
+> - Entries: N logs indexed
+> - Tags: N unique tags
+> - Arsenal: N skill files regenerated
+> - Voices: N profiles copied (or "none to copy")
+> - Personas: N seeded to `<things_path>/personas/`
+> - Companies: N seeded to `<things_path>/companies/`
+>
+> **New config locations:**
+> - Bootstrap: `.claude/trio.local.md`
+> - Full config: `<things_path>/config.yml`
+> - Index: `<things_path>/index.json`
+> - Tags: `<things_path>/tags.json`
+
+### 13. Verify with User
+
+Ask the user to spot-check:
+
+> Let me show you a few entries from the new index to verify they look correct.
+
+Show 2-3 entries from `index.json` with their key fields.
+
+Use AskUserQuestion: **Do these look correct?**
+- Yes — everything looks good
+- Something's off — let me check
+
+If something's off, help the user investigate.
+
+### 14. Rename Old Configs
+
+Rename the old config files to `.bak`:
+
+```bash
+mv .claude/i-did-a-thing.local.md .claude/i-did-a-thing.local.md.bak 2>/dev/null || true
+mv .claude/what-did-you-do.local.md .claude/what-did-you-do.local.md.bak 2>/dev/null || true
+mv .claude/mark-my-words.local.md .claude/mark-my-words.local.md.bak 2>/dev/null || true
+```
+
+Tell the user: "Old configs renamed to `.bak` — you can delete them once you're confident everything works."
+
+### 15. Handle Git
+
+Read the `git_workflow` from the new config.
+
+- **`auto`**: Commit and push the new config files, index.json, tags.json, and arsenal
+- **`ask`**: Ask the user if they want to commit and push
+- **`manual`**: Tell the user what files to commit
+
+### 16. Done
+
+> Migration complete! All four plugins now share a single config at `<things_path>/config.yml`.
+>
+> - `/i-did-a-thing:thing-i-did` — Log accomplishments (hooks auto-rebuild index + arsenal)
+> - `/i-did-a-thing:construct-resume` — Build resumes from `index.json`
+> - `/what-did-you-do:practice` — Practice with your arsenal
+> - `/what-do-you-know:explore` — Deep-dive into a topic from your experience
+> - `/mark-my-words:from-things` — Turn logs into blog posts

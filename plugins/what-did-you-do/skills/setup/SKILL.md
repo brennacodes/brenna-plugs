@@ -1,6 +1,6 @@
 ---
 name: setup
-description: "Configure what-did-you-do plugin: link to i-did-a-thing data, set interview preferences, and initialize session tracking"
+description: "Configure what-did-you-do plugin: link to shared trio config, set interview preferences, and initialize session tracking"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
@@ -8,34 +8,47 @@ argument-hint: "[reconfigure]"
 
 # Set Up what-did-you-do
 
-Configure the plugin to use your i-did-a-thing arsenal for interview preparation, practice sessions, and company-specific mock interviews.
+Configure the plugin to use your i-did-a-thing arsenal for interview preparation, practice sessions, and company-specific mock interviews. Seeds shared personas and company profiles to the things repo.
+
+This setup uses the centralized trio config shared by all trio plugins. See `references/trio-setup.md` for the full config architecture.
 
 ## Steps
 
 ### 1. Check for Existing Configuration
 
-Read `.claude/what-did-you-do.local.md`. If it exists, tell the user:
+Follow the **Bootstrap Detection Flow** from `references/trio-setup.md`:
+
+1. Check if `.claude/trio.local.md` exists
+2. If yes, read `things_path` from it
+3. Check if `<things_path>/config.yml` exists
+
+**If both exist**: Read `config.yml` and check the `interview_prep:` section. If it has non-default values, tell the user:
 
 > Found existing configuration. I'll walk you through updating it — your current settings will be shown as defaults.
 
-### 2. Verify i-did-a-thing Integration
+**If bootstrap exists but no config.yml**: Tell the user:
 
-Read `.claude/i-did-a-thing.local.md` to get the user's `things_path`. If missing:
+> Found your bootstrap config but no full config. Please run `/i-did-a-thing:setup` first to create the shared config.
 
-> This plugin works best with i-did-a-thing. Please run `/i-did-a-thing:setup` first to set up your accomplishment tracking.
+Then stop.
+
+**If neither exists**: Tell the user:
+
+> No configuration found. Please run `/i-did-a-thing:setup` first to set up your shared config and accomplishment tracking.
 >
 > You can still use what-did-you-do without it, but you won't get arsenal-powered feedback.
 
-If found, confirm:
+Then stop.
 
-> Found your i-did-a-thing config. Your arsenal at `<things_path>` will power your interview feedback.
+### 2. Verify Arsenal
 
-Extract from the i-did-a-thing config:
-- `things_path` — where accomplishments live
-- `current_role` — for level-appropriate questions
-- `target_roles` — for gap-targeted practice
-- `building_skills` — for question weighting
-- `aspirational_skills` — for bonus weighting in question selection
+Read `<things_path>/config.yml` to confirm the shared profile:
+
+> Found your shared config. Your arsenal at `<things_path>` will power your interview feedback.
+>
+> - Current role: `<current_role>`
+> - Target roles: `<target_roles>`
+> - Building skills: `<building_skills>`
 
 ### 3. Gather Interview Preferences
 
@@ -73,13 +86,29 @@ And:
 
 ### 5. Initialize Interview Prep Directory
 
+Seed shared personas and company profiles to the things repo. For each file in `<plugin_root>/personas/`, copy to `<things_path>/personas/` if not already present. For each file in `<plugin_root>/companies/`, copy to `<things_path>/companies/` if not already present. Never overwrite existing files (user customizations are sacred).
+
+```bash
+mkdir -p <things_path>/personas
+mkdir -p <things_path>/companies
+for f in <plugin_root>/personas/*.md; do
+  dest="<things_path>/personas/$(basename "$f")"
+  [ -f "$dest" ] || cp "$f" "$dest"
+done
+for f in <plugin_root>/companies/*.yaml; do
+  dest="<things_path>/companies/$(basename "$f")"
+  [ -f "$dest" ] || cp "$f" "$dest"
+done
+```
+
+Tell the user how many personas and companies were seeded.
+
 Create the directory structure at `<things_path>/interview-prep/`:
 
 ```
 <things_path>/interview-prep/
 ├── sessions/
 ├── progress.md
-├── companies/
 └── question-overrides/
     └── custom.yaml
 ```
@@ -87,7 +116,6 @@ Create the directory structure at `<things_path>/interview-prep/`:
 Run via Bash:
 ```bash
 mkdir -p <things_path>/interview-prep/sessions
-mkdir -p <things_path>/interview-prep/companies
 mkdir -p <things_path>/interview-prep/question-overrides
 ```
 
@@ -166,41 +194,22 @@ Write `<things_path>/interview-prep/question-overrides/custom.yaml`:
 questions: []
 ```
 
-### 8. Write Configuration
+### 8. Update Config
 
-Write `.claude/what-did-you-do.local.md`:
+Read `<things_path>/config.yml` and update the `interview_prep:` section with the user's preferences:
 
 ```yaml
----
-things_path: "<from i-did-a-thing config>"
-follow_up_depth: "<concise|detailed|coaching>"
-default_stage: "<stage or no-default>"
-trusted_sources:
-  domains:
-    - "<domain>"
-  urls:
-    - "<url>"
-current_role: "<from i-did-a-thing config>"
-target_roles:
-  - "<from i-did-a-thing config>"
-building_skills:
-  - "<from i-did-a-thing config>"
-aspirational_skills:
-  - "<from i-did-a-thing config>"
-last_updated: <current_date>
----
-
-# what-did-you-do Configuration
-
-Generated by `/what-did-you-do:setup`. Run it again to reconfigure.
-
-These settings are used by all what-did-you-do skills:
-- `practice` — single-question drill with persona-driven feedback
-- `mock` — full interview round simulation
-- `review` — readiness assessment across dimensions
-- `prep-for` — company-specific preparation plan
-- `update-questions` — add questions from trusted sources
+interview_prep:
+  follow_up_depth: <concise|detailed|coaching>
+  default_stage: <stage or no-default>
+  trusted_sources:
+    domains:
+      - <domain>
+    urls:
+      - <url>
 ```
+
+Use Edit to update only the `interview_prep:` section, preserving all other config.
 
 ### 9. Confirm Setup
 

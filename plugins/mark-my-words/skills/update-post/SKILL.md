@@ -14,17 +14,19 @@ You are helping the user update an existing blog post on their Quartz site. Find
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` to get the user's settings. If the file doesn't exist, tell the user:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
 
+Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
+
 #### Load Voice Profile
 
-If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user and continue without a voice.
+If the config has `blog.default_voice` set (not null), read the voice profile from `<things_path>/voices/<default_voice>.md`. If the file doesn't exist, warn the user and continue without a voice.
 
-Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for use in full rewrites.
+Also check if any voice profiles exist in `<things_path>/voices/` using Glob. Store this for use in full rewrites.
 
 #### Resolve Media Directory
 
@@ -76,7 +78,7 @@ For **append new content**: Ask what new section/content to add and where it sho
 
 For **full rewrite**: Ask for the new direction/focus. Confirm that they want to replace all existing content.
 
-If voice profiles exist in `.claude/voices/`, ask which voice to use for the rewrite:
+If voice profiles exist in `<things_path>/voices/`, ask which voice to use for the rewrite:
 - If a default voice is set, offer it as the default choice
 - List other available voices
 - Offer "No voice — write naturally" as an option

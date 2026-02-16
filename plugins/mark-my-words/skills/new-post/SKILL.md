@@ -14,17 +14,23 @@ You are creating a new blog post for the user's Quartz-powered blog. Use a struc
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` to get the user's settings. If the file doesn't exist, tell the user:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
+
+Then stop.
+
+Read `<things_path>/config.yml` for all settings. Extract the `blog:` section for blog-specific settings. If config.yml is missing or the `blog:` section has only defaults (e.g., empty `repo_url`), tell the user:
+
+> Blog not configured yet. Please run `/mark-my-words:setup` first to configure your blog settings.
 
 Then stop.
 
 #### Load Voice Profile
 
-If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
+If the config has `blog.default_voice` set (not null), read the voice profile from `<things_path>/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
 
-Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for the interview step.
+Also check if any voice profiles exist in `<things_path>/voices/` using Glob. Store this for the interview step.
 
 #### Resolve Media Directory
 
@@ -69,7 +75,7 @@ Use AskUserQuestion for each of these, adapting based on `$ARGUMENTS` if provide
 
 **Target directory**: Show the default from config (`default_subdirectory`). Let them override if they want to put it elsewhere.
 
-**Voice** (only if voice profiles exist in `.claude/voices/`):
+**Voice** (only if voice profiles exist in `<things_path>/voices/`):
 - If a default voice is set, show it and ask if they want to use it, pick a different one, or skip voice for this post
 - If no default is set, list available voices and let them pick one or skip
 - If only one voice exists, just confirm they want to use it

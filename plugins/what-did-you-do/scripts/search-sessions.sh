@@ -15,15 +15,11 @@
 
 set -euo pipefail
 
-CONFIG_FILE=".claude/what-did-you-do.local.md"
+CONFIG_FILE=".claude/trio.local.md"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
-  # Fall back to i-did-a-thing config for things_path
-  CONFIG_FILE=".claude/i-did-a-thing.local.md"
-  if [[ ! -f "$CONFIG_FILE" ]]; then
-    echo "No config found" >&2
-    exit 1
-  fi
+  echo "No config found" >&2
+  exit 1
 fi
 
 THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)

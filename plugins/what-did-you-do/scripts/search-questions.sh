@@ -19,7 +19,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 QUESTIONS_DIR="$(cd "$SCRIPT_DIR/../questions" && pwd)"
 
 # Also check for custom questions
-CONFIG_FILE=".claude/what-did-you-do.local.md"
+CONFIG_FILE=".claude/trio.local.md"
 CUSTOM_DIR=""
 if [[ -f "$CONFIG_FILE" ]]; then
   THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)

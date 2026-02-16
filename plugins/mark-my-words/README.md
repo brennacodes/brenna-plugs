@@ -12,11 +12,13 @@ claude plugin:add mark-my-words
 
 ## Setup
 
-Configure your Quartz blog source (local path or git remote), content directory, author info, default tags, and git workflow preferences.
+Configure your Quartz blog source (local path or git remote), content directory, default tags, and git workflow preferences. Updates the shared trio config.
 
 ```
 /mark-my-words:setup
 ```
+
+Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
 
 ## Skills
 
@@ -50,7 +52,7 @@ Configure your Quartz blog source (local path or git remote), content directory,
 /mark-my-words:update-voice [voice name]
 ```
 
-**From Things** — Transform i-did-a-thing evidence logs into blog posts. Pulls in the Blog Seed hook, narrative structure, and metrics from your logs. You choose the angle — tutorial, retrospective, or one of the angles suggested in the log itself.
+**From Things** — Transform i-did-a-thing evidence logs into blog posts. Finds candidates via the JSON index by blog potential, pulls in the Blog Seed hook, narrative structure, and metrics. You choose the angle — tutorial, retrospective, or one of the angles suggested in the log itself.
 
 ```
 /mark-my-words:from-things [log filename or search query]
@@ -66,15 +68,20 @@ Configure your Quartz blog source (local path or git remote), content directory,
 
 Posts are written in Quartz-compatible markdown with full frontmatter (title, date, description, tags, draft status, author). The plugin handles git workflows (auto, ask, or manual) based on your configuration. Rich media — Mermaid diagrams, images, GIFs, and video embeds — can be added during writing or to existing posts.
 
-The `from-things` skill bridges your i-did-a-thing evidence logs into narrative blog posts — choose an angle, and it transforms structured log data into an engaging first-person story.
+The `from-things` skill bridges your i-did-a-thing evidence logs into narrative blog posts — it uses the JSON index to find high-potential entries, then transforms structured log data into an engaging first-person story.
 
 ## Configuration
 
-Settings are stored in `.claude/mark-my-words.local.md` and include source type, content directory, author, default tags, git workflow (auto, ask, or manual), and default voice profile. Run setup again to reconfigure.
+Settings are stored in the centralized trio config shared by all trio plugins:
+
+- **Bootstrap**: `.claude/trio.local.md` (machine-local, contains `things_path`)
+- **Full config**: `<things_path>/config.yml` (git-tracked, `blog:` section)
+
+Run `/mark-my-words:setup` to reconfigure blog settings.
 
 ### Voice Profiles
 
-Voice profiles live at `.claude/voices/<name>.md` and teach mark-my-words how you write. Create profiles from your existing writing samples, then set a default voice so all new posts match your style. You can create multiple profiles and switch between them when creating posts.
+Voice profiles live at `<things_path>/voices/<name>.md` and teach mark-my-words how you write. They're stored in the things repo for cross-machine sync. Create profiles from your existing writing samples, then set a default voice so all new posts match your style. You can create multiple profiles and switch between them when creating posts.
 
 ### Media Support
 

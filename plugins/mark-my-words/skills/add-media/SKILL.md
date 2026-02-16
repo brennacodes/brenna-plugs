@@ -16,11 +16,13 @@ Consult `references/media-guide.md` for visual detection patterns, Mermaid synta
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` for blog settings. If missing:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
+
+Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
 
 Resolve `media_dir`: if configured, compute the full path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). If `media_dir` is null, ask the user:
 

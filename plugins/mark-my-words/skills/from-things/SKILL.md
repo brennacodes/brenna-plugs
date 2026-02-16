@@ -14,27 +14,23 @@ Source a blog post from one or more i-did-a-thing evidence logs. Each log alread
 
 ### 1. Load Configuration
 
-Read `.claude/mark-my-words.local.md` for blog settings. If missing:
+Read `.claude/trio.local.md` to get `things_path`. If missing:
 
-> No configuration found. Please run `/mark-my-words:setup` first to configure your blog settings.
+> No configuration found. Please run `/i-did-a-thing:setup` first.
 
 Then stop.
+
+Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
 
 #### Load Voice Profile
 
-If the config has a `default_voice` set (not null), read the voice profile from `.claude/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
+If the config has `blog.default_voice` set (not null), read the voice profile from `<things_path>/voices/<default_voice>.md`. If the file doesn't exist, warn the user that their default voice profile is missing and continue without a voice.
 
-Also check if any voice profiles exist in `.claude/voices/` using Glob. Store this for the interview step.
+Also check if any voice profiles exist in `<things_path>/voices/` using Glob. Store this for the interview step.
 
 #### Resolve Media Directory
 
-If the config has `media_dir` set (not null), resolve the full media path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). Store this path for use in visual planning and post generation.
-
-Read `.claude/i-did-a-thing.local.md` to find the things directory. If missing:
-
-> No i-did-a-thing configuration found. Please run `/i-did-a-thing:setup` first to set up your accomplishment tracking.
-
-Then stop.
+If the config has `blog.media_dir` set (not null), resolve the full media path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). Store this path for use in visual planning and post generation.
 
 ### 2. Resolve Content Location
 
@@ -49,7 +45,9 @@ Then stop.
 
 ### 3. Select Logs
 
-If the user provided a filename or search query as an argument, find matching logs in `<things_path>/logs/`. Otherwise, present options:
+Read `<things_path>/index.json` to get the full index of all logs with their metadata, blog seeds, and blog_potential ratings.
+
+If the user provided a filename or search query as an argument, find matching entries in the index. Otherwise, present options:
 
 Use AskUserQuestion:
 
@@ -60,13 +58,13 @@ Use AskUserQuestion:
 - Combine multiple logs into one post
 
 #### If "Browse recent":
-List the 10 most recent logs from `<things_path>/logs/` showing title, date, impact, and `blog_potential` from frontmatter. Let the user select one.
+Show the first 10 entries from `index.json` (already sorted by date descending) with title, date, impact, and `blog_potential`. Let the user select one.
 
 #### If "Search":
-Ask for search criteria (tag, skill, or keyword). Use Grep to search log frontmatter and content. Present matching results and let the user select.
+Ask for search criteria (tag, skill, or keyword). Filter entries in `index.json` by matching tags, skills_used, or title/description. Present matching results and let the user select.
 
 #### If "High blog potential":
-Search all logs for entries with `blog_potential: "high"` in frontmatter. Present results.
+Filter entries in `index.json` where `blog_potential` is `"high"`. Present results.
 
 #### If "Combine multiple":
 Let the user select 2-5 logs to weave into a single narrative post. See `references/things-bridge.md` for multi-log strategies.
@@ -93,7 +91,7 @@ Use AskUserQuestion to present the potential angles from the log(s), plus standa
 
 ### 6. Select Voice
 
-If voice profiles exist in `.claude/voices/`:
+If voice profiles exist in `<things_path>/voices/`:
 - If a default voice is set, show it and ask if they want to use it, pick a different one, or skip voice for this post
 - If no default is set, list available voices and let them pick one or skip
 

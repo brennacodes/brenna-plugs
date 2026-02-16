@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "1.5.0",
+    "version": "2.0.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
       "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
-      "version": "2.1.1",
+      "version": "3.0.0",
       "keywords": [
         "career",
         "evidence",
@@ -28,7 +28,7 @@
       "name": "what-did-you-do",
       "source": "./plugins/what-did-you-do",
       "description": "Interview preparation with persona-driven practice, company-specific mocks, spaced repetition, and progress tracking \u2014 powered by your i-did-a-thing arsenal",
-      "version": "1.1.0",
+      "version": "2.0.0",
       "keywords": [
         "interview",
         "practice",
@@ -41,7 +41,7 @@
       "name": "mark-my-words",
       "source": "./plugins/mark-my-words",
       "description": "Write, manage, and publish blog posts on Quartz static sites \u2014 with rich media support for images, diagrams, and video embeds",
-      "version": "1.2.0",
+      "version": "2.0.0",
       "keywords": [
         "blog",
         "quartz",
@@ -52,6 +52,22 @@
         "diagrams"
       ],
       "category": "content"
+    },
+    {
+      "name": "what-do-you-know",
+      "source": "./plugins/what-do-you-know",
+      "description": "Deepen your understanding of topics through concept quizzing, knowledge gap analysis, and personalized learning plans \u2014 powered by your i-did-a-thing arsenal",
+      "version": "1.0.0",
+      "keywords": [
+        "learning",
+        "knowledge",
+        "career",
+        "growth",
+        "quizzing",
+        "concepts",
+        "spaced-repetition"
+      ],
+      "category": "career"
     },
     {
       "name": "screenshotr",
