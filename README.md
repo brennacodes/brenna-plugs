@@ -14,32 +14,38 @@ Claude Code plugins by [brennacodes](https://github.com/brennacodes).
 | [**mark-my-words**](#mark-my-words) | Write and publish Quartz blog posts — standalone or from your evidence logs |
 | [**screenshotr**](#screenshotr) | Precise macOS screenshots with crop, resize, and format control |
 
-## The Quartet
+## The "Things" Quartet
 
-All four career plugins share a single config and data layer — including a shared arsenal, personas, and company profiles. Log an experience once, and it flows into interview prep, knowledge reinforcement, resume building, and blog posts without re-telling the story.
+Four career growth oriented plugins that share a single config and data layer — including a shared arsenal, personas, and company profiles. Log an experience once, and it flows into interview prep, knowledge reinforcement, resume building, and blog posts without re-telling the story. All git tracked so you can take your things with you and never miss a beat.
 
-```
-Log it                     Practice it                 Learn from it              Write about it
-/i-did-a-thing:thing-i-did → /what-did-you-do:practice → /what-do-you-know:explore → /mark-my-words:from-things
-         ↓                          ↓                          ↓                          ↓
-   evidence arsenal          coached feedback            concept maps              published post
-   resume bullets            readiness scores            gap analysis              first-person story
-   interview talking points  gap identification          learning plans            blog with metrics
-```
+Set up once with `/i-did-a-thing:setup`, then configure each plugin's specialties with its specific setup skill (eg. `/what-did-you-do:setup`).
 
-All four read from `<things_path>/config.yml` (git-tracked) with a machine-local bootstrap at `~/.claude/things.local.md`. Set up once with `/i-did-a-thing:setup`, then configure each plugin's section with its own setup skill.
+| Log it                                                                     | Practice it                                                            | Learn from it                                              | Write about it                                                        |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
+| `/i-did-a-thing:thing-i-did`                                               | `/what-did-you-do:practice`                                            | `/what-do-you-know:explore`                                | `/mark-my-words:from-things`                                          |
+| **evidence arsenal**<br>**resume bullets**<br>**interview talking points** | **coached feedback**<br>**readiness scores**<br>**gap identification** | **concept maps**<br>**gap analysis**<br>**learning plans** | **published post**<br>**first-person story**<br>**blog with metrics** |
 
 ## Installation
 
+### Add the marketplace
 ```bash
-# Add the marketplace
 /plugin marketplace add brennacodes/brenna-plugs
+```
 
-# Install what you need
+### Install what you need
+```
 /plugin install i-did-a-thing@brenna-plugs
+```
+```
 /plugin install what-did-you-do@brenna-plugs
+```
+```
 /plugin install mark-my-words@brenna-plugs
+```
+```
 /plugin install what-do-you-know@brenna-plugs
+```
+```
 /plugin install screenshotr@brenna-plugs
 ```
 
