@@ -86,7 +86,39 @@ Use AskUserQuestion: **Where is your .things directory?**
 - `~/.things`
 - Custom path
 
-### 6. Merge Config Fields
+### 6. Sync Existing Things Repo
+
+Check if `<things_path>` is already a git repo with a remote:
+
+```bash
+git -C <things_path> rev-parse --is-inside-work-tree 2>/dev/null
+```
+
+If yes, check for a remote:
+
+```bash
+git -C <things_path> remote -v
+```
+
+If a remote exists, pull latest before making any changes:
+
+```bash
+git -C <things_path> pull --rebase
+```
+
+If the pull fails due to conflicts, tell the user:
+
+> Your things repo has unpushed local changes that conflict with the remote. Please resolve them manually before running migration:
+> ```
+> cd <things_path>
+> git status
+> ```
+
+Then stop.
+
+If `<things_path>` is not a git repo yet, that's fine — step 16 will handle initializing it if the user configured a remote.
+
+### 7. Merge Config Fields
 
 Collect fields from all existing configs:
 
@@ -108,7 +140,7 @@ Collect fields from all existing configs:
 **Detect author name:**
 Use the `default_author` from mark-my-words config, or the GitHub username capitalized.
 
-### 7. Write Bootstrap Config
+### 8. Write Bootstrap Config
 
 Write `.claude/trio.local.md`:
 
@@ -117,13 +149,13 @@ things_path: <things_path>
 github_username: <username>
 ```
 
-### 8. Write Full Config
+### 9. Write Full Config
 
 Write `<things_path>/config.yml` with all merged fields using the schema from `../setup/references/trio-setup.md`.
 
 For any plugin-specific section where the plugin wasn't previously configured, write sensible defaults.
 
-### 9. Copy Voice Profiles
+### 10. Copy Voice Profiles
 
 Check if `.claude/voices/` exists and has any `.md` files.
 
@@ -132,7 +164,7 @@ If yes:
 2. Copy each voice file from `.claude/voices/` to `<things_path>/voices/`
 3. Tell the user: "Copied N voice profile(s) to `<things_path>/voices/`"
 
-### 10. Seed Shared Personas
+### 11. Seed Shared Personas
 
 Create the shared personas directory and seed default persona files:
 
@@ -161,7 +193,7 @@ done
 
 Tell the user how many personas and companies were seeded.
 
-### 11. Generate JSON Index and Arsenal
+### 12. Generate JSON Index and Arsenal
 
 Run the rebuild script:
 
@@ -171,7 +203,7 @@ python3 <plugin_root>/scripts/rebuild-data.py <things_path>
 
 Capture the output to show the user entry and tag counts.
 
-### 12. Show Summary
+### 13. Show Summary
 
 > **Migration complete!**
 >
@@ -188,7 +220,7 @@ Capture the output to show the user entry and tag counts.
 > - Index: `<things_path>/index.json`
 > - Tags: `<things_path>/tags.json`
 
-### 13. Verify with User
+### 14. Verify with User
 
 Ask the user to spot-check:
 
@@ -202,7 +234,7 @@ Use AskUserQuestion: **Do these look correct?**
 
 If something's off, help the user investigate.
 
-### 14. Rename Old Configs
+### 15. Rename Old Configs
 
 Rename the old config files to `.bak`:
 
@@ -214,7 +246,7 @@ mv .claude/mark-my-words.local.md .claude/mark-my-words.local.md.bak 2>/dev/null
 
 Tell the user: "Old configs renamed to `.bak` — you can delete them once you're confident everything works."
 
-### 15. Handle Git
+### 16. Handle Git
 
 Read the `git_workflow` from the new config.
 
@@ -222,7 +254,7 @@ Read the `git_workflow` from the new config.
 - **`ask`**: Ask the user if they want to commit and push
 - **`manual`**: Tell the user what files to commit
 
-### 16. Done
+### 17. Done
 
 > Migration complete! All four plugins now share a single config at `<things_path>/config.yml`.
 >
