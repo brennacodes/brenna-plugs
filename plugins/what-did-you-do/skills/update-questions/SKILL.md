@@ -14,7 +14,9 @@ Add new interview questions to the question bank from trusted sources or manual 
 
 ### 1. Load Configuration
 
-Read `~/.claude/things.local.md` to get `things_path`. If missing, direct to `/i-did-a-thing:setup`.
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
+Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing, direct to `/i-did-a-thing:setup`.
 
 Read `<things_path>/config.yml` and extract `trusted_sources` from the `interview_prep:` section. If config.yml is missing or interview_prep section has only defaults, direct to `/what-did-you-do:setup`.
 

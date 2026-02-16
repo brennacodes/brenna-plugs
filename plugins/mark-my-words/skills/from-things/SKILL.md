@@ -14,7 +14,9 @@ Source a blog post from one or more i-did-a-thing evidence logs. Each log alread
 
 ### 1. Load Configuration
 
-Read `~/.claude/things.local.md` to get `things_path`. If missing:
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
+Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

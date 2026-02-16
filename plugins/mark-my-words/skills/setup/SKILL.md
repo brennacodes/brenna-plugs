@@ -15,10 +15,12 @@ This setup uses the shared config used by all career plugins. See `references/th
 
 ### 1. Check for Existing Configuration
 
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
 Follow the **Bootstrap Detection Flow** from `references/things-setup.md`:
 
-1. Check if `~/.claude/things.local.md` exists
-2. If yes, read `things_path` from it
+1. Check if `<home>/.claude/things.local.md` exists
+2. If yes, read `things_path` from it (if `things_path` starts with `~`, replace with `<home>`)
 3. Check if `<things_path>/config.yml` exists
 
 **If both exist**: Read `config.yml` and check the `blog:` section. If it has non-default values (e.g., `repo_url` is not empty), tell the user their current settings and ask if they want to reconfigure.

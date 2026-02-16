@@ -16,10 +16,12 @@ This setup uses the shared config used by i-did-a-thing, what-did-you-do, mark-m
 
 ### 1. Check for Existing Configuration
 
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
 Follow the **Bootstrap Detection Flow** from `references/things-setup.md`:
 
-1. Check if `~/.claude/things.local.md` exists
-2. If yes, read `things_path` from it
+1. Check if `<home>/.claude/things.local.md` exists
+2. If yes, read `things_path` from it (if `things_path` starts with `~`, replace with `<home>`)
 3. Check if `<things_path>/config.yml` exists
 4. If both exist → show current settings and ask if they want to reconfigure
 5. If bootstrap exists but no config.yml → need to create full config (skip to Step 4)
@@ -45,7 +47,7 @@ gh api user -q .login 2>/dev/null || git config user.name
 
 Confirm with user via AskUserQuestion.
 
-Write `~/.claude/things.local.md`:
+Write `<home>/.claude/things.local.md`:
 
 ```yaml
 things_path: <chosen_path>

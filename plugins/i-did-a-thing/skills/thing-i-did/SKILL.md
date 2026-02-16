@@ -14,7 +14,9 @@ Walk the user through capturing a professional experience with enough depth and 
 
 ### 1. Load Configuration
 
-Read `~/.claude/things.local.md` to get `things_path`. If the file doesn't exist, tell the user:
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
+Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If the file doesn't exist, tell the user:
 
 > No configuration found. Please run `/i-did-a-thing:setup` first.
 

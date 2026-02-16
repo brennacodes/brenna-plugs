@@ -2,11 +2,15 @@
 
 All four career plugins (i-did-a-thing, what-did-you-do, mark-my-words, what-do-you-know) share a centralized config system. This document defines the bootstrap and config flows used by all setup skills.
 
+## Path Convention
+
+All paths below use `<home>` for the user's absolute home directory (resolve via `echo $HOME`). Never pass `~` to the Read tool — it requires absolute paths.
+
 ## Config Architecture
 
 ### Bootstrap Config (machine-local)
 
-File: `~/.claude/things.local.md`
+File: `<home>/.claude/things.local.md`
 
 Contains only machine-specific settings. Not committed to git.
 
@@ -100,8 +104,8 @@ Company profiles (amazon.yaml, google.yaml, meta.yaml + user-created) shared acr
 
 Used by all setup skills to determine current state:
 
-1. Check if `~/.claude/things.local.md` exists
-2. If yes, read `things_path` from it
+1. Check if `<home>/.claude/things.local.md` exists
+2. If yes, read `things_path` from it (if `things_path` starts with `~`, replace with `<home>`)
 3. Check if `<things_path>/config.yml` exists
 4. If both exist → config is complete, show current settings and offer reconfigure
 5. If bootstrap exists but no config.yml → need to create full config
@@ -109,7 +113,7 @@ Used by all setup skills to determine current state:
 
 ## Bootstrap Creation Flow
 
-When no `~/.claude/things.local.md` exists:
+When no `<home>/.claude/things.local.md` exists:
 
 1. **Detect GitHub username**: Try `gh api user -q .login`, fall back to `git config user.name`
 2. **Confirm username** with user via AskUserQuestion
@@ -117,7 +121,7 @@ When no `~/.claude/things.local.md` exists:
    - `~/.things` (home directory — recommended, single source of truth)
    - `./things` (project-local)
    - Custom path
-4. **Write `~/.claude/things.local.md`**:
+4. **Write `<home>/.claude/things.local.md`**:
    ```yaml
    things_path: <chosen_path>
    github_username: <username>

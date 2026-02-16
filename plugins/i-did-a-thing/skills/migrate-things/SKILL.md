@@ -6,21 +6,23 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[--dry-run]"
 ---
 
-# Migrate to Centralized Trio Config
+# Migrate to Centralized Shared Config
 
-Guide the user through migrating from per-plugin configs (`~/.claude/i-did-a-thing.local.md`, `~/.claude/what-did-you-do.local.md`, `~/.claude/mark-my-words.local.md`) to the centralized shared config system (`~/.claude/things.local.md` + `<things_path>/config.yml`), including seeding shared personas and company profiles.
+Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+
+Guide the user through migrating from per-plugin configs (`<home>/.claude/i-did-a-thing.local.md`, `<home>/.claude/what-did-you-do.local.md`, `<home>/.claude/mark-my-words.local.md`) to the centralized shared config system (`<home>/.claude/things.local.md` + `<things_path>/config.yml`), including seeding shared personas and company profiles.
 
 ## Steps
 
 ### 1. Check if Already Migrated
 
-Check if `~/.claude/things.local.md` exists. If it does, read it to get `things_path` and check if `<things_path>/config.yml` also exists.
+Check if `<home>/.claude/things.local.md` exists. If it does, read it to get `things_path` (if `things_path` starts with `~`, replace with `<home>`) and check if `<things_path>/config.yml` also exists.
 
 If both exist:
 
 > You're already using the centralized shared config. No migration needed.
 >
-> - Bootstrap: `~/.claude/things.local.md`
+> - Bootstrap: `<home>/.claude/things.local.md`
 > - Config: `<things_path>/config.yml`
 >
 > Run `/i-did-a-thing:setup` to reconfigure.
@@ -30,9 +32,9 @@ Then stop.
 ### 2. Detect Existing Configs
 
 Read whichever of these exist:
-- `~/.claude/i-did-a-thing.local.md`
-- `~/.claude/what-did-you-do.local.md`
-- `~/.claude/mark-my-words.local.md`
+- `<home>/.claude/i-did-a-thing.local.md`
+- `<home>/.claude/what-did-you-do.local.md`
+- `<home>/.claude/mark-my-words.local.md`
 
 If none exist:
 
@@ -48,7 +50,7 @@ Tell the user what will happen:
 >
 > I'll merge your existing configs into a centralized system:
 >
-> 1. Create `~/.claude/things.local.md` (machine-local bootstrap)
+> 1. Create `<home>/.claude/things.local.md` (machine-local bootstrap)
 > 2. Create `<things_path>/config.yml` (full config, git-tracked)
 > 3. Generate `index.json` from your logs (replaces `index.md`)
 > 4. Generate `tags.json` for quick tag lookups
@@ -142,7 +144,7 @@ Use the `default_author` from mark-my-words config, or the GitHub username capit
 
 ### 8. Write Bootstrap Config
 
-Write `~/.claude/things.local.md`:
+Write `<home>/.claude/things.local.md`:
 
 ```yaml
 things_path: <things_path>
@@ -157,11 +159,11 @@ For any plugin-specific section where the plugin wasn't previously configured, w
 
 ### 10. Copy Voice Profiles
 
-Check if `~/.claude/voices/` exists and has any `.md` files.
+Check if `<home>/.claude/voices/` exists and has any `.md` files.
 
 If yes:
 1. Create `<things_path>/voices/` directory
-2. Copy each voice file from `~/.claude/voices/` to `<things_path>/voices/`
+2. Copy each voice file from `<home>/.claude/voices/` to `<things_path>/voices/`
 3. Tell the user: "Copied N voice profile(s) to `<things_path>/voices/`"
 
 ### 11. Seed Shared Personas
@@ -215,7 +217,7 @@ Capture the output to show the user entry and tag counts.
 > - Companies: N seeded to `<things_path>/companies/`
 >
 > **New config locations:**
-> - Bootstrap: `~/.claude/things.local.md`
+> - Bootstrap: `<home>/.claude/things.local.md`
 > - Full config: `<things_path>/config.yml`
 > - Index: `<things_path>/index.json`
 > - Tags: `<things_path>/tags.json`
