@@ -88,6 +88,50 @@
         "window"
       ],
       "category": "utilities"
+    },
+    {
+      "name": "heres-the-thing",
+      "source": "./plugins/heres-the-thing",
+      "description": "Schema-aware data layer for .things/ — manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
+      "version": "2.0.0",
+      "keywords": [
+        "infrastructure",
+        "data",
+        "registry",
+        "things",
+        "config",
+        "git",
+        "validation"
+      ],
+      "category": "infrastructure"
+    },
+    {
+      "name": "think-like",
+      "source": "./plugins/think-like",
+      "description": "Apply expert thinking profiles to code reviews, architecture evaluation, and security audits — think like DHH, Sandi Metz, or build your own expert profiles",
+      "version": "2.0.0",
+      "keywords": [
+        "code-review",
+        "architecture",
+        "security",
+        "expert",
+        "thinking",
+        "profiles"
+      ],
+      "category": "engineering"
+    },
+    {
+      "name": "session-scout",
+      "source": "./plugins/session-scout",
+      "description": "A tool to help you grep through your Claude Code session data",
+      "version": "1.0.0",
+      "keywords": [
+        "claude",
+        "code",
+        "sessions",
+        "grep"
+      ],
+      "category": "utilities"
     }
   ]
 }

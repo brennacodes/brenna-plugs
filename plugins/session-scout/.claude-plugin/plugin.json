@@ -1,0 +1,11 @@
+{
+  "name": "session-scout",
+  "version": "1.0.0",
+  "description": "Search, browse, and resume Claude Code sessions across all projects",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["sessions", "history", "search", "resume", "productivity"],
+  "license": "MIT"
+}
