@@ -1,0 +1,12 @@
+{
+  "name": "think-like",
+  "version": "2.0.1",
+  "description": "Apply expert thinking profiles to code reviews, architecture evaluation, and security audits -- think like DHH, Sandi Metz, or build your own expert profiles",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["code-review", "architecture", "security", "expert", "thinking", "profiles", "career"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

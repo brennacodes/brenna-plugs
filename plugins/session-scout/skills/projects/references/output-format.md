@@ -1,4 +1,4 @@
-# Output Format — /sesh:projects
+# Output Format - /projects
 
 ## Project List (no argument)
 
@@ -13,11 +13,11 @@ Display as a **markdown table**:
 
 After the table: `{N} projects found`
 
-Remind the user they can drill into any project with `/sesh:projects <name>`.
+Remind the user they can drill into any project with `/projects <name>`.
 
 ## Filtered by Project (with argument)
 
-When a project name argument is provided, the skill calls `search "" --project <name>` and returns a session list. Display it using the same numbered table format as `/sesh:active`:
+When a project name argument is provided, the skill calls `search "" --project <name>` and returns a session list. Display it using the same numbered table format as `/active`:
 
 | # | Summary | Modified | Msgs |
 |---|---------|----------|------|

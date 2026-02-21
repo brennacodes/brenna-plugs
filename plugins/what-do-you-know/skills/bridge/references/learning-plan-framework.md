@@ -34,7 +34,7 @@ When the user has strong knowledge in a related area:
 
 ### From practical experience
 When the user has used the technology without understanding internals:
-- Start with "you've done X — now let's understand why it works"
+- Start with "you've done X - now let's understand why it works"
 - Reverse-engineer from their experience to the underlying concepts
 - Use their projects as case studies
 
@@ -76,7 +76,7 @@ When there's no clear bridge from existing knowledge:
 ### Application exercises
 - "Given [scenario], how would you apply [concept]?"
 - "What questions would you ask before using [concept] in production?"
-- "Compare [concept] to [alternative] — when would you choose each?"
+- "Compare [concept] to [alternative] - when would you choose each?"
 
 ## Success Criteria
 

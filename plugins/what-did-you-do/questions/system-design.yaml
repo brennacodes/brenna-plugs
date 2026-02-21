@@ -11,7 +11,7 @@ questions:
     stages: [technical, onsite]
     interviewer_types: [staff-engineer, principal-engineer]
     follow_ups:
-      - text: "How would you handle analytics — tracking clicks, geographic data, referrers?"
+      - text: "How would you handle analytics - tracking clicks, geographic data, referrers?"
         depth: 2
       - text: "What happens when you need to support custom short URLs and collision handling?"
         depth: 3
@@ -119,7 +119,7 @@ questions:
     stages: [technical, onsite]
     interviewer_types: [staff-engineer, principal-engineer]
     follow_ups:
-      - text: "How do you rank suggestions — by popularity, recency, or personalization?"
+      - text: "How do you rank suggestions - by popularity, recency, or personalization?"
         depth: 2
       - text: "How do you handle offensive or inappropriate suggestions?"
         depth: 3

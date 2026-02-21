@@ -6,7 +6,7 @@ Common patterns that weaken interview answers. Detect these during analysis and 
 
 ### The Rambler
 **Signal:** Answer exceeds 3 minutes for a behavioral question or loses the thread midway.
-**Coaching:** "Your answer has great content but needs editing. Try leading with the punchline — state the outcome first, then explain how you got there."
+**Coaching:** "Your answer has great content but needs editing. Try leading with the punchline - state the outcome first, then explain how you got there."
 
 ### The Setup-Heavy
 **Signal:** 60%+ of the answer is context/setup with a rushed action and result.
@@ -18,13 +18,13 @@ Common patterns that weaken interview answers. Detect these during analysis and 
 
 ### The Cliff-Hanger
 **Signal:** Great setup and action but no clear result or outcome stated.
-**Coaching:** "You've got me hooked but I don't know how it ends. Always close with the measurable result — what changed because of what you did?"
+**Coaching:** "You've got me hooked but I don't know how it ends. Always close with the measurable result - what changed because of what you did?"
 
 ## Content Anti-Patterns
 
 ### The Team Hider
 **Signal:** Uses "we" exclusively, even when asked about their specific contribution.
-**Coaching:** "I can tell this was a team effort, but I need to understand YOUR role. What specifically did YOU do? It's not bragging — it's answering the question."
+**Coaching:** "I can tell this was a team effort, but I need to understand YOUR role. What specifically did YOU do? It's not bragging - it's answering the question."
 
 ### The Credit Absorber
 **Signal:** Uses "I" exclusively for what was clearly a team effort. No acknowledgment of others.
@@ -32,7 +32,7 @@ Common patterns that weaken interview answers. Detect these during analysis and 
 
 ### The Humble Deflector
 **Signal:** Minimizes their contribution. "It wasn't a big deal" or "anyone could have done it."
-**Coaching:** "Stop underselling yourself. If you did the work and it had impact, own it. That's not arrogance — that's accuracy."
+**Coaching:** "Stop underselling yourself. If you did the work and it had impact, own it. That's not arrogance - that's accuracy."
 
 ### The Blame Narrator
 **Signal:** Every challenge or failure is someone else's fault. External factors caused all problems.
@@ -50,7 +50,7 @@ Common patterns that weaken interview answers. Detect these during analysis and 
 
 ### The Over-Qualifier
 **Signal:** Hedges every statement. "I think... maybe... sort of... it was probably..."
-**Coaching:** "You sound uncertain about your own experience. State what happened directly. You were there — be confident about what you observed."
+**Coaching:** "You sound uncertain about your own experience. State what happened directly. You were there - be confident about what you observed."
 
 ### The Perfectionist
 **Signal:** Only tells stories where everything went perfectly. No failures, no challenges, no learning.
@@ -62,5 +62,5 @@ When analyzing a user's answer:
 1. Check for each anti-pattern above
 2. If detected, note the specific part of their answer that triggered it
 3. Use the coaching language as a starting point but adapt to the persona's voice
-4. Limit to 2 anti-patterns per feedback session — focus on the most impactful ones
+4. Limit to 2 anti-patterns per feedback session - focus on the most impactful ones
 5. Always pair anti-pattern feedback with a concrete suggestion for improvement

@@ -1,43 +1,47 @@
 # i-did-a-thing
 
-Log professional experiences — accomplishments, lessons, expertise, decisions, influence, and insights — and build tailored resumes from your evidence arsenal.
+Log professional experiences - accomplishments, lessons, expertise, decisions, influence, and insights - and build tailored resumes from your evidence arsenal.
 
-Not everything worth remembering is a win. A hard lesson, deep expertise on a topic, a tough call you can articulate, influence you exercised without authority, or a pattern you noticed — all of these are interview gold and career evidence. The plugin captures each type through a guided deep-dive tailored to what kind of thing it is, then stores it as a structured, searchable log. The plugin automatically maintains skill-level arsenal summaries, pre-written resume bullets, interview talking points, and blog seeds from every entry. Log once, reuse everywhere.
+Not everything worth remembering is a win. A hard lesson, deep expertise on a topic, a tough call you can articulate, influence you exercised without authority, or a pattern you noticed - all of these are interview gold and career evidence. The plugin captures each type through a guided deep-dive tailored to what kind of thing it is, then stores it as a structured, searchable log. The plugin automatically maintains skill-level arsenal summaries, pre-written resume bullets, interview talking points, and blog seeds from every entry. Log once, reuse everywhere.
 
 ## Installation
 
-```bash
-claude plugin:add i-did-a-thing
+```
+/plugin install i-did-a-thing@brenna-plugs
 ```
 
 ## Setup
 
-Configure your .things directory (project-local or global), git remote, professional profile (current role, target roles, skills you're building), and preferences. This creates the shared shared config used by i-did-a-thing, what-did-you-do, and mark-my-words.
+Requires heres-the-thing (`/setup-htt`). Configures logging preferences.
 
 ```
-/i-did-a-thing:setup [reconfigure]
+/setup-idat
 ```
 
-**Migrating from v2.x?** Run `/i-did-a-thing:migrate-things` to move from per-plugin configs to the centralized shared config.
+To reconfigure:
+
+```
+/setup-idat reconfigure
+```
 
 ## Skills
 
-**Log a Thing** — Capture a professional experience with context-aware speed. If you paste a rich transcript, decision summary, or detailed description — or if the conversation already has relevant context — the skill extracts log fields automatically, shows you a summary, and confirms before writing. Only asks about genuinely missing details. For sparse context, it falls back to a full guided deep-dive that adapts based on what kind of thing it is: accomplishments get Context-Action-Result questions, lessons explore what went wrong and what you took from it, expertise entries dig into depth and teaching, decisions walk through options and tradeoffs, influence entries cover advocacy and outcomes, and insights explore observations and theses. Classifies by impact level and category, auto-generates tags, and writes a structured log with resume bullets, interview talking points, and a blog seed. Use `--interview` to force the full interview even when context is available.
+**Log a Thing** - Capture a professional experience with context-aware speed. If you paste a rich transcript, decision summary, or detailed description - or if the conversation already has relevant context - the skill extracts log fields automatically, shows you a summary, and confirms before writing. Only asks about genuinely missing details. For sparse context, it falls back to a full guided deep-dive that adapts based on what kind of thing it is: accomplishments get Context-Action-Result questions, lessons explore what went wrong and what you took from it, expertise entries dig into depth and teaching, decisions walk through options and tradeoffs, influence entries cover advocacy and outcomes, and insights explore observations and theses. Classifies by impact level and category, auto-generates tags, and writes a structured log with resume bullets, interview talking points, and a blog seed. Use `--interview` to force the full interview even when context is available.
 
 ```
-/i-did-a-thing:thing-i-did [description, pasted context, or --interview]
+/thing-i-did [description, pasted context, or --interview]
 ```
 
-**Build Resume** — Analyze a job listing (URL or pasted text), match it against your logged evidence, and produce a tailored resume. Weights evidence types by what the listing emphasizes — technical depth surfaces expertise entries, learning agility surfaces lessons, sound judgment surfaces decisions. Shows you strong matches, partial matches, and gaps. Pulls resume bullets directly from your logs in their type-appropriate format. Optionally generates cover letter talking points and a gap action plan that suggests specific evidence types to log.
+**Build Resume** - Analyze a job listing (URL or pasted text), match it against your logged evidence, and produce a tailored resume. Weights evidence types by what the listing emphasizes - technical depth surfaces expertise entries, learning agility surfaces lessons, sound judgment surfaces decisions. Shows you strong matches, partial matches, and gaps. Pulls resume bullets directly from your logs in their type-appropriate format. Optionally generates cover letter talking points and a gap action plan that suggests specific evidence types to log.
 
 ```
-/i-did-a-thing:construct-resume [job listing URL or text]
+/construct-resume [job listing URL or text]
 ```
 
-**Migrate** — Move from per-plugin configs to the centralized shared config. Run this after updating to v3.0.0.
+**Migrate Data** - Move i-did-a-thing data files from the old flat `~/.things/` layout to the per-plugin directory structure. Moves logs, arsenal, resumes, index.json, and tags.json. Run `/setup-htt` first if config.json doesn't exist yet.
 
 ```
-/i-did-a-thing:migrate-things [--dry-run]
+/migrate-idat [--dry-run]
 ```
 
 ## Evidence Types
@@ -53,44 +57,48 @@ Configure your .things directory (project-local or global), git remote, professi
 
 ## How It Works
 
-Each entry is logged via a guided deep-dive whose questions adapt to the evidence type. Logs are stored as markdown files with rich frontmatter in your `.things` directory.
+Each entry is logged via a guided deep-dive whose questions adapt to the evidence type. Logs are stored as markdown files with rich frontmatter in your `.things/` directory.
 
 The plugin automatically maintains:
 
-- **Arsenal files** — skill-level summaries with evidence from your logs, tagged by evidence type, fully regenerated on every log write
-- **A JSON index** — `index.json` with all entry data inline (frontmatter, resume bullets, body sections, talking points, blog seeds)
-- **A tag index** — `tags.json` with tag counts and last-used dates
-- **Resume bullets** — pre-written bullets generated with each log entry in the type-appropriate format
+- **Arsenal files** - skill-level summaries with evidence from your logs, tagged by evidence type, fully regenerated on every log write
+- **A JSON index** - `index.json` with all entry data inline (frontmatter, resume bullets, body sections, talking points, blog seeds)
+- **A tag index** - `tags.json` with tag counts and last-used dates
+- **Resume bullets** - pre-written bullets generated with each log entry in the type-appropriate format
 
-Logs include a Blog Seed section for use with `/mark-my-words:from-things`, and the celebration step points you to `/what-did-you-do:practice` for interview rehearsal.
+Logs include a Blog Seed section for use with `/from-things`, and the celebration step points you to `/practice` for interview rehearsal.
 
 ## Directory Structure
 
 ```
-<things_path>/
-├── config.yml      # Shared config for all career plugins
-├── logs/           # Individual log entries
-├── arsenal/        # Synthesized skill summaries (auto-regenerated)
-├── voices/         # Voice profiles for blog writing
-├── personas/       # Shared coaching personas
-├── companies/      # Shared company profiles
-├── index.json      # Auto-generated JSON index of all logs
-└── tags.json       # Auto-generated tag counts
+~/.things/
+├── config.json                    # Shared config (managed by HTT)
+├── shared/
+│   ├── professional-profile.json  # Career profile
+│   ├── roles/                     # Interviewer personas
+│   └── companies/                 # Company profiles
+└── i-did-a-thing/
+    ├── preferences.json           # Plugin preferences
+    ├── logs/                      # Individual log entries
+    ├── arsenal/                   # Synthesized skill summaries
+    ├── resumes/                   # Generated resumes
+    ├── index.json                 # Auto-generated index
+    └── tags.json                  # Auto-generated tag counts
 ```
 
-A PostToolUse hook automatically regenerates `index.json`, `tags.json`, and all arsenal files after every new log.
+HTT's PostToolUse hook automatically regenerates `index.json`, `tags.json`, and all arsenal files after every new log via the registry rebuild dispatch.
 
 ## Configuration
 
-Settings are stored in a centralized config shared by all career plugins:
+- Global config: `~/.things/config.json` (managed by heres-the-thing)
+- Plugin preferences: `~/.things/i-did-a-thing/preferences.json`
 
-- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
-- **Full config**: `<things_path>/config.yml` (git-tracked, all settings)
-
-Run `/i-did-a-thing:setup` to reconfigure.
+Run `/setup-idat` to reconfigure.
 
 ## Related Plugins
 
-- **what-did-you-do** — Practice interview questions coached by your arsenal, with evidence-type-aware feedback
-- **what-do-you-know** — Deepen your understanding through concept quizzing, gap analysis, and learning plans
-- **mark-my-words** — Turn your logs into blog posts with `/mark-my-words:from-things`
+- **heres-the-thing** - Foundation data layer that manages `.things/`, git sync, search, validation, and rebuild dispatch
+- **what-did-you-do** - Practice interview questions coached by your arsenal, with evidence-type-aware feedback
+- **what-do-you-know** - Deepen your understanding through concept quizzing, gap analysis, and learning plans
+- **mark-my-words** - Turn your logs into blog posts with `/from-things`
+- **think-like** - Apply expert thinking profiles for code review, architecture, security analysis, and more

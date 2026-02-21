@@ -5,40 +5,50 @@ disable-model-invocation: false
 allowed-tools: Read, Bash
 ---
 
-# List Windows
+<purpose>
+List the currently open windows on the user's Mac so they can identify targets for `/capture`.
+</purpose>
 
-You are listing the currently open windows on the user's Mac so they can identify targets for `/screenshotr:capture`.
+<steps>
 
-## Steps
+  <step id="get-window-list" number="1">
+    <description>Get Window List</description>
 
-### 1. Get Window List
+    <action>Run the list-windows script.</action>
 
-Run the list-windows script:
+    <command language="bash" tool="Bash">
+    bash "${CLAUDE_PLUGIN_ROOT}/scripts/list-windows.sh"
+    </command>
 
-```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/list-windows.sh"
-```
+    This outputs `APP_NAME|WINDOW_TITLE|WINDOW_ID|ON_SCREEN` lines.
+  </step>
 
-This outputs `APP_NAME|WINDOW_TITLE|WINDOW_ID|ON_SCREEN` lines.
+  <step id="format-as-table" number="2">
+    <description>Format as Table</description>
 
-### 2. Format as Table
+    <action>Parse the output and display as a readable table.</action>
 
-Parse the output and display as a readable table:
+    <output-format>
+    | App Name | Window Title | Window ID |
+    |----------|--------------|-----------|
+    | Finder | Documents | 1234 |
+    | Safari | GitHub - brennacodes | 5678 |
+    </output-format>
 
-| App Name | Window Title | Window ID |
-|----------|--------------|-----------|
-| Finder | Documents | 1234 |
-| Safari | GitHub - brennacodes | 5678 |
+    <constraint>Only show on-screen windows. Sort by app name.</constraint>
+  </step>
 
-Only show on-screen windows. Sort by app name.
+  <step id="suggest-follow-up" number="3">
+    <description>Suggest Follow-Up</description>
 
-### 3. Suggest Follow-Up
+    <completion-message>
+    To capture a specific window:
+    ```
+    /capture window "AppName"
+    ```
 
-After the table, suggest usage:
+    If there are multiple windows for the same app, the capture skill will let you choose which one.
+    </completion-message>
+  </step>
 
-> To capture a specific window:
-> ```
-> /screenshotr:capture window "AppName"
-> ```
-
-If there are multiple windows for the same app, note that the capture skill will let them choose which one.
+</steps>

@@ -13,16 +13,7 @@
 
 set -euo pipefail
 
-CONFIG_FILE="$HOME/.claude/things.local.md"
-
-if [[ ! -f "$CONFIG_FILE" ]]; then
-  echo "No config found" >&2
-  exit 1
-fi
-
-THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)
-THINGS_PATH="${THINGS_PATH/#\~/$HOME}"
-SESSIONS_DIR="$THINGS_PATH/learning/sessions"
+SESSIONS_DIR="$HOME/.things/what-do-you-know/sessions"
 
 if [[ ! -d "$SESSIONS_DIR" ]]; then
   echo "No sessions directory found at $SESSIONS_DIR" >&2

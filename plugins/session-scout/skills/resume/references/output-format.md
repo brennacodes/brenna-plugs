@@ -1,4 +1,4 @@
-# Output Format — /sesh:resume
+# Output Format - /resume
 
 ## Single Match
 
@@ -32,4 +32,4 @@ Ask the user to pick one by number, then show the full resume details for that s
 
 ## No Match
 
-> No session found matching "{id}". Try `/sesh:active` to browse recent sessions or `/sesh:search` to find by keyword.
+> No session found matching "{id}". Try `/active` to browse recent sessions or `/search` to find by keyword.

@@ -9,7 +9,7 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 
 **Coaching focus:**
 - Keep answers under 2 minutes
-- Lead with energy — you're selling yourself as someone they want to spend a full day with
+- Lead with energy - you're selling yourself as someone they want to spend a full day with
 - Focus on high-level impact, not implementation details
 - Show genuine interest in the company and role
 - Have 2-3 crisp stories ready that cover your range
@@ -26,10 +26,10 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 **What matters most:** Problem-solving approach, technical communication, code quality.
 
 **Coaching focus:**
-- Think aloud — silence is your enemy in a technical round
+- Think aloud - silence is your enemy in a technical round
 - Ask clarifying questions before diving in
 - Discuss tradeoffs explicitly ("I'm choosing X over Y because...")
-- Write clean, readable code — not clever code
+- Write clean, readable code - not clever code
 - Test your solution with edge cases
 
 **Common mistakes at this stage:**
@@ -45,7 +45,7 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 **What matters most:** Depth, specificity, pattern of leadership and impact.
 
 **Coaching focus:**
-- You'll tell 8-12 stories across the day — prepare varied examples
+- You'll tell 8-12 stories across the day - prepare varied examples
 - STAR format is your friend but don't be robotic about it
 - Tailor stories to the interviewer's role and concerns
 - Show a pattern of increasing scope and impact
@@ -65,7 +65,7 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 **Coaching focus:**
 - Spend the first 5 minutes on requirements and constraints
 - Start with the high-level architecture, then drill into components
-- Always discuss tradeoffs — there are no "right" answers, only justified ones
+- Always discuss tradeoffs - there are no "right" answers, only justified ones
 - Address scalability, reliability, and cost
 - Be prepared to dive deep into any component you draw
 
@@ -73,7 +73,7 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 - Jumping to a solution without gathering requirements
 - Drawing boxes without explaining data flow
 - Ignoring non-functional requirements (latency, availability, cost)
-- Not driving the conversation — waiting for the interviewer to guide you
+- Not driving the conversation - waiting for the interviewer to guide you
 - Designing for current scale instead of target scale
 
 ## Bar Raiser
@@ -82,9 +82,9 @@ Guidance for adjusting feedback based on the interview stage being practiced.
 **What matters most:** Consistency, judgment, genuine self-reflection.
 
 **Coaching focus:**
-- This interviewer will ask the same question from multiple angles — be consistent
+- This interviewer will ask the same question from multiple angles - be consistent
 - They're testing judgment more than knowledge
-- Failure stories are critical — have 2-3 genuine ones ready
+- Failure stories are critical - have 2-3 genuine ones ready
 - Show evidence of raising the bar for others, not just yourself
 - Connect everything to customer/user impact
 

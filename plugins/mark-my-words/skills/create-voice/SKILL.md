@@ -1,170 +1,223 @@
 ---
 name: create-voice
-description: "Create a voice profile from writing samples — teach mark-my-words how you actually write"
+description: "Create a voice profile from writing samples - teach mark-my-words how you actually write"
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[voice name]"
 ---
 
-# Create Voice Profile
+<references>
+  <reference name="voice-profile-format" path="references/voice-profile-format.md" />
+</references>
 
-You are creating a voice profile from the user's writing samples. The profile will be a compact style guide that captures how they write — not generic AI voice, their actual voice.
+<purpose>
+You are creating a voice profile from the user's writing samples. The profile will be a compact style guide that captures how they write -- not generic AI voice, their actual voice.
+</purpose>
 
-## Steps
+<steps>
 
-### 1. Load Configuration
+  <step id="load-config" number="1">
+    <description>Load Configuration</description>
 
-Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+    <load-config>
+      <action>Resolve the user's home directory.</action>
+      <command language="bash" output="home" tool="Bash">echo $HOME</command>
+      <constraint>Never pass `~` to the Read tool.</constraint>
 
-Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing:
+      <read path="<home>/.things/config.json" output="config" />
+      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
 
-> No configuration found. Please run `/i-did-a-thing:setup` first.
+      <read path="<home>/.things/mark-my-words/preferences.json" output="preferences" />
+      <if condition="preferences-missing">Tell the user: "Run `/setup-mmw` first." Then stop.</if>
+    </load-config>
+  </step>
 
-Then stop.
+  <step id="ensure-voices-dir" number="2">
+    <description>Ensure Voices Directory</description>
 
-Read `<things_path>/config.yml` for all settings. If config.yml is missing, tell the user to run setup.
+    <action>Check if `<home>/.things/mark-my-words/voices/` exists.</action>
+    <if condition="voices-dir-missing">Create it.</if>
+  </step>
 
-### 2. Ensure Voices Directory
+  <step id="get-voice-name" number="3">
+    <description>Get Voice Name</description>
 
-Check if `<things_path>/voices/` exists. If not, create it.
+    <if condition="arguments-provided">Use it as the voice name (convert to kebab-case: lowercase, hyphens for spaces, no special characters).</if>
 
-### 3. Get Voice Name
+    <if condition="no-arguments">
+      <ask-user-question>
+        <question>What should this voice profile be called?</question>
+      </ask-user-question>
+    </if>
 
-If `$ARGUMENTS` was provided, use it as the voice name (convert to kebab-case: lowercase, hyphens for spaces, no special characters).
+    <constraint>Suggest names based on common patterns: `casual-tech`, `professional`, `personal-blog`, `tutorial-voice`. The name becomes the filename and identifier.</constraint>
+  </step>
 
-If no arguments, use AskUserQuestion to ask:
+  <step id="check-existing-profile" number="4">
+    <description>Check for Existing Profile</description>
 
-> **What should this voice profile be called?**
+    <validate name="profile-uniqueness">
+      <action>Check if `<home>/.things/mark-my-words/voices/<name>.md` already exists.</action>
 
-Suggest names based on common patterns: `casual-tech`, `professional`, `personal-blog`, `tutorial-voice`. The name becomes the filename and identifier.
+      <if condition="profile-exists">
+        Tell the user:
 
-### 4. Check for Existing Profile
+        > A voice profile named "<name>" already exists. Use `/update-voice <name>` to refine it, or choose a different name.
 
-Check if `<things_path>/voices/<name>.md` already exists. If it does, tell the user:
+        <ask-user-question>
+          <question>What would you like to do?</question>
+          <option>Choose a different name</option>
+          <option>Overwrite the existing profile</option>
+        </ask-user-question>
 
-> A voice profile named "<name>" already exists. Use `/mark-my-words:update-voice <name>` to refine it, or choose a different name.
+        <if condition="user-picks-different-name">Go back to Step 3.</if>
+      </if>
+    </validate>
+  </step>
 
-Then use AskUserQuestion to offer:
-- Choose a different name
-- Overwrite the existing profile
+  <step id="get-description" number="5">
+    <description>Get Description</description>
 
-If they want a different name, go back to Step 3.
+    <ask-user-question>
+      <question>Describe this voice in one sentence. What does it sound like? (e.g., "Conversational technical writing with dry humor" or "Direct and opinionated, like explaining something to a friend")</question>
+    </ask-user-question>
+  </step>
 
-### 5. Get Description
+  <step id="gather-writing-samples" number="6">
+    <description>Gather Writing Samples</description>
 
-Use AskUserQuestion:
+    <ask-user-question>
+      <question>How would you like to provide writing samples?</question>
+      <option>Point to files -- I'll give you file paths or a glob pattern</option>
+      <option>Paste text -- I'll paste samples directly into the chat</option>
+      <option>Both -- files and pasted text</option>
+    </ask-user-question>
 
-> **Describe this voice in one sentence.** What does it sound like? (e.g., "Conversational technical writing with dry humor" or "Direct and opinionated, like explaining something to a friend")
+    <constraint>You need enough samples to identify patterns. Aim for at least 2-3 samples, ideally 1000+ words total.</constraint>
 
-### 6. Gather Writing Samples
+    <if condition="user-point-to-files">
+      <action>Use AskUserQuestion to get file paths or a glob pattern (e.g., `content/blog/*.md`, or specific paths).</action>
+      <action>Use Glob to find matching files. Read each file.</action>
 
-Use AskUserQuestion:
+      <action>Track the source info:</action>
+      <schema name="file-source">
+      ```yaml
+      - type: file
+        path: <absolute path>
+      ```
+      </schema>
 
-> **How would you like to provide writing samples?**
-> - Point to files — I'll give you file paths or a glob pattern
-> - Paste text — I'll paste samples directly into the chat
-> - Both — files and pasted text
+      For glob patterns, track as:
+      <schema name="glob-source">
+      ```yaml
+      - type: glob
+        pattern: "<pattern>"
+        count: <number of files matched>
+      ```
+      </schema>
+    </if>
 
-You need enough samples to identify patterns. Aim for at least 2-3 samples, ideally 1000+ words total.
+    <if condition="user-paste-text">
+      <action>Use AskUserQuestion to ask for their writing sample.</action>
+      <ask-user-question>
+        <question>What's this sample from? (e.g., "Blog post about React hooks", "README I wrote last week")</question>
+      </ask-user-question>
 
-#### If "Point to files":
+      <schema name="paste-source">
+      ```yaml
+      - type: paste
+        label: "<user's label>"
+      ```
+      </schema>
 
-Use AskUserQuestion to get file paths or a glob pattern (e.g., `content/blog/*.md`, or specific paths).
+      <action>Ask if they have more samples. Repeat until they're done.</action>
+    </if>
 
-Use Glob to find matching files. Read each file. Track the source info:
-```yaml
-- type: file
-  path: <absolute path>
-```
-For glob patterns, track as:
-```yaml
-- type: glob
-  pattern: "<pattern>"
-  count: <number of files matched>
-```
+    <if condition="user-both">Do both flows above.</if>
 
-#### If "Paste text":
+    <constraint name="no-url-fetching">Do not fetch URLs.</constraint>
+    <if condition="user-provides-url">Tell them:
 
-Use AskUserQuestion to ask for their writing sample. Ask for a label for reference:
+    > Voice profiles work with local files and pasted text only -- no URL fetching. You can paste the content directly or save it to a file first.
+    </if>
+  </step>
 
-> **What's this sample from?** (e.g., "Blog post about React hooks", "README I wrote last week")
+  <step id="analyze-and-distill" number="7">
+    <description>Analyze and Distill</description>
 
-Track the source:
-```yaml
-- type: paste
-  label: "<user's label>"
-```
+    <action>Read all the gathered samples carefully. Analyze the writing for patterns across the six profile sections defined in <reference name="voice-profile-format"/>:</action>
 
-Ask if they have more samples. Repeat until they're done.
+    1. Tone and Register -- formality, emotional range, reader relationship
+    2. Sentence Patterns -- rhythm, length, distinctive structures
+    3. Vocabulary and Diction -- word choice, technical level, characteristic phrases
+    4. Rhetorical Habits -- how they explain, persuade, use humor
+    5. Structural Preferences -- intros, sections, conclusions, formatting
+    6. Things to Avoid -- anti-patterns that would break the voice
 
-#### If "Both":
+    <constraint>Be specific and concrete. Pull actual examples from the samples. Don't be generic -- "uses humor" is useless, "drops self-deprecating asides in parentheses after technical claims" is useful.</constraint>
+  </step>
 
-Do both flows above.
+  <step id="present-for-review" number="8">
+    <description>Present for Review</description>
 
-**Important:** Do not fetch URLs. If the user provides a URL, tell them:
+    <action>Show the user the generated profile and ask:</action>
 
-> Voice profiles work with local files and pasted text only — no URL fetching. You can paste the content directly or save it to a file first.
+    <ask-user-question>
+      <question>How does this look?</question>
+      <option>Save it -- looks good</option>
+      <option>Adjust it -- I want to tweak some sections</option>
+      <option>Start over -- try again with different samples</option>
+    </ask-user-question>
 
-### 7. Analyze and Distill
+    <if condition="user-save-it">Continue to Step 9.</if>
+    <if condition="user-adjust-it">Use AskUserQuestion to find out what to change. Update the profile and present again.</if>
+    <if condition="user-start-over">Go back to Step 6.</if>
+  </step>
 
-Read all the gathered samples carefully. Analyze the writing for patterns across the six profile sections defined in `references/voice-profile-format.md`:
+  <step id="save-profile" number="9">
+    <description>Save the Profile</description>
 
-1. **Tone & Register** — formality, emotional range, reader relationship
-2. **Sentence Patterns** — rhythm, length, distinctive structures
-3. **Vocabulary & Diction** — word choice, technical level, characteristic phrases
-4. **Rhetorical Habits** — how they explain, persuade, use humor
-5. **Structural Preferences** — intros, sections, conclusions, formatting
-6. **Things to Avoid** — anti-patterns that would break the voice
+    <action>Write the profile to `<home>/.things/mark-my-words/voices/<name>.md` using the format from <reference name="voice-profile-format"/>.</action>
 
-Be specific and concrete. Pull actual examples from the samples. Don't be generic — "uses humor" is useless, "drops self-deprecating asides in parentheses after technical claims" is useful.
+    Include:
+    - Frontmatter with name, description, created date (today), last_updated (today), and sample_sources
+    - All six body sections with the distilled analysis
+  </step>
 
-### 8. Present for Review
+  <step id="set-as-default" number="10">
+    <description>Set as Default?</description>
 
-Show the user the generated profile and ask:
+    <ask-user-question>
+      <question>Should "<name>" be your default voice for new posts?</question>
+      <option>Yes -- use this voice by default</option>
+      <option>No -- I'll pick a voice when I need one</option>
+    </ask-user-question>
 
-> **How does this look?**
-> - Save it — looks good
-> - Adjust it — I want to tweak some sections
-> - Start over — try again with different samples
+    <if condition="user-yes-default">Read `<home>/.things/mark-my-words/preferences.json`, update `default_voice` to `<name>`, and write the file back.</if>
+  </step>
 
-#### If "Save it":
-Continue to Step 9.
+  <step id="confirm" number="11">
+    <description>Confirm</description>
 
-#### If "Adjust it":
-Use AskUserQuestion to find out what to change. Update the profile and present again.
+    <completion-message>
+      Tell the user:
 
-#### If "Start over":
-Go back to Step 6.
+      > Voice profile "<name>" saved to `<home>/.things/mark-my-words/voices/<name>.md`.
 
-### 9. Save the Profile
+      <if condition="set-as-default">
 
-Write the profile to `<things_path>/voices/<name>.md` using the format from `references/voice-profile-format.md`. Include:
+      > It's now your default voice -- new posts will use this style automatically.
 
-- Frontmatter with name, description, created date (today), last_updated (today), and sample_sources
-- All six body sections with the distilled analysis
+      </if>
 
-### 10. Set as Default?
+      <if condition="not-set-as-default">
 
-Use AskUserQuestion:
+      > You can use it by picking it when creating a post, or set it as default later by updating `default_voice` in your preferences.
+      >
+      > Run `/update-voice <name>` to refine it with more samples.
 
-> **Should "<name>" be your default voice for new posts?**
-> - Yes — use this voice by default
-> - No — I'll pick a voice when I need one
+      </if>
+    </completion-message>
+  </step>
 
-If yes, read `<things_path>/config.yml`, update `blog.default_voice` to `<name>`, and write the file back.
-
-### 11. Confirm
-
-Tell the user:
-
-> Voice profile "<name>" saved to `<things_path>/voices/<name>.md`.
-
-If set as default:
-
-> It's now your default voice — new posts will use this style automatically.
-
-Otherwise:
-
-> You can use it by picking it when creating a post, or set it as default later by updating `default_voice` in your config.
->
-> Run `/mark-my-words:update-voice <name>` to refine it with more samples.
+</steps>

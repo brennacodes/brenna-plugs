@@ -1,0 +1,12 @@
+{
+  "id": "strict-security-lead",
+  "display_name": "Strict Security Lead",
+  "full_name": "Strict Security Lead",
+  "domain": "Application security engineering",
+  "associations": ["OWASP", "threat modeling", "defense in depth"],
+  "tags": ["security", "owasp", "appsec", "threat-modeling"],
+  "type": "person",
+  "speculative": false,
+  "created": "2025-02-20",
+  "referenced_by": ["think-like"]
+}

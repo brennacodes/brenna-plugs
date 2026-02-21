@@ -15,8 +15,8 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 0
 fi
 
-# Only validate files matching */learning/sessions/*.md
-if [[ ! "$FILE_PATH" =~ /learning/sessions/[^/]*\.md$ ]]; then
+# Only validate files matching */what-do-you-know/sessions/*.md
+if [[ ! "$FILE_PATH" =~ /what-do-you-know/sessions/[^/]*\.md$ ]]; then
   exit 0
 fi
 
@@ -53,7 +53,7 @@ fi
 for dim in depth accuracy connections application articulation; do
   if ! echo "$CONTENT" | grep -q "  ${dim}:"; then
     echo "VALIDATION WARNING: Missing score dimension: $dim" >&2
-    # Warning only — don't block the write
+    # Warning only - don't block the write
   fi
 done
 

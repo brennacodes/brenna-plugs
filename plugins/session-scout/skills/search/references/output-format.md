@@ -1,4 +1,4 @@
-# Output Format — /sesh:search
+# Output Format - /search
 
 ## Table Format
 
@@ -14,7 +14,7 @@ Display results as a **numbered markdown table**:
 - **Project**: Use the `projectName` field.
 - **Modified**: Relative time (same rules as active format).
 - **Msgs**: The `messageCount` value.
-- **Match**: Where the query was found — show `summary`, `prompt`, or `transcript`.
+- **Match**: Where the query was found - show `summary`, `prompt`, or `transcript`.
 
 ## After the Table
 
@@ -25,7 +25,7 @@ If `--deep` was used, note that transcript content was also searched.
 ## Empty Results
 
 If 0 results and `--deep` was not used:
-> No sessions found matching "{query}" in metadata. Try `/sesh:search {query} --deep` to also search inside session transcripts.
+> No sessions found matching "{query}" in metadata. Try `/search {query} --deep` to also search inside session transcripts.
 
 If 0 results with `--deep`:
 > No sessions found matching "{query}" in metadata or transcripts.

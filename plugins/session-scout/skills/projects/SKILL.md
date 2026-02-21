@@ -7,33 +7,43 @@ user-invocable: true
 arguments: "[project-name]"
 ---
 
-# /sesh:projects — List Sessions by Project
-
-## Usage
-
-```
-/sesh:projects            # List all projects with session counts
-/sesh:projects bivvy      # Show all sessions for the "bivvy" project
-```
-
-## Execution
-
-**Without arguments** — list all projects:
-
-```bash
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/sesh.py" projects
-```
-
-**With a project name** — list all sessions for that project:
-
-```bash
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/sesh.py" search "" --project "<PROJECT_NAME>"
-```
-
-## Output Formatting
-
+<references>
 Read and follow the formatting rules in `references/output-format.md`.
+</references>
 
-## Interaction
+<purpose>
+List all Claude Code projects with session counts and last modified dates, or view all sessions for a specific project.
 
-When showing the project list, tell the user they can drill into any project by running `/sesh:projects <name>` to see its sessions.
+```
+/projects            # List all projects with session counts
+/projects bivvy      # Show all sessions for the "bivvy" project
+```
+</purpose>
+
+<steps>
+
+  <step id="run-script" number="1">
+    <description>Run the Appropriate Command</description>
+
+    <if condition="no-arguments">
+      <action>List all projects.</action>
+      <command language="bash" tool="Bash">python3 "${CLAUDE_PLUGIN_ROOT}/scripts/sesh.py" projects</command>
+    </if>
+
+    <if condition="project-name-provided">
+      <action>List all sessions for that project.</action>
+      <command language="bash" tool="Bash">python3 "${CLAUDE_PLUGIN_ROOT}/scripts/sesh.py" search "" --project "<PROJECT_NAME>"</command>
+    </if>
+  </step>
+
+  <step id="format-output" number="2">
+    <description>Format and Display Results</description>
+    <action>Format the output according to the rules in `references/output-format.md`.</action>
+  </step>
+
+  <step id="interaction" number="3">
+    <description>Offer Next Actions</description>
+    <completion-message>When showing the project list, tell the user they can drill into any project by running `/projects <name>` to see its sessions.</completion-message>
+  </step>
+
+</steps>

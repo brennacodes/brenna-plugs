@@ -14,7 +14,7 @@ Scan post content for these patterns and suggest the matching diagram type:
 | Lifecycle, modes, transitions between states | State diagram | `stateDiagram-v2` |
 | Timeline, project phases, milestones | Gantt chart | `gantt` |
 | Decision tree, conditional logic, branching paths | Flowchart with decisions | `graph TD` with `{}` nodes |
-| Before/after comparisons | Side-by-side table or two diagrams | — |
+| Before/after comparisons | Side-by-side table or two diagrams | - |
 | Architecture, system components, infrastructure | Flowchart with subgraphs | `graph TD` + `subgraph` |
 | Data flow, ETL, event processing | Flowchart | `graph LR` |
 | Git branching strategy | Gitgraph | `gitGraph` |
@@ -23,29 +23,29 @@ Scan post content for these patterns and suggest the matching diagram type:
 
 ### Use a Mermaid diagram when:
 - The content describes a **process, flow, or relationship** that can be expressed as nodes and edges
-- The information is **abstract or structural** — architecture, workflows, state machines
+- The information is **abstract or structural** - architecture, workflows, state machines
 - You want the visual to stay **in sync with the text** (diagrams are code, easy to update)
-- The visual needs to be **precise** — exact steps, exact relationships
+- The visual needs to be **precise** - exact steps, exact relationships
 
 ### Use an image when:
-- The content references something **visual by nature** — a UI, a physical thing, a screenshot, a result
-- A photo or illustration would convey **more than a diagram** — before/after screenshots, product photos
-- The concept is **better shown than diagrammed** — a design, a layout, a real-world example
+- The content references something **visual by nature** - a UI, a physical thing, a screenshot, a result
+- A photo or illustration would convey **more than a diagram** - before/after screenshots, product photos
+- The concept is **better shown than diagrammed** - a design, a layout, a real-world example
 
 ### Use a table when:
 - Comparing **2-4 options** across the same dimensions
-- Listing **structured data** — feature comparisons, config options, API parameters
+- Listing **structured data** - feature comparisons, config options, API parameters
 - The comparison is **simple enough** that a diagram would overcomplicate it
 
 ## Content That Does NOT Need Visuals
 
 Skip suggesting visuals for:
 
-- **Short opinion pieces** — personal takes, hot takes, reflections under 500 words
-- **Simple code tutorials** — the code itself is the visual; adding a flowchart of a 5-line function adds noise
-- **Lists and roundups** — "5 tools I use" doesn't need a diagram connecting them
-- **Code examples that are self-explanatory** — well-commented code with clear variable names
-- **Single-concept posts** — if the entire post explains one thing linearly, a diagram may just restate the text
+- **Short opinion pieces** - personal takes, hot takes, reflections under 500 words
+- **Simple code tutorials** - the code itself is the visual; adding a flowchart of a 5-line function adds noise
+- **Lists and roundups** - "5 tools I use" doesn't need a diagram connecting them
+- **Code examples that are self-explanatory** - well-commented code with clear variable names
+- **Single-concept posts** - if the entire post explains one thing linearly, a diagram may just restate the text
 
 ## Mermaid Syntax Quick Reference
 
@@ -158,24 +158,24 @@ Alt text should describe the **content and purpose** of the image, not its forma
 - "Click to enlarge"
 
 ### Rules
-- **Concise but complete** — one sentence, rarely two
-- **Describe content, not format** — "authentication flow" not "flowchart"
-- **Include key details** — if a screenshot shows an error message, mention the error
-- **Skip decorative images** — if an image is purely decorative, use empty alt text
+- **Concise but complete** - one sentence, rarely two
+- **Describe content, not format** - "authentication flow" not "flowchart"
+- **Include key details** - if a screenshot shows an error message, mention the error
+- **Skip decorative images** - if an image is purely decorative, use empty alt text
 
 ## Media Placement Rules
 
 ### Where to place visuals
 
-- **After the text that introduces the concept** — the reader should understand what they're about to see
-- **Before detailed explanation** — a diagram can serve as a map before diving into specifics
-- **At natural section breaks** — between major topics or at the start of a new section
-- **Near the data they illustrate** — a chart should be close to the numbers it visualizes
+- **After the text that introduces the concept** - the reader should understand what they're about to see
+- **Before detailed explanation** - a diagram can serve as a map before diving into specifics
+- **At natural section breaks** - between major topics or at the start of a new section
+- **Near the data they illustrate** - a chart should be close to the numbers it visualizes
 
 ### Where NOT to place visuals
 
-- **At the very top of the post** — the opening paragraph should set context first
-- **Back-to-back** — two consecutive images/diagrams without text between them feels like a slideshow
-- **Inside callout/admonition blocks** — some platforms render images inconsistently inside callouts
-- **After "Mentioned in this post"** — the references section is the end; nothing goes after it
-- **In the middle of a paragraph** — break the paragraph at a natural point and place the image between
+- **At the very top of the post** - the opening paragraph should set context first
+- **Back-to-back** - two consecutive images/diagrams without text between them feels like a slideshow
+- **Inside callout/admonition blocks** - some platforms render images inconsistently inside callouts
+- **After "Mentioned in this post"** - the references section is the end; nothing goes after it
+- **In the middle of a paragraph** - break the paragraph at a natural point and place the image between

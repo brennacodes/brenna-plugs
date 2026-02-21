@@ -6,10 +6,10 @@
 |----------|-------|
 | Platform | Zola (Rust-based SSG) |
 | Content directory | `content/` |
-| Common subdirectories | `blog/`, `posts/` — organized into sections (directories with `_index.md`) |
+| Common subdirectories | `blog/`, `posts/` - organized into sections (directories with `_index.md`) |
 | File naming | Slug: `my-post-title.md`, or folder: `my-post-title/index.md` for page bundles with co-located assets |
 | Frontmatter format | TOML between `+++` delimiters |
-| Draft behavior | `draft = true` — excluded from build unless `--drafts` flag used |
+| Draft behavior | `draft = true` - excluded from build unless `--drafts` flag used |
 
 ## Frontmatter
 
@@ -86,7 +86,7 @@ author = "Brenna"
 **Important:** Always validate user input before processing.
 ```
 
-Do not use `> [!type]` syntax — it will render as plain text.
+Do not use `> [!type]` syntax - it will render as plain text.
 
 ### Code Blocks
 
@@ -101,7 +101,7 @@ def hello():
 
 Zola uses syntect for built-in syntax highlighting (supports most common languages).
 
-**Line numbers** — add `linenos`:
+**Line numbers** - add `linenos`:
 
 ````markdown
 ```python,linenos
@@ -110,7 +110,7 @@ def hello():
 ```
 ````
 
-**Line highlighting** — add `hl_lines` (1-indexed):
+**Line highlighting** - add `hl_lines` (1-indexed):
 
 ````markdown
 ```python,hl_lines=2-3
@@ -120,7 +120,7 @@ def process():
 ```
 ````
 
-**Line number start** — add `linenostart`:
+**Line number start** - add `linenostart`:
 
 ````markdown
 ```python,linenos,linenostart=10
@@ -129,7 +129,7 @@ def process():
 ```
 ````
 
-**Multiple attributes** — comma-separated:
+**Multiple attributes** - comma-separated:
 
 ````markdown
 ```rust,linenos,hl_lines=1 3-5
@@ -152,14 +152,14 @@ Standard markdown links work:
 [Link Text](/blog/other-post)
 ```
 
-**Zola internal links** — use `@/` prefix to reference content directory and validate at build time:
+**Zola internal links** - use `@/` prefix to reference content directory and validate at build time:
 
 ```markdown
 [Link to post](@/blog/my-post.md)
 [Link to section](@/blog/_index.md)
 ```
 
-**No wikilink support** — do not use `[[Other Page]]` syntax.
+**No wikilink support** - do not use `[[Other Page]]` syntax.
 
 ### Images
 
@@ -170,19 +170,19 @@ Standard markdown links work:
 ![Alt text](/images/my-image.png)
 ```
 
-**Co-located images** — place images in the same directory as the post (requires page bundle structure: `my-post/index.md`):
+**Co-located images** - place images in the same directory as the post (requires page bundle structure: `my-post/index.md`):
 
 ```markdown
 ![Architecture diagram](./architecture.png)
 ```
 
-**Static directory images** — place images in `static/images/` (served at `/images/`):
+**Static directory images** - place images in `static/images/` (served at `/images/`):
 
 ```markdown
 ![Logo](/images/logo.png)
 ```
 
-**Zola image processing** — use the `resize_image` shortcode for optimized images:
+**Zola image processing** - use the `resize_image` shortcode for optimized images:
 
 ```markdown
 {{ resize_image(path="my-image.png", width=800, height=600, op="fit_width") }}
@@ -193,7 +193,7 @@ Standard markdown links work:
 - Use descriptive filenames: `authentication-flow-diagram.png` over `IMG_4523.png`
 - Prefer page bundles for posts with multiple images (easier to keep assets together)
 - Use `resize_image` shortcode for large images to improve performance
-- No wikilink image syntax — use standard markdown or shortcodes
+- No wikilink image syntax - use standard markdown or shortcodes
 
 ### Video Embeds
 
@@ -253,13 +253,13 @@ $$
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use emphasis sparingly** — bold and blockquotes are effective for important asides, but most content should be regular text.
-6. **End with a takeaway** — close with a summary, next steps, or a call to action.
-7. **Tags for discoverability** — use 2-5 relevant tags in `[taxonomies]`. Prefer existing tags over creating new ones.
-8. **Descriptions matter** — write a compelling 1-2 sentence description for feeds, link previews, and SEO.
-9. **Organize with sections** — Zola uses sections (directories with `_index.md`) to structure content. Each section can have its own template and configuration.
-10. **Use page bundles for asset-heavy posts** — if a post has multiple images or files, use the `my-post/index.md` structure to co-locate assets.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use emphasis sparingly** - bold and blockquotes are effective for important asides, but most content should be regular text.
+6. **End with a takeaway** - close with a summary, next steps, or a call to action.
+7. **Tags for discoverability** - use 2-5 relevant tags in `[taxonomies]`. Prefer existing tags over creating new ones.
+8. **Descriptions matter** - write a compelling 1-2 sentence description for feeds, link previews, and SEO.
+9. **Organize with sections** - Zola uses sections (directories with `_index.md`) to structure content. Each section can have its own template and configuration.
+10. **Use page bundles for asset-heavy posts** - if a post has multiple images or files, use the `my-post/index.md` structure to co-locate assets.

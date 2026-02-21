@@ -1,7 +1,7 @@
 {
   "name": "screenshotr",
-  "version": "1.0.0",
-  "description": "Precise screenshot capabilities for macOS — capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
+  "version": "1.0.1",
+  "description": "Precise screenshot capabilities for macOS -- capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
   "author": {
     "name": "brennacodes",
     "email": "brennacodes@users.noreply.github.com"

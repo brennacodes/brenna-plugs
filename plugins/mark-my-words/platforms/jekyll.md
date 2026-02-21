@@ -6,8 +6,8 @@
 |----------|-------|
 | Platform | Jekyll |
 | Content directory | `_posts/` for published posts, `_drafts/` for drafts |
-| Common subdirectories | None within `_posts/` typically — posts go directly in `_posts/` |
-| File naming | **DATE PREFIX REQUIRED** — `YYYY-MM-DD-my-post-title.md` (e.g., `2025-01-15-building-a-cli.md`) |
+| Common subdirectories | None within `_posts/` typically - posts go directly in `_posts/` |
+| File naming | **DATE PREFIX REQUIRED** - `YYYY-MM-DD-my-post-title.md` (e.g., `2025-01-15-building-a-cli.md`) |
 | Frontmatter format | YAML between `---` delimiters |
 | Draft behavior | Files in `_drafts/` directory (no date prefix, built only with `--drafts` flag) OR `published: false` in frontmatter |
 
@@ -122,7 +122,7 @@ The `linenos` option adds line numbers, but individual line highlighting is not 
 
 The `post_url` tag validates links at build time and prevents broken internal links. Omit the `.md` extension.
 
-**No wikilink support** — Jekyll does not recognize `[[wikilinks]]`.
+**No wikilink support** - Jekyll does not recognize `[[wikilinks]]`.
 
 ### Images
 
@@ -139,7 +139,7 @@ The `post_url` tag validates links at build time and prevents broken internal li
 - Images referenced with absolute paths starting with `/` are resolved from site root
 - Relative paths work: `![Alt](./images/diagram.png)` from the post location
 
-**No figure/caption shortcode** — use HTML if captions are needed:
+**No figure/caption shortcode** - use HTML if captions are needed:
 
 ```html
 <figure>
@@ -148,7 +148,7 @@ The `post_url` tag validates links at build time and prevents broken internal li
 </figure>
 ```
 
-**No wikilink image syntax** — Jekyll does not support `![[image.png]]`.
+**No wikilink image syntax** - Jekyll does not support `![[image.png]]`.
 
 ### Video Embeds
 
@@ -207,13 +207,13 @@ $$
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use emphasis sparingly** — bold or blockquotes for important asides, not regular content.
-6. **End with a takeaway** — close with a summary, next steps, or a call to action.
-7. **Tags and categories for discoverability** — use 2-5 relevant tags and 1-2 categories. Prefer existing tags over creating new ones. Jekyll generates archive pages for each tag and category.
-8. **Descriptions matter** — write a compelling 1-2 sentence description for post listings and link previews.
-9. **Filename date is canonical** — the date in the filename (`YYYY-MM-DD-`) is the primary publication date. Only override with frontmatter `date` if you need to specify a time or adjust the date.
-10. **Excerpt control** — use the `excerpt` frontmatter field or set `excerpt_separator` in your config to control how post previews appear on listing pages.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use emphasis sparingly** - bold or blockquotes for important asides, not regular content.
+6. **End with a takeaway** - close with a summary, next steps, or a call to action.
+7. **Tags and categories for discoverability** - use 2-5 relevant tags and 1-2 categories. Prefer existing tags over creating new ones. Jekyll generates archive pages for each tag and category.
+8. **Descriptions matter** - write a compelling 1-2 sentence description for post listings and link previews.
+9. **Filename date is canonical** - the date in the filename (`YYYY-MM-DD-`) is the primary publication date. Only override with frontmatter `date` if you need to specify a time or adjust the date.
+10. **Excerpt control** - use the `excerpt` frontmatter field or set `excerpt_separator` in your config to control how post previews appear on listing pages.

@@ -9,7 +9,7 @@
 | Common subdirectories | Usually flat, or organized with date-prefixed folders |
 | File naming | Slug: `my-post-title.md` or `my-post-title.mdx`, date-prefixed: `2025-01-15-my-post-title.md`, or folder: `2025-01-15-my-post/index.md` |
 | Frontmatter format | YAML between `---` delimiters |
-| Draft behavior | `draft: true` — hidden in production, visible in development |
+| Draft behavior | `draft: true` - hidden in production, visible in development |
 | Note | Docusaurus supports both markdown and MDX out of the box |
 
 ## Frontmatter
@@ -86,7 +86,7 @@ Dangerous content here.
 :::
 ```
 
-**Custom titles** — add title in square brackets after the type:
+**Custom titles** - add title in square brackets after the type:
 
 ```markdown
 :::tip[My Custom Title]
@@ -100,7 +100,7 @@ This note has a custom heading.
 
 ### Code Blocks
 
-**Basic syntax highlighting** — Prism by default:
+**Basic syntax highlighting** - Prism by default:
 
 ````markdown
 ```python
@@ -109,7 +109,7 @@ def hello():
 ```
 ````
 
-**Title** — add `title="filename"`:
+**Title** - add `title="filename"`:
 
 ````markdown
 ```python title="app.py"
@@ -118,7 +118,7 @@ def main():
 ```
 ````
 
-**Line highlighting** — `{N}` or `{N-M}` after language:
+**Line highlighting** - `{N}` or `{N-M}` after language:
 
 ````markdown
 ```python {2-3}
@@ -128,7 +128,7 @@ def process():
 ```
 ````
 
-**Magic comments** — inline highlighting directives:
+**Magic comments** - inline highlighting directives:
 
 ````markdown
 ```python
@@ -142,7 +142,7 @@ def example():
 ```
 ````
 
-**Line numbers** — add `showLineNumbers` attribute:
+**Line numbers** - add `showLineNumbers` attribute:
 
 ````markdown
 ```js title="app.js" {1,3-4} showLineNumbers
@@ -168,7 +168,7 @@ File paths with `.md` extension also work for blog post links.
 
 ### Images
 
-**Standard markdown** — relative or absolute paths:
+**Standard markdown** - relative or absolute paths:
 
 ```markdown
 ![Alt text](./img/my-image.png)
@@ -179,7 +179,7 @@ File paths with `.md` extension also work for blog post links.
 - Co-located with blog post: `./img/my-image.png`
 - In static directory: `/img/my-image.png` (served from `static/img/`)
 
-**MDX files** — can use HTML `<img>` tags or custom React components:
+**MDX files** - can use HTML `<img>` tags or custom React components:
 
 ```jsx
 <img src="/img/my-image.png" alt="Alt text" width="600" />
@@ -249,14 +249,14 @@ $$
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use admonitions effectively** — the `:::` syntax is a core Docusaurus feature. Use it for tips, warnings, important notes, and contextual information.
-6. **Use the truncate marker** — add `<!--truncate-->` in your post to control what shows on the blog list page. Content before this marker appears in the preview.
-7. **End with a takeaway** — close with a summary, next steps, or a call to action.
-8. **Tags for discoverability** — use 2-5 relevant tags. Prefer existing tags over creating new ones.
-9. **Descriptions matter** — write a compelling 1-2 sentence description. This appears in blog post listings and is used for SEO.
-10. **Authors field for consistency** — use the `authors` field with `authors.yml` for consistent author information across all posts.
-11. **MDX for interactivity** — Docusaurus supports MDX out of the box, so you can use React components when needed, but stick to plain markdown for better portability.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use admonitions effectively** - the `:::` syntax is a core Docusaurus feature. Use it for tips, warnings, important notes, and contextual information.
+6. **Use the truncate marker** - add `<!--truncate-->` in your post to control what shows on the blog list page. Content before this marker appears in the preview.
+7. **End with a takeaway** - close with a summary, next steps, or a call to action.
+8. **Tags for discoverability** - use 2-5 relevant tags. Prefer existing tags over creating new ones.
+9. **Descriptions matter** - write a compelling 1-2 sentence description. This appears in blog post listings and is used for SEO.
+10. **Authors field for consistency** - use the `authors` field with `authors.yml` for consistent author information across all posts.
+11. **MDX for interactivity** - Docusaurus supports MDX out of the box, so you can use React components when needed, but stick to plain markdown for better portability.

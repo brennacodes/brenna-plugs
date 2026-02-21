@@ -28,7 +28,7 @@ Every entry has an `evidence_type` that determines how the body sections, resume
 | `influence` | You shaped someone else's decision, advocated for a change, or mentored someone |
 | `insight` | You noticed a pattern, formed a thesis, developed a perspective |
 
-Existing logs without `evidence_type` default to `accomplishment` — no migration needed.
+Existing logs without `evidence_type` default to `accomplishment` - no migration needed.
 
 ## Full Template
 
@@ -63,7 +63,7 @@ target_alignment:
 # Context
 role_at_time: "<Your role when this happened>"
 team_or_org: "<Team or organization context>"
-duration: "<How long this took — hours, days, weeks>"
+duration: "<How long this took - hours, days, weeks>"
 
 # Metrics (if applicable)
 metrics:
@@ -97,7 +97,7 @@ blog_potential: "<high|medium|low>"
 
 ## Result
 
-<What happened? What was the outcome? Include specifics — numbers, feedback, changes.>
+<What happened? What was the outcome? Include specifics - numbers, feedback, changes.>
 
 ## Reflection
 
@@ -141,7 +141,7 @@ blog_potential: "<high|medium|low>"
 
 ## How I Developed It
 
-<The journey — how you went from beginner to go-to person.>
+<The journey - how you went from beginner to go-to person.>
 
 ## How I Apply It
 

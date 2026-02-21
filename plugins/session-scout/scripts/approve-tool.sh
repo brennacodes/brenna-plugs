@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# approve-tool.sh — PreToolUse hook for the sesh plugin
+# approve-tool.sh - PreToolUse hook for the sesh plugin
 # Auto-approves:
 #   - Read calls targeting files under ~/.claude/
 #   - Bash calls that execute sesh.py from this plugin

@@ -1,64 +1,70 @@
 # what-do-you-know
 
-Deepen your understanding of topics through concept quizzing, knowledge gap analysis, and personalized learning plans — powered by your i-did-a-thing arsenal.
+Deepen your understanding of topics through concept quizzing, knowledge gap analysis, and personalized learning plans - powered by your i-did-a-thing arsenal.
 
 Different from generic learning tools because it knows what you've actually done. When you explore a topic, it grounds the conversation in your logged projects. When you quiz yourself, questions reference your real architecture decisions, not textbook scenarios. When it finds gaps, they're measured against your career goals and compared to evidence you've actually produced.
 
 ## Installation
 
-```bash
-claude plugin:add what-do-you-know
+```
+/plugin install what-do-you-know@brenna-plugs
 ```
 
 ## Setup
 
-Link to your shared shared config, set learning depth, default persona, session length, and focus areas.
+Configure learning preferences, set learning depth, default persona, session length, and focus areas.
 
 ```
-/what-do-you-know:setup [reconfigure]
+/setup-wdyk [reconfigure]
 ```
 
-Requires i-did-a-thing to be set up first (`/i-did-a-thing:setup`).
+Requires heres-the-thing to be set up first (`/setup-htt`).
 
 ## Skills
 
-**Explore** — Topic-driven deep dive with a persona probing your understanding. Grounded in your arsenal — questions reference your actual projects, decisions, and lessons. Produces a concept map showing what's strong, partial, and missing.
+**Explore** - Topic-driven deep dive with a persona probing your understanding. Grounded in your arsenal - questions reference your actual projects, decisions, and lessons. Produces a concept map showing what's strong, partial, and missing.
 
 ```
-/what-do-you-know:explore <topic> [--persona staff-engineer|...] [--depth exploratory|focused|deep]
+/explore <topic> [--persona staff-engineer|...] [--depth exploratory|focused|deep]
 ```
 
-**Quiz** — Concept-based spaced repetition with dynamically generated questions. No static question bank — every question is created from your index.json, referencing your real projects and experiences. Tracks scores over time for spaced repetition scheduling.
+**Quiz** - Concept-based spaced repetition with dynamically generated questions. No static question bank - every question is created from your index.json, referencing your real projects and experiences. Tracks scores over time for spaced repetition scheduling.
 
 ```
-/what-do-you-know:quiz [--topic <topic>] [--persona staff-engineer|...] [--count 3|5|10]
+/quiz [--topic <topic>] [--persona staff-engineer|...] [--count 3|5|10]
 ```
 
-**Gaps** — Knowledge gap analysis that cross-references your building and aspirational skills against arsenal evidence depth, evidence type diversity, learning session scores, and evidence recency. Classifies each area as Strong, Building, Gap, or Blind Spot.
+**Gaps** - Knowledge gap analysis that cross-references your building and aspirational skills against arsenal evidence depth, evidence type diversity, learning session scores, and evidence recency. Classifies each area as Strong, Building, Gap, or Blind Spot.
 
 ```
-/what-do-you-know:gaps [--focus building|aspirational|all]
+/gaps [--focus building|aspirational|all]
 ```
 
-**Bridge** — Personalized learning plan builder. Finds your closest existing knowledge and builds a path from there to the gap topic, with exercises tied to your actual projects and checkpoints using explore and quiz sessions.
+**Bridge** - Personalized learning plan builder. Finds your closest existing knowledge and builds a path from there to the gap topic, with exercises tied to your actual projects and checkpoints using explore and quiz sessions.
 
 ```
-/what-do-you-know:bridge <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
+/bridge <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
+```
+
+**Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/setup-htt` first if config.json doesn't exist yet.
+
+```
+/migrate-wdyk [--dry-run]
 ```
 
 ## How It Works
 
 ### Personas
 
-Seven coaching personas shape the probing dialogue and feedback delivery. Shared with what-did-you-do and stored at `<things_path>/personas/`. Each persona has distinct evaluation weights and follow-up patterns adapted for learning (not interview coaching):
+Seven coaching personas shape the probing dialogue and feedback delivery. Shared with what-did-you-do and stored at `~/.things/shared/roles/`. Each persona has distinct evaluation weights and follow-up patterns adapted for learning (not interview coaching):
 
-- **Staff Engineer** — technical depth, architecture, tradeoffs
-- **Engineering Manager** — collaboration, communication, growth
-- **Principal Engineer** — multi-year strategy, organizational impact
-- **VP of Engineering** — business alignment, strategic leadership
-- **CTO** — technical vision, competitive strategy
-- **Recruiter** — communication clarity, motivation
-- **Bar Raiser** — judgment, ownership, consistency
+- **Staff Engineer** - technical depth, architecture, tradeoffs
+- **Engineering Manager** - collaboration, communication, growth
+- **Principal Engineer** - multi-year strategy, organizational impact
+- **VP of Engineering** - business alignment, strategic leadership
+- **CTO** - technical vision, competitive strategy
+- **Recruiter** - communication clarity, motivation
+- **Bar Raiser** - judgment, ownership, consistency
 
 ### Dynamic Questions
 
@@ -72,19 +78,19 @@ No static question bank. Questions are generated from your `index.json` on every
 
 Every answer is scored on five learning dimensions:
 
-- **Depth** — how far below the surface can you explain? Internals vs. buzzwords
-- **Accuracy** — are your mental models technically correct?
-- **Connections** — can you relate this to adjacent concepts and your own experiences?
-- **Application** — can you apply the knowledge to new situations?
-- **Articulation** — can you explain it clearly to someone else?
+- **Depth** - how far below the surface can you explain? Internals vs. buzzwords
+- **Accuracy** - are your mental models technically correct?
+- **Connections** - can you relate this to adjacent concepts and your own experiences?
+- **Application** - can you apply the knowledge to new situations?
+- **Articulation** - can you explain it clearly to someone else?
 
 ### Knowledge Map
 
-A living document at `<things_path>/learning/knowledge-map.md` that classifies your knowledge into:
-- **Strong** — consistent depth, accuracy, ability to teach
-- **Building** — partial understanding, some depth but gaps remain
-- **Gap** — limited knowledge despite relevance to goals
-- **Blind Spot** — relevant to target roles but unexplored
+A living document at `~/.things/what-do-you-know/knowledge-map.json` that classifies your knowledge into:
+- **Strong** - consistent depth, accuracy, ability to teach
+- **Building** - partial understanding, some depth but gaps remain
+- **Gap** - limited knowledge despite relevance to goals
+- **Blind Spot** - relevant to target roles but unexplored
 
 ### Session Logging
 
@@ -96,27 +102,26 @@ A rolling progress dashboard tracks dimension averages, trends, topic breakdowns
 
 ## Session Data
 
-Stored alongside your i-did-a-thing data:
-
 ```
-<things_path>/learning/
-├── sessions/        # One file per explore or quiz session
-├── progress.md      # Rolling learning progress dashboard
-├── knowledge-map.md # Living knowledge area classifications
-└── study-plans/     # Bridge learning plans
+~/.things/what-do-you-know/
+├── preferences.json     # Learning preferences
+├── sessions/            # One file per explore or quiz session
+├── progress.json        # Rolling learning progress
+├── knowledge-map.json   # Living knowledge classifications
+└── study-plans/         # Bridge learning plans
 ```
 
 ## Configuration
 
-Settings are stored in the centralized shared config shared by all career plugins:
+- **Global config**: `~/.things/config.json` (managed by heres-the-thing)
+- **Plugin preferences**: `~/.things/what-do-you-know/preferences.json`
 
-- **Bootstrap**: `~/.claude/things.local.md` (machine-local, contains `things_path`)
-- **Full config**: `<things_path>/config.yml` (git-tracked, `learning:` section)
-
-Run `/what-do-you-know:setup` to reconfigure learning preferences.
+Run `/setup-wdyk` to reconfigure.
 
 ## Related Plugins
 
-- **i-did-a-thing** — Log the experiences that power your learning sessions
-- **what-did-you-do** — Practice interview questions with the same personas and arsenal
-- **mark-my-words** — Turn your learning insights into blog posts
+- **heres-the-thing** - Data layer that manages shared config and plugin coordination
+- **i-did-a-thing** - Log the experiences that power your learning sessions
+- **what-did-you-do** - Practice interview questions with the same personas and arsenal
+- **think-like** - Expert thinking profiles for different perspectives on your learning
+- **mark-my-words** - Turn your learning insights into blog posts

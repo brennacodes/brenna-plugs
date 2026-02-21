@@ -13,14 +13,14 @@ Focus on years of experience, domain expertise, and top 2-3 relevant skills.>
 
 ## Experience
 
-### <Role Title> — <Company>
+### <Role Title> - <Company>
 *<Start Date> – <End Date or Present>*
 
 - <STAR-format bullet from log: ACTION VERB + what + how + result>
 - <STAR-format bullet from log>
 - <STAR-format bullet from log>
 
-### <Previous Role> — <Company>
+### <Previous Role> - <Company>
 *<Start Date> – <End Date>*
 
 - <Bullet>
@@ -34,12 +34,12 @@ Focus on years of experience, domain expertise, and top 2-3 relevant skills.>
 
 ## Education
 
-### <Degree> — <School>
+### <Degree> - <School>
 *<Year>*
 
 ## Other
 
-- <Certifications, publications, speaking, open source — only if relevant>
+- <Certifications, publications, speaking, open source - only if relevant>
 ```
 
 ## Narrative Format

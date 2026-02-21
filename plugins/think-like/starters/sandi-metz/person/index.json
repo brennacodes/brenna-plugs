@@ -1,0 +1,12 @@
+{
+  "id": "sandi-metz",
+  "display_name": "Sandi Metz",
+  "full_name": "Sandi Metz",
+  "domain": "Object-oriented design",
+  "associations": ["POODR", "99 Bottles of OOP", "Duke University"],
+  "tags": ["ruby", "oop", "design", "refactoring", "patterns"],
+  "type": "person",
+  "speculative": false,
+  "created": "2025-02-20",
+  "referenced_by": ["think-like"]
+}

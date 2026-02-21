@@ -26,7 +26,7 @@ CONTENT=""
 if [[ -f "$FILE_PATH" ]]; then
   CONTENT=$(cat "$FILE_PATH")
 else
-  # For pre-write, we can't validate yet — let it through
+  # For pre-write, we can't validate yet - let it through
   exit 0
 fi
 

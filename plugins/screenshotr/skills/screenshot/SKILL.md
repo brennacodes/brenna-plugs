@@ -5,11 +5,8 @@ disable-model-invocation: false
 allowed-tools: Read, Bash, Glob
 ---
 
-# Auto Screenshot
-
-You are automatically capturing a screenshot because the conversation context suggests the user needs one. This skill is invoked proactively — do not ask the user questions, just capture and show the result.
-
-## When to Use This
+<purpose>
+Automatically capture a screenshot because the conversation context suggests the user needs one. This skill is invoked proactively -- do not ask the user questions, just capture and show the result.
 
 Invoke this skill when the user says things like:
 - "let me see what that looks like"
@@ -17,49 +14,76 @@ Invoke this skill when the user says things like:
 - "screenshot this"
 - "show me the screen"
 - "take a screenshot of [app]"
+</purpose>
 
-## Steps
+<steps>
 
-### 1. Load Config
+  <step id="load-config" number="1">
+    <description>Load Config</description>
 
-Read `.claude/screenshotr.local.md` for settings. If no config exists, capture with sensible defaults: png format, `./screenshots` directory, no shadow, silent.
+    <load-config>
+      <action>Read `.claude/screenshotr.local.md` for settings.</action>
+      <if condition="no-config">
+        <action>Capture with sensible defaults: png format, `./screenshots` directory, no shadow, silent.</action>
+      </if>
+    </load-config>
+  </step>
 
-### 2. Detect Target
+  <step id="detect-target" number="2">
+    <description>Detect Target</description>
 
-Infer the capture target from conversation context:
+    <action>Infer the capture target from conversation context.</action>
 
-- If a specific app is being discussed (e.g., the user is working with Xcode, or just opened a browser) → capture that app's window using `bash "${CLAUDE_PLUGIN_ROOT}/scripts/get-window-id.sh" "<AppName>"`
-- If no specific app context → fullscreen capture
-- If the user mentioned a URL → this is better handled by `/screenshotr:capture url "..."` — suggest that instead and stop
+    <if condition="specific-app-discussed">
+      <action>Capture that app's window using `bash "${CLAUDE_PLUGIN_ROOT}/scripts/get-window-id.sh" "<AppName>"`.</action>
+    </if>
+    <if condition="no-specific-app">
+      <action>Fullscreen capture.</action>
+    </if>
+    <if condition="user-mentioned-url">
+      <action>This is better handled by `/capture url "..."` -- suggest that instead and stop.</action>
+      <exit />
+    </if>
+  </step>
 
-### 3. Generate Filename
+  <step id="generate-filename" number="3">
+    <description>Generate Filename</description>
 
-Create a descriptive kebab-case filename based on context:
-- What's being captured (app name, feature, state)
-- Keep it concise (2-4 words max)
-- Apply the naming convention from config
+    <action>Create a descriptive kebab-case filename based on context:</action>
+    - What's being captured (app name, feature, state)
+    - Keep it concise (2-4 words max)
+    - Apply the naming convention from config
+  </step>
 
-### 4. Capture
+  <step id="capture" number="4">
+    <description>Capture</description>
 
-Run the capture using `${CLAUDE_PLUGIN_ROOT}/scripts/capture.sh`:
+    <action>Run the capture using `${CLAUDE_PLUGIN_ROOT}/scripts/capture.sh`.</action>
 
-```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/capture.sh" \
-  --target <fullscreen|window> \
-  [--window-id <id>] \
-  --format <config_format> \
-  --silent \
-  [--no-shadow] \
-  [--resize <config_max_dimension>] \
-  --output "<output_dir>/<filename>.<ext>"
-```
+    <command language="bash" tool="Bash">
+    bash "${CLAUDE_PLUGIN_ROOT}/scripts/capture.sh" \
+      --target <fullscreen|window> \
+      [--window-id <id>] \
+      --format <config_format> \
+      --silent \
+      [--no-shadow] \
+      [--resize <config_max_dimension>] \
+      --output "<output_dir>/<filename>.<ext>"
+    </command>
 
-Apply `default_max_dimension` from config if set (and it's a number, not "ask").
+    <constraint>Apply `default_max_dimension` from config if set (and it's a number, not "ask").</constraint>
+  </step>
 
-### 5. Display Result
+  <step id="display-result" number="5">
+    <description>Display Result</description>
 
-Parse the `OK|path|WxH|bytes|format` output from `capture.sh`.
+    <action>Parse the `OK|path|WxH|bytes|format` output from `capture.sh`.</action>
 
-Report the file path and dimensions briefly, then use the Read tool to display the image so the user can see it inline.
+    <action>Report the file path and dimensions briefly, then use the Read tool to display the image so the user can see it inline.</action>
 
-If capture fails, report the error without being verbose. Suggest running `/screenshotr:setup` if config is missing, or `/screenshotr:list-windows` if window detection failed.
+    <if condition="capture-failed">
+      <action>Report the error without being verbose. Suggest running `/setup-ss` if config is missing, or `/list-windows` if window detection failed.</action>
+    </if>
+  </step>
+
+</steps>

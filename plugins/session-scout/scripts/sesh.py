@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""sesh — Claude Code session finder engine.
+"""sesh - Claude Code session finder engine.
 
 Subcommands:
     active              List recent sessions sorted by modified date

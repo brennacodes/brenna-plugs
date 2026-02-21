@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# capture.sh — Central wrapper for screencapture + sips post-processing
+# capture.sh - Central wrapper for screencapture + sips post-processing
 # Usage: capture.sh --target <type> [options] --output <path>
 # Output on success: OK|<path>|<WxH>|<bytes>|<format>
 # Exit codes: 0 = success, 1 = capture failed, 2 = post-processing failed, 3 = usage error

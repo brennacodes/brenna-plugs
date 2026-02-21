@@ -46,7 +46,7 @@ Defines the structure for each interview stage simulation.
 - **Questions:** 1 end-to-end design
 - **Pacing:** 5 min requirements, 25 min design, 15 min deep dive
 - **Persona:** Principal Engineer or Staff Engineer
-- **Follow-ups:** Continuous — this is a conversation, not Q&A
+- **Follow-ups:** Continuous - this is a conversation, not Q&A
 - **Focus:** Structure, tradeoffs, scalability, communication
 
 **Question selection:**

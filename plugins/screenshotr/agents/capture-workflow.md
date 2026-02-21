@@ -1,6 +1,6 @@
 ---
 name: capture-workflow
-description: "Multi-screenshot workflows — tutorials, breakpoint comparisons, before/after documentation"
+description: "Multi-screenshot workflows - tutorials, breakpoint comparisons, before/after documentation"
 allowed-tools: Read, Write, Bash, Glob, Grep, AskUserQuestion
 ---
 
@@ -46,7 +46,7 @@ Capture a browser window at multiple viewport widths for responsive design docum
 
 ### 3. Before/After
 
-Capture two states of something — before and after a change.
+Capture two states of something - before and after a change.
 
 **How it works:**
 1. Ask the user what they're comparing and what the "before" state is.

@@ -52,7 +52,7 @@ def parse_frontmatter(text):
                 current_collection = None
             continue
 
-        # Block list item (  - value) — determines collection is a list
+        # Block list item (  - value) - determines collection is a list
         m = re.match(r"^  - (.+)$", line)
         if m and current_key is not None:
             if not isinstance(current_collection, list):
@@ -60,7 +60,7 @@ def parse_frontmatter(text):
             current_collection.append(m.group(1).strip().strip('"').strip("'"))
             continue
 
-        # Nested map item (  key: value) — determines collection is a dict
+        # Nested map item (  key: value) - determines collection is a dict
         m = re.match(r"^  (\w+):\s*(.*)$", line)
         if m and current_key is not None:
             if not isinstance(current_collection, dict):
@@ -85,7 +85,7 @@ def parse_frontmatter(text):
                 data[key] = [i.strip().strip('"').strip("'") for i in items if i.strip()]
                 current_key = None
                 current_collection = None
-            # Empty value — start of a block list or map (determined by first child)
+            # Empty value - start of a block list or map (determined by first child)
             elif val == "" or val is None:
                 current_key = key
                 current_collection = None  # type determined by first child line
@@ -336,7 +336,7 @@ def write_arsenal_files(arsenal_dir, arsenal_data):
 
         for e in entries:
             lines.append("")
-            lines.append(f"### {e['date']} — {e['title']}")
+            lines.append(f"### {e['date']} - {e['title']}")
             lines.append(f"- {e['description']}")
             lines.append(f"- Impact: {e['impact']}")
             lines.append(f"- Type: {e['evidence_type']}")
@@ -360,7 +360,8 @@ def main():
         sys.exit(1)
 
     things_path = os.path.expanduser(sys.argv[1])
-    logs_dir = os.path.join(things_path, "logs")
+    plugin_dir = os.path.join(things_path, "i-did-a-thing")
+    logs_dir = os.path.join(plugin_dir, "logs")
 
     if not os.path.isdir(logs_dir):
         print(f"No logs directory at {logs_dir}", file=sys.stderr)
@@ -387,7 +388,7 @@ def main():
         "total_entries": len(entries),
         "entries": entries,
     }
-    index_path = os.path.join(things_path, "index.json")
+    index_path = os.path.join(plugin_dir, "index.json")
     write_atomic(index_path, json.dumps(index_data, indent=2, ensure_ascii=False) + "\n")
 
     # Build tags.json
@@ -396,12 +397,12 @@ def main():
         "last_updated": today,
         "tags": tags_map,
     }
-    tags_path = os.path.join(things_path, "tags.json")
+    tags_path = os.path.join(plugin_dir, "tags.json")
     write_atomic(tags_path, json.dumps(tags_data, indent=2, ensure_ascii=False) + "\n")
 
     # Build and write arsenal files
     arsenal_data = build_arsenal(entries)
-    arsenal_dir = os.path.join(things_path, "arsenal")
+    arsenal_dir = os.path.join(plugin_dir, "arsenal")
     write_arsenal_files(arsenal_dir, arsenal_data)
 
     print(f"Rebuilt: {len(entries)} entries, {len(tags_map)} tags, {len(arsenal_data)} arsenal skills")

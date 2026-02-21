@@ -5,11 +5,11 @@
 | Property | Value |
 |----------|-------|
 | Platform | Eleventy (11ty) |
-| Content directory | Highly configurable — common patterns: `src/posts/`, `src/blog/`, `content/`, `posts/` |
+| Content directory | Highly configurable - common patterns: `src/posts/`, `src/blog/`, `content/`, `posts/` |
 | Common subdirectories | Usually flat within the posts directory |
 | File naming | Slug: `my-post-title.md` |
 | Frontmatter format | YAML between `---` delimiters (also supports JSON frontmatter) |
-| Draft behavior | `draft: true` in frontmatter — requires custom filtering in collection (common pattern, but user must configure it) |
+| Draft behavior | `draft: true` in frontmatter - requires custom filtering in collection (common pattern, but user must configure it) |
 
 **Note:** Eleventy is extremely flexible and unopinionated. Conventions vary widely per project. When in doubt, follow what existing posts in the project do.
 
@@ -58,7 +58,7 @@ author: "Brenna"
 
 **NOT natively supported.**
 
-Would require a custom markdown plugin or paired shortcode. Do not use callout syntax — write important information as regular emphasized text or blockquotes instead.
+Would require a custom markdown plugin or paired shortcode. Do not use callout syntax - write important information as regular emphasized text or blockquotes instead.
 
 ```markdown
 > **Important:** This is a key point to remember.
@@ -142,7 +142,7 @@ Always add a context sentence before the embed and a fallback link after:
 
 ### Diagrams (Mermaid)
 
-**NOT natively supported** — requires client-side JavaScript or a plugin.
+**NOT natively supported** - requires client-side JavaScript or a plugin.
 
 If the user has Mermaid set up, use standard fenced `mermaid` code blocks:
 
@@ -159,7 +159,7 @@ If unsure whether Mermaid is available, skip Mermaid diagrams.
 
 ### Math (LaTeX)
 
-**NOT natively supported** — requires adding KaTeX or MathJax to the project.
+**NOT natively supported** - requires adding KaTeX or MathJax to the project.
 
 If the user's site supports it, use standard syntax:
 
@@ -177,11 +177,11 @@ If unsure whether LaTeX is available, skip LaTeX formatting.
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **End with a takeaway** — close with a summary, next steps, or a call to action.
-6. **Tags for collections** — the `tags` field in Eleventy serves double duty: used for collections AND display tags. The user likely has a tag like `posts` or `blog` that adds content to the blog collection. Ask about this during setup.
-7. **Descriptions matter** — write a compelling 1-2 sentence `description` or `excerpt` for post listings and link previews.
-8. **Follow project conventions** — Eleventy is highly flexible. When in doubt about a convention, follow what existing posts in the project do.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **End with a takeaway** - close with a summary, next steps, or a call to action.
+6. **Tags for collections** - the `tags` field in Eleventy serves double duty: used for collections AND display tags. The user likely has a tag like `posts` or `blog` that adds content to the blog collection. Ask about this during setup.
+7. **Descriptions matter** - write a compelling 1-2 sentence `description` or `excerpt` for post listings and link previews.
+8. **Follow project conventions** - Eleventy is highly flexible. When in doubt about a convention, follow what existing posts in the project do.

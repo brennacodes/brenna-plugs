@@ -12,16 +12,9 @@
 
 set -euo pipefail
 
-CONFIG_FILE="$HOME/.claude/things.local.md"
-
-if [[ ! -f "$CONFIG_FILE" ]]; then
-  echo "Config not found" >&2
-  exit 1
-fi
-
-THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)
-THINGS_PATH="${THINGS_PATH/#\~/$HOME}"
-LOGS_DIR="$THINGS_PATH/logs"
+# Convention path - no bootstrap needed
+THINGS_PATH="$HOME/.things"
+LOGS_DIR="$THINGS_PATH/i-did-a-thing/logs"
 
 if [[ ! -d "$LOGS_DIR" ]]; then
   echo "No logs directory found at $LOGS_DIR" >&2

@@ -6,142 +6,236 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebFetch
 argument-hint: "<url or 'manual'>"
 ---
 
-# Update Questions
+<references>
+  - references/source-validation.md
+</references>
 
+<purpose>
 Add new interview questions to the question bank from trusted sources or manual entry, with validation, deduplication, and proper metadata tagging.
+</purpose>
 
-## Steps
+<steps>
 
-### 1. Load Configuration
+  <step id="load-config" number="1">
+    <description>Load Configuration</description>
 
-Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+    <load-config>
+      <action>Resolve the user's home directory.</action>
+      <command language="bash" output="home" tool="Bash">echo $HOME</command>
+      <constraint>Never pass `~` to the Read tool.</constraint>
 
-Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing, direct to `/i-did-a-thing:setup`.
+      <read path="<home>/.things/config.json" output="config" />
+      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
 
-Read `<things_path>/config.yml` and extract `trusted_sources` from the `interview_prep:` section. If config.yml is missing or interview_prep section has only defaults, direct to `/what-did-you-do:setup`.
+      <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 
-### 2. Determine Source
+      <read path="<home>/.things/what-did-you-do/preferences.json" output="preferences" />
+      <if condition="preferences-missing">Tell the user: "Run `/setup-wdyd` first." Then stop.</if>
+    </load-config>
+  </step>
 
-If the user provided a URL argument:
-- Validate the URL against `trusted_sources.domains` and `trusted_sources.urls` using `references/source-validation.md`
-- If untrusted:
-  > That URL isn't in your trusted sources. Add it via `/what-did-you-do:setup` or provide a trusted source.
-  Then stop.
-- If trusted, use WebFetch to retrieve the content
+  <step id="determine-source" number="2">
+    <description>Determine Source</description>
 
-If the user provided `manual`:
-- Proceed to manual entry flow (Step 5)
+    <if condition="url-provided">
+      <validate>
+        <action>Validate the URL against `trusted_sources.domains` and `trusted_sources.urls` using `references/source-validation.md`.</action>
 
-If no argument, use AskUserQuestion:
+        <if condition="url-untrusted">
 
-**How do you want to add questions?**
-- From a URL — I'll paste a link to interview questions
-- Manual entry — I'll type them in
-- Browse suggestions — show me what's new from my trusted sources
+        > That URL isn't in your trusted sources. Add it via `/setup-wdyd` or provide a trusted source.
 
-### 3. Parse External Content
+        <exit />
+        </if>
 
-From the fetched URL content, extract potential interview questions. Look for:
-- Questions in quote format or numbered lists
-- Follow-up questions
-- Category indicators (behavioral, technical, etc.)
-- Skill/topic tags
-- Difficulty indicators
+        <if condition="url-trusted">
+          <action>Use WebFetch to retrieve the content.</action>
+        </if>
+      </validate>
+    </if>
 
-### 4. Validate and Enrich Questions
+    <if condition="manual-provided">
+      <action>Proceed to manual entry flow (Step 5).</action>
+    </if>
 
-For each extracted question, apply the schema from `references/source-validation.md`:
+    <if condition="no-argument">
+      <ask-user>
+      How do you want to add questions?
 
-1. **Deduplication:** Check against existing questions in all `<plugin_root>/questions/*.yaml` files. Flag duplicates or near-duplicates.
-2. **Category assignment:** Classify into behavioral, technical, system-design, leadership, or situational
-3. **Metadata generation:** Generate required fields:
-   - `id`: `ext-<source-hash>-<seq>`
-   - `skills_tested`: inferred from question content
-   - `level`: inferred from complexity
-   - `stages`: inferred from question type
-   - `interviewer_types`: inferred from category
-   - `difficulty`: 1-5 scale
-   - `expected_format`: narrative / whiteboard / coding
-   - `time_budget_minutes`: estimated
-   - `red_flags` and `green_flags`: generated from question intent
-   - `source`: URL or "manual"
-   - `added_date`: today
+      <options>
+      - From a URL -- I'll paste a link to interview questions
+      - Manual entry -- I'll type them in
+      - Browse suggestions -- show me what's new from my trusted sources
+      </options>
+      </ask-user>
+    </if>
+  </step>
 
-4. **Follow-up generation:** For questions without follow-ups, generate depth-2 and depth-3 follow-ups
+  <step id="parse-content" number="3">
+    <description>Parse External Content</description>
 
-### 5. Manual Entry Flow
+    <action>From the fetched URL content, extract potential interview questions. Look for:</action>
 
-If manual entry, use AskUserQuestion iteratively:
+    - Questions in quote format or numbered lists
+    - Follow-up questions
+    - Category indicators (behavioral, technical, etc.)
+    - Skill/topic tags
+    - Difficulty indicators
+  </step>
 
-**Question text?** (free text)
+  <step id="validate-and-enrich" number="4">
+    <description>Validate and Enrich Questions</description>
 
-**Category?**
-- behavioral
-- technical
-- system-design
-- leadership
-- situational
+    <action>For each extracted question, apply the schema from `references/source-validation.md`.</action>
 
-**What skills does this test?** (comma-separated)
+    <phase name="deduplication" number="1">
+      <action>Check against existing questions in all `<plugin_root>/questions/*.yaml` files. Flag duplicates or near-duplicates.</action>
+    </phase>
 
-**Difficulty?** (1=easy, 5=very hard)
+    <phase name="categorize" number="2">
+      <action>Classify into behavioral, technical, system-design, leadership, or situational.</action>
+    </phase>
 
-**Any follow-up questions?** (free text, or skip)
+    <phase name="generate-metadata" number="3">
+      <action>Generate required fields.</action>
 
-Generate the remaining metadata fields automatically.
+      <schema name="question-metadata">
+      - `id`: `ext-<source-hash>-<seq>`
+      - `skills_tested`: inferred from question content
+      - `level`: inferred from complexity
+      - `stages`: inferred from question type
+      - `interviewer_types`: inferred from category
+      - `difficulty`: 1-5 scale
+      - `expected_format`: narrative / whiteboard / coding
+      - `time_budget_minutes`: estimated
+      - `red_flags` and `green_flags`: generated from question intent
+      - `source`: URL or "manual"
+      - `added_date`: today
+      </schema>
+    </phase>
 
-### 6. Present for Review
+    <phase name="generate-follow-ups" number="4">
+      <action>For questions without follow-ups, generate depth-2 and depth-3 follow-ups.</action>
+    </phase>
+  </step>
 
-Show the user the proposed additions:
+  <step id="manual-entry" number="5">
+    <description>Manual Entry Flow</description>
 
-> **Questions to Add:**
->
-> 1. **"<question>"**
->    Category: <cat> | Skills: <skills> | Difficulty: <n>
->    Status: New / Duplicate of <existing-id>
->
-> 2. **"<question>"**
->    ...
+    <if condition="manual-entry">
+      <ask-user>
+      Question text? (free text)
+      </ask-user>
 
-Use AskUserQuestion:
+      <ask-user>
+      Category?
 
-**Which questions should I add?**
-- All of them
-- Let me select which ones
-- None — cancel
+      <options>
+      - behavioral
+      - technical
+      - system-design
+      - leadership
+      - situational
+      </options>
+      </ask-user>
 
-If selecting, present each question individually for yes/no.
+      <ask-user>
+      What skills does this test? (comma-separated)
+      </ask-user>
 
-### 7. Write Questions
+      <ask-user>
+      Difficulty? (1=easy, 5=very hard)
+      </ask-user>
 
-For new questions, determine the target file:
-- Built-in categories → `<things_path>/interview-prep/question-overrides/custom.yaml`
-- User questions always go to the overrides directory, never modifying built-in files
+      <ask-user>
+      Any follow-up questions? (free text, or skip)
+      </ask-user>
 
-Read the existing `custom.yaml`, append the new questions, and write it back.
+      <action>Generate the remaining metadata fields automatically.</action>
+    </if>
+  </step>
 
-### 8. Rebuild Index
+  <step id="present-for-review" number="6">
+    <description>Present for Review</description>
 
-Run: `bash <plugin_root>/scripts/rebuild-question-index.sh`
+    <template name="question-review">
 
-### 9. Handle Git Workflow
+    > Questions to Add:
+    >
+    > 1. "<question>"
+    >    Category: <cat> | Skills: <skills> | Difficulty: <n>
+    >    Status: New / Duplicate of <existing-id>
+    >
+    > 2. "<question>"
+    >    ...
 
-Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+    </template>
 
-```bash
-git -C <things_path> pull --rebase 2>/dev/null || true
-```
+    <ask-user>
+    Which questions should I add?
 
-Based on the `git_workflow` config setting:
-- **`ask`**: Use AskUserQuestion — "Would you like to commit and push the updated question bank?"
-- **`auto`**: Automatically `git add` the custom.yaml, `git commit -m "questions: add <N> custom questions"`, and `git push`
-- **`manual`**: Tell the user the questions have been saved and they can commit when ready
+    <options>
+    - All of them
+    - Let me select which ones
+    - None -- cancel
+    </options>
+    </ask-user>
 
-### 10. Confirm
+    <if condition="selecting-individually">
+      <action>Present each question individually for yes/no.</action>
+    </if>
+  </step>
 
-> Added [N] new questions to your custom question bank.
->
-> - <category>: <count>
-> - <category>: <count>
->
-> These questions will appear in your practice and mock sessions. Run `/what-did-you-do:practice` to try them out.
+  <step id="write-questions" number="7">
+    <description>Write Questions</description>
+
+    <constraint>For new questions, determine the target file:
+    - Built-in categories -> `<home>/.things/what-did-you-do/questions/custom.yaml`
+    - User questions always go to the questions directory, never modifying built-in files
+    </constraint>
+
+    <action>Read the existing `custom.yaml`, append the new questions, and write it back.</action>
+  </step>
+
+  <step id="rebuild-index" number="8">
+    <description>Rebuild Index</description>
+
+    <command language="bash" tool="Bash">bash <plugin_root>/scripts/rebuild-question-index.sh</command>
+  </step>
+
+  <step id="git-workflow" number="9">
+    <description>Handle Git Workflow</description>
+
+    <git-workflow>
+      <command language="bash" tool="Bash">git -C <home>/.things pull --rebase 2>/dev/null || true</command>
+
+      <action>Based on the `git_workflow` setting (from config.json):</action>
+
+      <if condition="workflow-ask">
+        <ask-user>Use AskUserQuestion -- "Would you like to commit and push the updated question bank?"</ask-user>
+      </if>
+      <if condition="workflow-auto">
+        <action>Automatically `git add` the custom.yaml, `git commit -m "questions: add <N> custom questions"`, and `git push`.</action>
+      </if>
+      <if condition="workflow-manual">
+        <action>Tell the user the questions have been saved and they can commit when ready.</action>
+      </if>
+    </git-workflow>
+  </step>
+
+  <step id="confirm" number="10">
+    <description>Confirm</description>
+
+    <completion-message>
+
+    > Added [N] new questions to your custom question bank.
+    >
+    > - <category>: <count>
+    > - <category>: <count>
+    >
+    > These questions will appear in your practice and mock sessions. Run `/practice` to try them out.
+
+    </completion-message>
+  </step>
+
+</steps>

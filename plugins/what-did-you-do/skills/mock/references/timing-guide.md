@@ -1,6 +1,6 @@
 # Interview Timing Guide
 
-Pacing guidance for mock interviews. These are targets, not hard limits — but consistently exceeding them is a signal to coach on conciseness.
+Pacing guidance for mock interviews. These are targets, not hard limits - but consistently exceeding them is a signal to coach on conciseness.
 
 ## Per-Question Timing
 
@@ -31,7 +31,7 @@ Pacing guidance for mock interviews. These are targets, not hard limits — but 
 
 **When a candidate is running long (>50% over target):**
 - After they finish, note in the debrief that timing needs work
-- Do NOT interrupt during the mock — that breaks the simulation
+- Do NOT interrupt during the mock - that breaks the simulation
 
 **When a candidate is too brief (<50% of target):**
 - Ask a follow-up to draw out more detail

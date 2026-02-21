@@ -9,7 +9,7 @@
 | Common subdirectories | `posts/`, `blog/`, `articles/` |
 | File naming | Slug: `my-post-title.md` |
 | Frontmatter format | YAML between `---` delimiters (YAML is most common; TOML and JSON also supported) |
-| Draft behavior | `draft: true` — hidden from build output unless `--buildDrafts` flag is used |
+| Draft behavior | `draft: true` - hidden from build output unless `--buildDrafts` flag is used |
 
 ## Frontmatter
 
@@ -82,9 +82,9 @@ def hello():
 ```
 ````
 
-**Title** — NOT natively supported in standard fenced code blocks. Some themes add custom support, but avoid relying on it.
+**Title** - NOT natively supported in standard fenced code blocks. Some themes add custom support, but avoid relying on it.
 
-**Line highlighting** — use `{hl_lines=[1,3]}` or `{hl_lines=["2-4"]}`:
+**Line highlighting** - use `{hl_lines=[1,3]}` or `{hl_lines=["2-4"]}`:
 
 ````markdown
 ```python {hl_lines=[2,3]}
@@ -94,7 +94,7 @@ def process():
 ```
 ````
 
-**Line numbers** — use `{linenos=true}`:
+**Line numbers** - use `{linenos=true}`:
 
 ````markdown
 ```python {linenos=true}
@@ -103,7 +103,7 @@ def main():
 ```
 ````
 
-**Custom start line** — use `{linenostart=10}`:
+**Custom start line** - use `{linenostart=10}`:
 
 ````markdown
 ```python {linenos=true,linenostart=10}
@@ -140,7 +140,7 @@ Standard markdown links with relative paths:
 ```
 
 **Best practices:**
-- Use `ref`/`relref` for internal links when possible — Hugo will error if the target doesn't exist
+- Use `ref`/`relref` for internal links when possible - Hugo will error if the target doesn't exist
 - Relative paths work but won't be validated at build time
 
 ### Images
@@ -164,7 +164,7 @@ Standard markdown links with relative paths:
 - Use descriptive filenames: `authentication-flow-diagram.png` over `IMG_4523.png`
 - Images typically live in `static/images/` (served at `/images/`)
 - Or use page bundles: create `content/posts/my-post/` with `index.md` and images
-- No wikilink syntax support — use standard markdown or shortcodes
+- No wikilink syntax support - use standard markdown or shortcodes
 
 ### Video Embeds
 
@@ -193,7 +193,7 @@ This tutorial walks through the entire setup process:
 
 ### Diagrams (Mermaid)
 
-**NOT natively supported** — requires adding mermaid.js via partial template or shortcode.
+**NOT natively supported** - requires adding mermaid.js via partial template or shortcode.
 
 Many popular Hugo themes include Mermaid support. If your site supports it, use standard fenced code blocks:
 
@@ -210,7 +210,7 @@ graph TD
 
 ### Math (LaTeX)
 
-**NOT natively supported** — requires adding KaTeX or MathJax via partial template.
+**NOT natively supported** - requires adding KaTeX or MathJax via partial template.
 
 If your site supports math rendering, use standard LaTeX syntax:
 
@@ -228,13 +228,13 @@ $$
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use blockquotes for emphasis** — since callouts aren't standard, use blockquotes for important asides.
-6. **Control post previews** — use `summary` frontmatter or add `<!--more-->` divider to control what appears on list pages.
-7. **End with a takeaway** — close with a summary, next steps, or a call to action.
-8. **Tags for discoverability** — use 2-5 relevant tags. Prefer existing tags over creating new ones. Hugo generates tag pages automatically.
-9. **Descriptions matter** — write a compelling 1-2 sentence description for post listings and link previews.
-10. **Leverage taxonomies** — use both `tags` and `categories` consistently. Hugo's taxonomy system is powerful and flexible.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use blockquotes for emphasis** - since callouts aren't standard, use blockquotes for important asides.
+6. **Control post previews** - use `summary` frontmatter or add `<!--more-->` divider to control what appears on list pages.
+7. **End with a takeaway** - close with a summary, next steps, or a call to action.
+8. **Tags for discoverability** - use 2-5 relevant tags. Prefer existing tags over creating new ones. Hugo generates tag pages automatically.
+9. **Descriptions matter** - write a compelling 1-2 sentence description for post listings and link previews.
+10. **Leverage taxonomies** - use both `tags` and `categories` consistently. Hugo's taxonomy system is powerful and flexible.

@@ -1,0 +1,12 @@
+{
+  "id": "dhh",
+  "display_name": "DHH",
+  "full_name": "David Heinemeier Hansson",
+  "domain": "Web application development",
+  "associations": ["Ruby on Rails", "37signals", "Basecamp", "HEY"],
+  "tags": ["ruby", "rails", "web", "simplicity", "monolith"],
+  "type": "person",
+  "speculative": false,
+  "created": "2025-02-20",
+  "referenced_by": ["think-like"]
+}

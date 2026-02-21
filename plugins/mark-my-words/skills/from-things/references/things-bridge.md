@@ -43,10 +43,10 @@ blog_potential: "high|medium|low"
 ---
 
 ## Resume Bullets
-<pre-written STAR-format bullets — not used in blog>
+<pre-written STAR-format bullets - not used in blog>
 
 ## Interview Talking Points
-<structured talking points — not used in blog>
+<structured talking points - not used in blog>
 
 ## Blog Seed
 > <1-2 sentence opening hook>
@@ -56,6 +56,14 @@ blog_potential: "high|medium|low"
 - <angle 2>
 ```
 
+## Data Locations
+
+- **Log index**: `<home>/.things/i-did-a-thing/index.json` - all log metadata, blog seeds, blog_potential ratings
+- **Log files**: `<home>/.things/i-did-a-thing/logs/` - full log markdown files
+- **Voice profiles**: `<home>/.things/mark-my-words/voices/` - writing voice profiles
+- **Professional profile**: `<home>/.things/shared/professional-profile.json` - author name and professional context
+- **Blog preferences**: `<home>/.things/mark-my-words/preferences.json` - platform, content dir, git workflow, etc.
+
 ## Frontmatter Mapping
 
 | Log Field | Blog Field | Transformation |
@@ -64,12 +72,12 @@ blog_potential: "high|medium|low"
 | `date` | `date` | Use today's date (when the post is written), not the log date |
 | `description` | `description` | Rewrite as 1-2 sentence preview/hook |
 | `tags` | `tags` | Broaden for blog audience, blend with existing blog tags |
-| `author` | `author` | Use mark-my-words `default_author` config |
+| `author` | `author` | Use author from professional profile or config.json |
 | `draft` | `draft` | Always `true` initially |
-| `category` | — | Informs tone, not directly mapped |
-| `impact` | — | Calibrates ambition of post |
-| `skills_used` | — | Woven into narrative naturally |
-| `metrics` | — | Contextualized as concrete evidence in the story |
+| `category` | - | Informs tone, not directly mapped |
+| `impact` | - | Calibrates ambition of post |
+| `skills_used` | - | Woven into narrative naturally |
+| `metrics` | - | Contextualized as concrete evidence in the story |
 
 ## Content Transformation
 
@@ -115,7 +123,7 @@ Logs are written for personal reference. Blog posts are written for an audience.
 ## The Problem
 
 {Context section rewritten in narrative voice}
-{Why this mattered — stakes, not just facts}
+{Why this mattered - stakes, not just facts}
 ```
 
 **Narrative (from Action):**
@@ -124,7 +132,7 @@ Logs are written for personal reference. Blog posts are written for an audience.
 
 {Action section as a story, not a report}
 {Technical details in code blocks with language identifiers}
-{Decision points — what you chose and why}
+{Decision points - what you chose and why}
 ```
 
 **Results (from Result):**

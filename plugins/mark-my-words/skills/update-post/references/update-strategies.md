@@ -13,7 +13,7 @@ When updating a post, always read the full frontmatter first and only modify the
 3. Keep all other fields exactly as they were
 4. Write the complete frontmatter back
 
-Example — if the user asks to add a tag, and the original frontmatter is:
+Example - if the user asks to add a tag, and the original frontmatter is:
 
 ```yaml
 ---
@@ -77,7 +77,7 @@ When replacing a section's content:
 When appending content after a specific section:
 1. Find the end of the target section (line before next same-or-higher-level heading)
 2. Insert a blank line, then the new content
-3. Ensure proper heading hierarchy — if inserting under an h2, use h3 for subsections
+3. Ensure proper heading hierarchy - if inserting under an h2, use h3 for subsections
 
 ## Append Patterns
 

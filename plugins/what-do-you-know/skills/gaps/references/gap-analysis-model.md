@@ -56,11 +56,11 @@ Diversity of evidence types matters:
 
 For the gap report, prioritize actions by:
 
-1. **Blind spots in critical skills** — highest priority, could be career-blocking
-2. **Gaps in building_skills** — actively developing but missing knowledge foundation
-3. **Gaps in aspirational_skills** — needed for target roles
-4. **Building areas with evidence type gaps** — deepening existing knowledge
-5. **Strong areas losing recency** — maintenance to prevent skill decay
+1. **Blind spots in critical skills** - highest priority, could be career-blocking
+2. **Gaps in building_skills** - actively developing but missing knowledge foundation
+3. **Gaps in aspirational_skills** - needed for target roles
+4. **Building areas with evidence type gaps** - deepening existing knowledge
+5. **Strong areas losing recency** - maintenance to prevent skill decay
 
 ## Trend Detection
 
@@ -68,5 +68,5 @@ When multiple sessions exist for a topic:
 
 - **Improving**: Average score increasing over last 3+ sessions
 - **Stable**: Score within ±0.5 across recent sessions
-- **Declining**: Average score decreasing — may indicate false confidence or forgotten concepts
-- **Insufficient data**: Fewer than 2 sessions — need more data points
+- **Declining**: Average score decreasing - may indicate false confidence or forgotten concepts
+- **Insufficient data**: Fewer than 2 sessions - need more data points

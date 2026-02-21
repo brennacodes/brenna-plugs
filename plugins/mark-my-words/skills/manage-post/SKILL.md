@@ -1,160 +1,207 @@
 ---
 name: manage-post
-description: List, search, and manage your blog posts — drafts, tags, and metadata.
+description: List, search, and manage your blog posts - drafts, tags, and metadata.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[action: list, drafts, publish, tags]"
 ---
 
-# Manage Blog Posts
-
+<purpose>
 You are helping the user manage their blog posts. This includes listing posts, managing drafts, publishing, and organizing tags.
+</purpose>
 
-## Steps
+<steps>
 
-### 1. Load Configuration
+  <step id="load-config" number="1">
+    <description>Load Configuration</description>
 
-Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+    <load-config>
+      <action>Resolve the user's home directory.</action>
+      <command language="bash" output="home" tool="Bash">echo $HOME</command>
+      <constraint>Never pass `~` to the Read tool.</constraint>
 
-Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing:
+      <read path="<home>/.things/config.json" output="config" />
+      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
 
-> No configuration found. Please run `/i-did-a-thing:setup` first.
+      <read path="<home>/.things/mark-my-words/preferences.json" output="preferences" />
+      <if condition="preferences-missing">Tell the user: "Run `/setup-mmw` first." Then stop.</if>
+    </load-config>
 
-Then stop.
+    <action>Read `platform` from preferences.json (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines how drafts work and frontmatter field names for the user's platform.</action>
+  </step>
 
-Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
+  <step id="resolve-content-location" number="2">
+    <description>Resolve Content Location</description>
 
-#### Load Platform Template
+    <if condition="source-type-remote">
+      <action>Check if the repo is already cloned at `<workdir>` (read `workdir` from preferences.json, default `<home>/.mark-my-words`).</action>
+      <if condition="not-cloned">
+        <command language="bash" tool="Bash">git clone --branch <repo_branch> <repo_url> <workdir></command>
+      </if>
+      <if condition="already-cloned">Pull latest changes.</if>
+      The content root is `<workdir>/<content_dir>/`.
+    </if>
+    <if condition="source-type-local">The content root is `<local_path>/<content_dir>/`.</if>
+  </step>
 
-Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines how drafts work and frontmatter field names for the user's platform.
+  <step id="determine-action" number="3">
+    <description>Determine Action</description>
 
-### 2. Resolve Content Location
+    <action>Check `$ARGUMENTS` for the requested action.</action>
+    <if condition="action-not-provided">
+      <ask-user-question>
+        <question>What would you like to do?</question>
+        <option>list -- Show all posts with metadata</option>
+        <option>drafts -- Show draft posts and offer to publish</option>
+        <option>publish -- Publish a specific draft post</option>
+        <option>tags -- View and manage tags across all posts</option>
+      </ask-user-question>
+    </if>
+  </step>
 
-- **If `source_type: remote`**: Look for the working directory at `.mark-my-words-workdir/`. If not cloned, clone it. If cloned, pull latest.
-- **If `source_type: local`**: Use `<local_path>/<content_dir>/`.
+  <step id="execute-action" number="4">
+    <description>Execute the Action</description>
 
-### 3. Determine Action
+    <phase name="list-posts" number="1">
+      <description>Action: list</description>
 
-Check `$ARGUMENTS` for the requested action. If not provided or unclear, use AskUserQuestion:
+      <action>Scan all `.md` files in the content directory. For each post, extract from frontmatter:</action>
+      - Title
+      - Date (field name varies by platform -- check template)
+      - Draft status (varies by platform -- see draft detection below)
+      - Tags (YAML `tags:` list, or TOML `tags = []` for Zola, or `[taxonomies]` table)
+      - Calculate word count from content body
 
-- **list** — Show all posts with metadata
-- **drafts** — Show draft posts and offer to publish
-- **publish** — Publish a specific draft post
-- **tags** — View and manage tags across all posts
+      <action>Detect draft status by platform:</action>
+      <platform-specific platform="jekyll">A post is a draft if it's in the `_drafts/` directory OR has `published: false` in frontmatter.</platform-specific>
+      <platform-specific platform="zola-hugo-quartz-astro-eleventy">`draft: true` in frontmatter (or `draft = true` for TOML).</platform-specific>
+      <platform-specific platform="docusaurus">`draft: true` in frontmatter.</platform-specific>
 
-### 4. Execute the Action
+      <template name="post-list-output">
+        Display as a formatted table or list, sorted by date (newest first):
 
----
+        ```
+        | Title                    | Date       | Status    | Tags                  | Words |
+        |--------------------------|------------|-----------|-----------------------|-------|
+        | Building a CLI in Go     | 2025-01-15 | published | go, cli, tutorial     | 1,245 |
+        | Learning Rust            | 2025-01-10 | draft     | rust, learning        |   832 |
+        ```
+      </template>
 
-#### Action: `list`
+      <action>Show summary stats: total posts, published count, draft count.</action>
+    </phase>
 
-Scan all `.md` files in the content directory. For each post, extract from frontmatter:
-- Title
-- Date (field name varies by platform — check template)
-- Draft status (varies by platform — see draft detection below)
-- Tags (YAML `tags:` list, or TOML `tags = []` for Zola, or `[taxonomies]` table)
-- Calculate word count from content body
+    <phase name="manage-drafts" number="2">
+      <description>Action: drafts</description>
 
-**Draft detection by platform**:
-- **Jekyll**: A post is a draft if it's in the `_drafts/` directory OR has `published: false` in frontmatter
-- **Zola/Hugo/Quartz/Astro/Eleventy**: `draft: true` in frontmatter (or `draft = true` for TOML)
-- **Docusaurus**: `draft: true` in frontmatter
+      <action>Scan all `.md` files and identify drafts using the platform-specific draft detection described above. For Jekyll, also scan the `_drafts/` directory.</action>
+      <action>Display the drafts with title, date, tags, and word count.</action>
 
-Display as a formatted table or list, sorted by date (newest first):
+      <if condition="drafts-exist">
+        <ask-user-question>
+          <question>Would you like to publish any of these drafts?</question>
+          List each draft by title, plus "No, just looking."
+        </ask-user-question>
+      </if>
 
-```
-| Title                    | Date       | Status    | Tags                  | Words |
-|--------------------------|------------|-----------|-----------------------|-------|
-| Building a CLI in Go     | 2025-01-15 | published | go, cli, tutorial     | 1,245 |
-| Learning Rust            | 2025-01-10 | draft     | rust, learning        |   832 |
-```
+      <if condition="user-selects-draft">Apply the platform-specific publish action:</if>
 
-Show summary stats: total posts, published count, draft count.
+      <platform-specific platform="jekyll-in-drafts">
+        1. Read the file
+        2. Add a `date` field in frontmatter if not present (today's date)
+        3. Move the file to `_posts/` with the date-prefixed filename: `YYYY-MM-DD-slug.md`
+        4. Handle git workflow per preferences.json
+      </platform-specific>
 
----
+      <platform-specific platform="jekyll-published-false">
+        1. Read the file
+        2. Change `published: false` to `published: true`
+        3. Ask about date update
+        4. Handle git workflow per preferences.json
+      </platform-specific>
 
-#### Action: `drafts`
+      <platform-specific platform="not-jekyll">
+        1. Read the file
+        2. Change `draft: true` to `draft: false` (or `draft = false` for TOML)
+        3. Ask: "Update the date to today?" -- Yes or Keep original date
+        4. If yes, update the date field (using the platform's field name)
+        5. Write the changes
+        6. Handle git workflow per preferences.json
+      </platform-specific>
+    </phase>
 
-Scan all `.md` files and identify drafts using the platform-specific draft detection described above. For Jekyll, also scan the `_drafts/` directory.
+    <phase name="publish-post" number="3">
+      <description>Action: publish</description>
 
-Display the drafts with title, date, tags, and word count.
+      <if condition="arguments-include-post-identifier">Search for matching draft posts.</if>
+      <if condition="no-specific-post">Behave like `drafts` action above.</if>
 
-If drafts exist, use AskUserQuestion: "Would you like to publish any of these drafts?" with options listing each draft by title, plus "No, just looking."
+      <if condition="specific-post-found">
+        <ask-user-question>
+          <question>Publish '<title>'?</question>
+          <option>Yes</option>
+          <option>No</option>
+        </ask-user-question>
+        <action>Apply the platform-specific publish action (same as drafts above).</action>
+      </if>
 
-If the user selects a draft to publish, apply the platform-specific publish action:
+      <if condition="post-already-published">Tell the user.</if>
+    </phase>
 
-**For Jekyll** (if post is in `_drafts/`):
-1. Read the file
-2. Add a `date` field in frontmatter if not present (today's date)
-3. Move the file to `_posts/` with the date-prefixed filename: `YYYY-MM-DD-slug.md`
-4. Handle git workflow per config
+    <phase name="manage-tags" number="4">
+      <description>Action: tags</description>
 
-**For Jekyll** (if post has `published: false`):
-1. Read the file
-2. Change `published: false` to `published: true`
-3. Ask about date update
-4. Handle git workflow per config
+      <action>Scan all `.md` files and extract all tags from frontmatter. For TOML-based platforms (Zola), look for tags in the `[taxonomies]` table.</action>
 
-**For all other platforms**:
-1. Read the file
-2. Change `draft: true` to `draft: false` (or `draft = false` for TOML)
-3. Use AskUserQuestion: "Update the date to today?" — Yes or Keep original date
-4. If yes, update the date field (using the platform's field name)
-5. Write the changes
-6. Handle git workflow per config
+      <template name="tag-summary-output">
+        Display tag summary: List each unique tag with how many posts use it, sorted by count:
 
----
+        ```
+        | Tag          | Posts |
+        |--------------|-------|
+        | programming  |    12 |
+        | tutorial     |     8 |
+        | python       |     6 |
+        | learning     |     3 |
+        ```
+      </template>
 
-#### Action: `publish`
+      <ask-user-question>
+        <question>What would you like to do with tags?</question>
+        <option>Add a tag to posts -- select a tag, then select which posts to add it to</option>
+        <option>Remove a tag from posts -- select a tag, show which posts have it, select which to remove from</option>
+        <option>Rename a tag -- rename a tag across all posts that use it</option>
+        <option>Done -- exit</option>
+      </ask-user-question>
 
-If `$ARGUMENTS` includes a post identifier beyond "publish", search for matching draft posts.
+      <action>For tag modifications:</action>
+      1. Read each affected file
+      2. Update the tags in frontmatter using the platform's format (YAML list or TOML array)
+      3. Write the changes
+      4. Handle git workflow per preferences.json (batch all tag changes into one commit if auto)
+    </phase>
+  </step>
 
-If no specific post given, behave like `drafts` action above.
+  <step id="git-workflow" number="5">
+    <description>Git Workflow</description>
 
-If a specific post is found:
-1. Confirm with the user: "Publish '<title>'?"
-2. Apply the platform-specific publish action (same as drafts above)
+    <git-workflow>
+      <action>Before committing, pull latest changes from the remote (if one exists) to avoid conflicts.</action>
+      <command language="bash" tool="Bash">git -C <content_root> pull --rebase 2>/dev/null || true</command>
 
-If the post is already published, tell the user.
+      After any modifications, handle git based on `git_workflow` from preferences.json (for the blog repo):
 
----
+      <if condition="workflow-ask">
+        <ask-user-question>
+          <question>Commit and push these changes?</question>
+          <option>Yes (commit + push)</option>
+          <option>Commit only</option>
+          <option>No</option>
+        </ask-user-question>
+      </if>
+      <if condition="workflow-auto">Auto commit with descriptive message and push.</if>
+      <if condition="workflow-manual">Inform user that changes are saved locally.</if>
+    </git-workflow>
+  </step>
 
-#### Action: `tags`
-
-Scan all `.md` files and extract all tags from frontmatter. For TOML-based platforms (Zola), look for tags in the `[taxonomies]` table.
-
-**Display tag summary**: List each unique tag with how many posts use it, sorted by count:
-
-```
-| Tag          | Posts |
-|--------------|-------|
-| programming  |    12 |
-| tutorial     |     8 |
-| python       |     6 |
-| learning     |     3 |
-```
-
-Then use AskUserQuestion to offer:
-- "Add a tag to posts" — select a tag, then select which posts to add it to
-- "Remove a tag from posts" — select a tag, show which posts have it, select which to remove from
-- "Rename a tag" — rename a tag across all posts that use it
-- "Done" — exit
-
-For tag modifications:
-1. Read each affected file
-2. Update the tags in frontmatter using the platform's format (YAML list or TOML array)
-3. Write the changes
-4. Handle git workflow per config (batch all tag changes into one commit if auto)
-
-### 5. Git Workflow
-
-Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
-
-```bash
-git -C <content_root> pull --rebase 2>/dev/null || true
-```
-
-After any modifications, handle git based on `git_workflow` config:
-- **`ask`**: Use AskUserQuestion to confirm commit/push
-- **`auto`**: Auto commit with descriptive message and push
-- **`manual`**: Inform user that changes are saved locally
+</steps>

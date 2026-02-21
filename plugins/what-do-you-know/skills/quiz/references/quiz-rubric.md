@@ -10,11 +10,11 @@ Same five dimensions as explore sessions, applied to individual question answers
 
 | Score | In a quiz context |
 |-------|------------------|
-| 1 | Can't answer — no knowledge of the concept |
+| 1 | Can't answer - no knowledge of the concept |
 | 2 | Recalls a fact or definition but can't elaborate |
 | 3 | Explains the concept correctly at a working level |
 | 4 | Explains internals, edge cases, or non-obvious implications |
-| 5 | Explains the "why" behind the "what" — design rationale, historical context, alternatives considered |
+| 5 | Explains the "why" behind the "what" - design rationale, historical context, alternatives considered |
 
 ### Accuracy (1-5)
 
@@ -30,17 +30,17 @@ Same five dimensions as explore sessions, applied to individual question answers
 
 | Score | In a quiz context |
 |-------|------------------|
-| 1 | Answers in isolation — no references to anything else |
+| 1 | Answers in isolation - no references to anything else |
 | 2 | Mentions that related things exist |
 | 3 | Names related concepts but doesn't explain the relationship |
 | 4 | Draws meaningful connections and references personal experience |
-| 5 | Builds a connected web — relates to theory, practice, and personal experience across contexts |
+| 5 | Builds a connected web - relates to theory, practice, and personal experience across contexts |
 
 ### Application (1-5)
 
 | Score | In a quiz context |
 |-------|------------------|
-| 1 | Can't apply the concept — theoretical only |
+| 1 | Can't apply the concept - theoretical only |
 | 2 | Can apply in the exact context they've seen |
 | 3 | Can reason about application in a new context with prompting |
 | 4 | Proactively applies to new scenarios |
@@ -51,10 +51,10 @@ Same five dimensions as explore sessions, applied to individual question answers
 | Score | In a quiz context |
 |-------|------------------|
 | 1 | Incoherent or unintelligible answer |
-| 2 | Disorganized — jumps between points |
+| 2 | Disorganized - jumps between points |
 | 3 | Gets the point across but could be clearer |
 | 4 | Well-structured, easy to follow |
-| 5 | Would make an excellent teaching example — clear, progressive, uses analogies |
+| 5 | Would make an excellent teaching example - clear, progressive, uses analogies |
 
 ## Question Generation Patterns
 

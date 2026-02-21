@@ -69,7 +69,7 @@ But never stretch a story to fit a value it doesn't naturally support.
 - Light practice (1-2 questions/day, familiar categories)
 - Review your strongest stories
 - Get sleep and rest
-- Don't try to learn new things — use what you have
+- Don't try to learn new things - use what you have
 
 ## Custom Company Profile Generation
 

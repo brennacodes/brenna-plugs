@@ -53,7 +53,7 @@ sips -g all image.png
 
 ## Key Notes
 
-- **Argument order matters**: `-z height width` and `-c height width` — height comes first
+- **Argument order matters**: `-z height width` and `-c height width` - height comes first
 - **In-place editing**: Use `--out` pointing to the same file for in-place modification
 - **Retina awareness**: sips works with actual pixel dimensions, not point dimensions. A retina screenshot will report 2x the display resolution.
 - **No quality setting for resize**: sips uses system defaults for resampling quality

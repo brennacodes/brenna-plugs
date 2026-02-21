@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# list-windows.sh — List on-screen windows with app name, title, and window ID
+# list-windows.sh - List on-screen windows with app name, title, and window ID
 # Output: APP_NAME|WINDOW_TITLE|WINDOW_ID|ON_SCREEN lines
 # Falls back to System Events AppleScript if CGWindowList returns nothing
 # (common when Screen Recording permission hasn't been granted)

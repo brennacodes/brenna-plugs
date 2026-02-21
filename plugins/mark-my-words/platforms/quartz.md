@@ -6,10 +6,10 @@
 |----------|-------|
 | Platform | Quartz v4 |
 | Content directory | `content/` |
-| Common subdirectories | Flexible — `blog/`, `notes/`, `projects/`, or flat |
+| Common subdirectories | Flexible - `blog/`, `notes/`, `projects/`, or flat |
 | File naming | Slug: `my-post-title.md` |
 | Frontmatter format | YAML between `---` delimiters |
-| Draft behavior | `draft: true` — hidden from listings, accessible by direct URL |
+| Draft behavior | `draft: true` - hidden from listings, accessible by direct URL |
 
 ## Frontmatter
 
@@ -89,7 +89,7 @@ def hello():
 ```
 ````
 
-**Title** — add `title="filename"`:
+**Title** - add `title="filename"`:
 
 ````markdown
 ```python title="app.py"
@@ -98,7 +98,7 @@ def main():
 ```
 ````
 
-**Line highlighting** — `{N}` or `{N-M}`:
+**Line highlighting** - `{N}` or `{N-M}`:
 
 ````markdown
 ```python {2-3}
@@ -108,7 +108,7 @@ def process():
 ```
 ````
 
-**Word highlighting** — `/word/`:
+**Word highlighting** - `/word/`:
 
 ````markdown
 ```python /important_function/
@@ -153,7 +153,7 @@ Standard markdown syntax also works:
 - Use descriptive filenames: `authentication-flow-diagram.png` over `IMG_4523.png`
 - Prefer local images stored in your media directory
 - Specify dimensions when images would render too large: `![[wide-screenshot.png|800x450]]`
-- Do NOT place images inside callout blocks — they render inconsistently
+- Do NOT place images inside callout blocks - they render inconsistently
 
 ### Video Embeds
 
@@ -200,11 +200,11 @@ $$
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use callouts sparingly** — most effective for tips, warnings, and important asides, not regular content.
-6. **End with a takeaway** — close with a summary, next steps, or a call to action.
-7. **Tags for discoverability** — use 2-5 relevant tags. Prefer existing tags over creating new ones.
-8. **Descriptions matter** — write a compelling 1-2 sentence description for post listings and link previews.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use callouts sparingly** - most effective for tips, warnings, and important asides, not regular content.
+6. **End with a takeaway** - close with a summary, next steps, or a call to action.
+7. **Tags for discoverability** - use 2-5 relevant tags. Prefer existing tags over creating new ones.
+8. **Descriptions matter** - write a compelling 1-2 sentence description for post listings and link previews.

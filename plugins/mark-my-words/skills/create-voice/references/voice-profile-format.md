@@ -1,6 +1,6 @@
 # Voice Profile Format
 
-Voice profiles are stored as markdown files at `.claude/voices/<name>.md`. Each profile is a compact, actionable style guide distilled from writing samples — not raw samples themselves.
+Voice profiles are stored as markdown files at `<home>/.things/mark-my-words/voices/<name>.md`. Each profile is a compact, actionable style guide distilled from writing samples - not raw samples themselves.
 
 ## File Structure
 
@@ -25,21 +25,21 @@ sample_sources:
 
 **Fields:**
 - `name`: Kebab-case identifier, matches the filename
-- `description`: One-line summary of the voice — what it sounds like
+- `description`: One-line summary of the voice - what it sounds like
 - `created`: Date the profile was first generated
 - `last_updated`: Date of the most recent update
-- `sample_sources`: List of where the writing samples came from. Each entry has a `type` (`file`, `paste`, or `glob`) and relevant metadata. This is for reference only — raw samples are not stored.
+- `sample_sources`: List of where the writing samples came from. Each entry has a `type` (`file`, `paste`, or `glob`) and relevant metadata. This is for reference only - raw samples are not stored.
 
 ### Body Sections
 
-Each section should be concise — bullet points preferred, prose only where nuance demands it. The whole profile should fit on one page.
+Each section should be concise - bullet points preferred, prose only where nuance demands it. The whole profile should fit on one page.
 
 #### Tone & Register
 
 How formal or casual the writing is. The emotional temperature. Where it sits on the spectrum from academic to conversational.
 
 Examples of what to capture:
-- Formality level (e.g., "casual but not sloppy — contractions yes, slang rarely")
+- Formality level (e.g., "casual but not sloppy - contractions yes, slang rarely")
 - Emotional range (e.g., "enthusiastic about solutions, self-deprecating about mistakes")
 - Relationship with the reader (e.g., "peer-to-peer, never talks down")
 

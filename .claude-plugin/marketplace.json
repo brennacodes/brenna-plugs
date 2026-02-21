@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "2.2.0",
+    "version": "4.0.1",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "i-did-a-thing",
       "source": "./plugins/i-did-a-thing",
       "description": "A build-me-up tool that helps you log professional experiences and build tailored resumes from your personal arsenal of evidence",
-      "version": "3.1.0",
+      "version": "4.0.1",
       "keywords": [
         "career",
         "evidence",
@@ -28,7 +28,7 @@
       "name": "what-did-you-do",
       "source": "./plugins/what-did-you-do",
       "description": "Interview preparation with persona-driven practice, company-specific mocks, spaced repetition, and progress tracking \u2014 powered by your i-did-a-thing arsenal",
-      "version": "2.1.0",
+      "version": "3.0.1",
       "keywords": [
         "interview",
         "practice",
@@ -41,7 +41,7 @@
       "name": "mark-my-words",
       "source": "./plugins/mark-my-words",
       "description": "Write, manage, and publish blog posts on any markdown-based platform \u2014 Quartz, Hugo, Jekyll, Astro, Eleventy, Docusaurus, and Zola",
-      "version": "3.0.0",
+      "version": "4.0.1",
       "keywords": [
         "blog",
         "writing",
@@ -63,7 +63,7 @@
       "name": "what-do-you-know",
       "source": "./plugins/what-do-you-know",
       "description": "Deepen your understanding of topics through concept quizzing, knowledge gap analysis, and personalized learning plans \u2014 powered by your i-did-a-thing arsenal",
-      "version": "1.1.0",
+      "version": "2.0.1",
       "keywords": [
         "learning",
         "knowledge",
@@ -79,7 +79,7 @@
       "name": "screenshotr",
       "source": "./plugins/screenshotr",
       "description": "Precise screenshot capabilities for macOS \u2014 capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "keywords": [
         "screenshot",
         "macos",
@@ -92,8 +92,8 @@
     {
       "name": "heres-the-thing",
       "source": "./plugins/heres-the-thing",
-      "description": "Schema-aware data layer for .things/ — manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
-      "version": "2.0.0",
+      "description": "Schema-aware data layer for .things/ - manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
+      "version": "1.0.1",
       "keywords": [
         "infrastructure",
         "data",
@@ -108,8 +108,8 @@
     {
       "name": "think-like",
       "source": "./plugins/think-like",
-      "description": "Apply expert thinking profiles to code reviews, architecture evaluation, and security audits — think like DHH, Sandi Metz, or build your own expert profiles",
-      "version": "2.0.0",
+      "description": "Apply expert thinking profiles to code reviews, architecture evaluation, and security audits - think like DHH, Sandi Metz, or build your own expert profiles",
+      "version": "2.0.1",
       "keywords": [
         "code-review",
         "architecture",
@@ -123,8 +123,8 @@
     {
       "name": "session-scout",
       "source": "./plugins/session-scout",
-      "description": "A tool to help you grep through your Claude Code session data",
-      "version": "1.0.0",
+      "description": "A tool to help you grep through your Claude Code session data, list active sessions, and resume where you left off",
+      "version": "1.0.1",
       "keywords": [
         "claude",
         "code",

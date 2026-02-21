@@ -37,17 +37,17 @@ screencapture -x -T 3 -t jpg /path/to/output.jpg
 
 ## Format Notes
 
-- **png** — lossless, supports transparency, largest file size. Best default.
-- **jpg** — lossy compression, no transparency, smaller files. Good for photos/screenshots shared online.
-- **heic** — efficient compression, good quality. macOS-native but less portable.
-- **pdf** — vector-capable, good for documentation. Captures at screen resolution.
-- **tiff** — lossless, large files. Rarely needed.
-- **gif** — static only (no animation capture). Limited color palette.
+- **png** - lossless, supports transparency, largest file size. Best default.
+- **jpg** - lossy compression, no transparency, smaller files. Good for photos/screenshots shared online.
+- **heic** - efficient compression, good quality. macOS-native but less portable.
+- **pdf** - vector-capable, good for documentation. Captures at screen resolution.
+- **tiff** - lossless, large files. Rarely needed.
+- **gif** - static only (no animation capture). Limited color palette.
 
 ## Limitations
 
-- No built-in resize or crop — use `sips` for post-processing
-- No URL/web page capture — must open in browser first, then capture the window
+- No built-in resize or crop - use `sips` for post-processing
+- No URL/web page capture - must open in browser first, then capture the window
 - Window must be on-screen to capture with `-l` (can be partially occluded)
 - Retina displays capture at 2x resolution (a 1440px-wide screen produces a 2880px-wide image)
-- Interactive modes (`-i`, `-W`) require user mouse input — not suitable for automation
+- Interactive modes (`-i`, `-W`) require user mouse input - not suitable for automation

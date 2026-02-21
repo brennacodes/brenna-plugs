@@ -15,8 +15,8 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 0
 fi
 
-# Only validate files matching */interview-prep/sessions/*.md
-if [[ ! "$FILE_PATH" =~ /interview-prep/sessions/[^/]*\.md$ ]]; then
+# Only validate files matching */what-did-you-do/sessions/*.md
+if [[ ! "$FILE_PATH" =~ /what-did-you-do/sessions/[^/]*\.md$ ]]; then
   exit 0
 fi
 
@@ -53,7 +53,7 @@ fi
 for dim in specificity structure impact relevance self_advocacy; do
   if ! echo "$CONTENT" | grep -q "  ${dim}:"; then
     echo "VALIDATION WARNING: Missing score dimension: $dim" >&2
-    # Warning only — don't block the write
+    # Warning only - don't block the write
   fi
 done
 

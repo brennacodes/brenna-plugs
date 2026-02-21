@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# get-window-id.sh — Resolve an app name to a CGWindowID
+# get-window-id.sh - Resolve an app name to a CGWindowID
 # Usage: get-window-id.sh <app-name> [--all]
 # Single mode: prints the CGWindowID of the best-matching window
 # --all mode: prints ID|TITLE|ON_SCREEN lines for all matching windows
@@ -124,7 +124,7 @@ JSEOF
 }
 
 # Fallback: System Events AppleScript (no CGWindowID, returns 0 as placeholder)
-# When this fallback is used, window capture by ID won't work — capture by app name instead
+# When this fallback is used, window capture by ID won't work - capture by app name instead
 get_windows_applescript() {
   local app_name="$1"
   local all_mode="$2"
@@ -170,7 +170,7 @@ ASEOF
   if [ "$all_mode" = "true" ]; then
     echo "$result"
   else
-    # Return just "0" — caller will need to capture by app name instead
+    # Return just "0" - caller will need to capture by app name instead
     echo "0"
   fi
 }

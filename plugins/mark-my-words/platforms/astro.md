@@ -9,7 +9,7 @@
 | Common subdirectories | Usually flat within the blog collection |
 | File naming | Slug: `my-post-title.md` (or `.mdx` for MDX) |
 | Frontmatter format | YAML between `---` delimiters |
-| Draft behavior | `draft: true` — filtering depends on collection schema |
+| Draft behavior | `draft: true` - filtering depends on collection schema |
 
 **Note:** Astro uses content collections with typed schemas defined in `src/content/config.ts`. The exact required fields depend on your schema definition, but the conventions below are standard.
 
@@ -98,7 +98,7 @@ def hello():
 ```
 ````
 
-**Title** — add `title="filename"`:
+**Title** - add `title="filename"`:
 
 ````markdown
 ```python title="app.py"
@@ -107,7 +107,7 @@ def main():
 ```
 ````
 
-**Line highlighting** — `{N}` or `{N-M}`:
+**Line highlighting** - `{N}` or `{N-M}`:
 
 ````markdown
 ```python {2-3}
@@ -117,7 +117,7 @@ def process():
 ```
 ````
 
-**Mark/ins/del highlighting** — for diff-style highlighting:
+**Mark/ins/del highlighting** - for diff-style highlighting:
 
 ````markdown
 ```python mark={1} ins={2} del={3}
@@ -127,7 +127,7 @@ old_line = "removed"
 ```
 ````
 
-**Line wrapping** — add `wrap` attribute:
+**Line wrapping** - add `wrap` attribute:
 
 ````markdown
 ```python wrap
@@ -144,7 +144,7 @@ Standard markdown links with relative or absolute paths:
 [Relative link](../other-post)
 ```
 
-**No wikilink support** — use standard markdown syntax.
+**No wikilink support** - use standard markdown syntax.
 
 In MDX files, you can use Astro components for enhanced linking:
 
@@ -163,8 +163,8 @@ import { getEntry } from 'astro:content';
 ```
 
 **Image locations:**
-- `src/` — images optimized by Astro's image service at build time
-- `public/images/` — served as-is, good for blog post images
+- `src/` - images optimized by Astro's image service at build time
+- `public/images/` - served as-is, good for blog post images
 
 **In MDX** (for optimized images):
 
@@ -207,7 +207,7 @@ MDX files can use custom components for video embeds:
 
 ### Diagrams (Mermaid)
 
-**NOT natively supported** — requires `remark-mermaid` or client-side JS.
+**NOT natively supported** - requires `remark-mermaid` or client-side JS.
 
 If you have Mermaid configured in your Astro project, use standard fenced code blocks:
 
@@ -224,7 +224,7 @@ If unsure whether Mermaid is set up, skip diagrams or use images instead.
 
 ### Math (LaTeX)
 
-**NOT natively supported** — requires `remark-math` + `rehype-katex` remark plugins.
+**NOT natively supported** - requires `remark-math` + `rehype-katex` remark plugins.
 
 If you have math support configured, use standard LaTeX syntax:
 
@@ -242,13 +242,13 @@ If unsure whether math support is set up, skip LaTeX or use images instead.
 
 ## Content Structure Best Practices
 
-1. **Start with context** — open with a brief paragraph explaining what the post covers and why it matters.
-2. **Use h2 for major sections** — keep the heading hierarchy clean (h2 → h3 → h4).
-3. **One idea per paragraph** — keep paragraphs focused and scannable.
-4. **Code with context** — explain what code does before or after the block. Always include the language identifier.
-5. **Use callouts sparingly** (if available) — most effective for tips, warnings, and important asides, not regular content.
-6. **End with a takeaway** — close with a summary, next steps, or a call to action.
-7. **Tags for discoverability** — use 2-5 relevant tags. Prefer existing tags over creating new ones.
-8. **Descriptions matter** — write a compelling 1-2 sentence description. Unlike some platforms, Astro doesn't auto-generate excerpts, so the `description` field is crucial for SEO and post listings.
-9. **Hero images enhance engagement** — if your theme supports `heroImage`, use high-quality header images to make posts more visually appealing.
-10. **Content collections provide type safety** — stick to the fields defined in your schema. Check `src/content/config.ts` if you're unsure what fields are required or optional.
+1. **Start with context** - open with a brief paragraph explaining what the post covers and why it matters.
+2. **Use h2 for major sections** - keep the heading hierarchy clean (h2 → h3 → h4).
+3. **One idea per paragraph** - keep paragraphs focused and scannable.
+4. **Code with context** - explain what code does before or after the block. Always include the language identifier.
+5. **Use callouts sparingly** (if available) - most effective for tips, warnings, and important asides, not regular content.
+6. **End with a takeaway** - close with a summary, next steps, or a call to action.
+7. **Tags for discoverability** - use 2-5 relevant tags. Prefer existing tags over creating new ones.
+8. **Descriptions matter** - write a compelling 1-2 sentence description. Unlike some platforms, Astro doesn't auto-generate excerpts, so the `description` field is crucial for SEO and post listings.
+9. **Hero images enhance engagement** - if your theme supports `heroImage`, use high-quality header images to make posts more visually appealing.
+10. **Content collections provide type safety** - stick to the fields defined in your schema. Check `src/content/config.ts` if you're unsure what fields are required or optional.

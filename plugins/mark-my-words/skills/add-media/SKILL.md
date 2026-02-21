@@ -6,179 +6,246 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion, WebSearch, 
 argument-hint: "[post filename or search term]"
 ---
 
-# Add Media to Blog Post
+<references>
+  <reference name="media-guide" path="references/media-guide.md" />
+</references>
 
-You are adding rich media — diagrams, images, and video embeds — to an existing blog post. Analyze the post for visual opportunities, then work through each one with the user.
+<purpose>
+You are adding rich media -- diagrams, images, and video embeds -- to an existing blog post. Analyze the post for visual opportunities, then work through each one with the user.
+</purpose>
 
-Consult `references/media-guide.md` for visual detection patterns, Mermaid syntax, file naming conventions, alt text guidelines, and placement rules.
+<steps>
 
-## Steps
+  <step id="load-config" number="1">
+    <description>Load Configuration</description>
 
-### 1. Load Configuration
+    <load-config>
+      <action>Resolve the user's home directory.</action>
+      <command language="bash" output="home" tool="Bash">echo $HOME</command>
+      <constraint>Never pass `~` to the Read tool.</constraint>
 
-Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below — never pass `~` to the Read tool.
+      <read path="<home>/.things/config.json" output="config" />
+      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
 
-Read `<home>/.claude/things.local.md` to get `things_path` (if `things_path` starts with `~`, replace with `<home>`). If missing:
+      <read path="<home>/.things/mark-my-words/preferences.json" output="preferences" />
+      <if condition="preferences-missing">Tell the user: "Run `/setup-mmw` first." Then stop.</if>
+    </load-config>
 
-> No configuration found. Please run `/i-did-a-thing:setup` first.
+    <action>Read `platform` from preferences.json (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines the platform's image syntax, diagram support, and video embed conventions. Use it for all media insertion.</action>
 
-Then stop.
+    <action>Resolve `media_dir`.</action>
+    <if condition="media-dir-configured">Compute the full path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`).</if>
+    <if condition="media-dir-null">
+      <ask-user-question>
+        <question>No media directory is configured. You can still add inline content like Mermaid diagrams and video embeds. For images, would you like to:</question>
+        <option>Provide a one-time media directory path for this session</option>
+        <option>Continue without image support (diagrams and embeds only)</option>
+      </ask-user-question>
+      <if condition="user-provides-path">Use it for this session but don't update the preferences file.</if>
+    </if>
+  </step>
 
-Read `<things_path>/config.yml` for all settings. Extract the `blog:` section. If config.yml is missing or blog not configured, tell the user to run `/mark-my-words:setup`.
+  <step id="resolve-content-location" number="2">
+    <description>Resolve Content Location</description>
 
-#### Load Platform Template
+    <if condition="source-type-remote">
+      <action>Check if the repo is already cloned at `<workdir>` (read `workdir` from preferences.json, default `<home>/.mark-my-words`).</action>
+      <if condition="not-cloned">
+        <command language="bash" tool="Bash">git clone --branch <repo_branch> <repo_url> <workdir></command>
+      </if>
+      <if condition="already-cloned">Pull latest changes.</if>
+      The content root is `<workdir>/<content_dir>/`.
+    </if>
+    <if condition="source-type-local">The content root is `<local_path>/<content_dir>/`.</if>
+  </step>
 
-Read `blog.platform` from config (default to `quartz` if not set). Read the platform template from `../../platforms/<platform>.md` (relative to this skill's directory). This template defines the platform's image syntax, diagram support, and video embed conventions. Use it for all media insertion.
+  <step id="find-post" number="3">
+    <description>Find the Post</description>
 
-Resolve `media_dir`: if configured, compute the full path as `<content_root>/<media_dir>` and ensure the directory exists (`mkdir -p`). If `media_dir` is null, ask the user:
+    <if condition="arguments-provided">
+      <action>Search for matching posts by:</action>
+      - Filename match (glob for `*<argument>*.md`)
+      - Title match (grep for the argument in frontmatter `title:` fields)
+      - Content match if no filename/title hits
+    </if>
 
-> No media directory is configured. You can still add inline content like Mermaid diagrams and video embeds. For images, would you like to:
-> - Provide a one-time media directory path for this session
-> - Continue without image support (diagrams and embeds only)
+    <if condition="no-arguments">List the 10 most recently modified `.md` files in the content directory with their titles and dates.</if>
 
-If they provide a path, use it for this session but don't update the config file.
+    <if condition="multiple-matches">
+      <ask-user-question>
+        <question>Which post?</question>
+        Show title, date, and filename for each.
+      </ask-user-question>
+    </if>
 
-### 2. Resolve Content Location
+    <if condition="no-matches">Tell the user and suggest checking the filename or trying a different search term.</if>
+  </step>
 
-- **If `source_type: remote`**: Look for the working directory at `.mark-my-words-workdir/`. If not cloned, clone it. If cloned, pull latest.
-- **If `source_type: local`**: Use `<local_path>/<content_dir>/`.
+  <step id="analyze-post" number="4">
+    <description>Analyze the Post</description>
 
-### 3. Find the Post
+    <action>Read the full post content and scan for visual opportunities using the detection patterns from <reference name="media-guide"/>.</action>
 
-- **If `$ARGUMENTS` was provided**: Search for matching posts by:
-  - Filename match (glob for `*<argument>*.md`)
-  - Title match (grep for the argument in frontmatter `title:` fields)
-  - Content match if no filename/title hits
-- **If no arguments**: List the 10 most recently modified `.md` files in the content directory with their titles and dates.
+    <validate name="diagram-candidates">Processes, architectures, workflows, decision logic, state changes, request/response flows, data models (only suggest Mermaid diagrams if the platform template indicates Mermaid support).</validate>
+    <validate name="image-candidates">UI references, visual concepts, results/screenshots, before/after comparisons.</validate>
+    <validate name="table-candidates">Comparisons, structured data, feature lists.</validate>
+    <validate name="video-candidates">References to talks, demos, tutorials, recordings.</validate>
 
-If multiple posts match, use AskUserQuestion to let the user select which one. Show title, date, and filename for each.
+    <template name="visual-opportunities-output">
 
-If no posts match, tell the user and suggest checking the filename or trying a different search term.
+    > **Visual opportunities found:**
+    >
+    > **"How Authentication Works" (line 24)**
+    > - Diagram: the login flow described here would work well as a sequence diagram
+    >
+    > **"Architecture Overview" (line 45)**
+    > - Diagram: the three-service architecture could be a flowchart with subgraphs
+    > - Image: the system diagram mentioned could be a screenshot or architecture image
+    >
+    > **"Results" (line 78)**
+    > - Image: before/after comparison of the dashboard redesign
+    >
+    > **"Demo" (line 92)**
+    > - Video: the conference talk mentioned could be embedded
 
-### 4. Analyze the Post
+    </template>
 
-Read the full post content and scan for visual opportunities using the detection patterns from `references/media-guide.md`.
+    <ask-user-question>
+      <question>What would you like to do?</question>
+      <option>Accept all suggestions</option>
+      <option>Pick and choose which ones to add</option>
+      <option>Add my own images/media instead</option>
+      <option>Skip specific suggestions</option>
+    </ask-user-question>
+  </step>
 
-Look for:
-- **Diagram candidates**: processes, architectures, workflows, decision logic, state changes, request/response flows, data models (only suggest Mermaid diagrams if the platform template indicates Mermaid support)
-- **Image candidates**: UI references, visual concepts, results/screenshots, before/after comparisons
-- **Table candidates**: comparisons, structured data, feature lists
-- **Video candidates**: references to talks, demos, tutorials, recordings
+  <step id="process-media" number="5">
+    <description>Process Media</description>
 
-Present findings organized by section:
+    Work through each selected item one at a time.
 
-> **Visual opportunities found:**
->
-> **"How Authentication Works" (line 24)**
-> - Diagram: the login flow described here would work well as a sequence diagram
->
-> **"Architecture Overview" (line 45)**
-> - Diagram: the three-service architecture could be a flowchart with subgraphs
-> - Image: the system diagram mentioned could be a screenshot or architecture image
->
-> **"Results" (line 78)**
-> - Image: before/after comparison of the dashboard redesign
->
-> **"Demo" (line 92)**
-> - Video: the conference talk mentioned could be embedded
+    <phase name="mermaid-diagrams" number="1">
+      <constraint>Only available if the platform template indicates Mermaid support (native or plugin-based).</constraint>
 
-Use AskUserQuestion to let the user choose:
-- Accept all suggestions
-- Pick and choose which ones to add
-- Add their own images/media instead
-- Skip specific suggestions
+      <action>Read the relevant section carefully.</action>
+      <action>Generate Mermaid diagram code following the syntax in <reference name="media-guide"/>.</action>
+      <action>Show the diagram code to the user for review.</action>
 
-### 5. Process Media
+      <ask-user-question>
+        <question>Does this diagram look right?</question>
+        <option>Looks good</option>
+        <option>Revise it</option>
+        <option>Skip this one</option>
+      </ask-user-question>
 
-Work through each selected item one at a time.
+      <if condition="diagram-approved">Use Edit to insert the diagram after the text that introduces the concept.</if>
+      <if condition="diagram-revision-requested">Adjust and show again.</if>
+    </phase>
 
-#### Mermaid Diagrams
+    <phase name="user-provided-images" number="2">
+      <action>Ask for the file path or URL and a description.</action>
+      <action>Generate a descriptive kebab-case filename if the original name is generic.</action>
+      <action>Generate concise alt text from the description.</action>
+      <if condition="local-file">Copy to media dir with `cp`.</if>
+      <if condition="remote-url">
+        <command language="bash" tool="Bash">curl -L -o <media_dir>/<filename> <url></command>
+      </if>
+      <action>Insert the image reference using the platform's syntax from the template (e.g., `![[filename|alt text]]` for Quartz, `![alt text](path/filename)` for others).</action>
+      <action>Place it following the placement rules in <reference name="media-guide"/>.</action>
+    </phase>
 
-Only available if the platform template indicates Mermaid support (native or plugin-based).
+    <phase name="web-search-images" number="3">
+      <action>Ask the user for the topic or description of what they're looking for.</action>
+      <action>Use WebSearch to find relevant images (search `site:unsplash.com <topic>` or `creative commons <topic> photo`).</action>
+      <action>Present 2-3 options with descriptions.</action>
+      <action>Download the selected image.</action>
+      <command language="bash" tool="Bash">curl -L -o <media_dir>/<descriptive-filename> <url></command>
+      <action>Generate alt text and insert the reference using the platform's image syntax.</action>
+      <constraint>Always include alt text describing the image content.</constraint>
+    </phase>
 
-1. Read the relevant section carefully
-2. Generate Mermaid diagram code following the syntax in `references/media-guide.md`
-3. Show the diagram code to the user for review
-4. Use AskUserQuestion: "Does this diagram look right?" — Looks good / Revise it / Skip this one
-5. If approved, use Edit to insert the diagram after the text that introduces the concept
-6. If revision requested, adjust and show again
+    <phase name="ai-generated-images" number="4">
+      <constraint>Only offer this if `ai_image_generation: true` in preferences.json.</constraint>
 
-#### Images (User-Provided)
+      <action>Check if image generation tools are available (e.g., Hugging Face MCP tools).</action>
+      <if condition="no-generation-tools">Tell the user and offer alternatives (web search, placeholder, skip).</if>
+      <if condition="generation-tools-available">Ask the user to describe what they want.</if>
 
-1. Ask for the file path or URL and a description
-2. Generate a descriptive kebab-case filename if the original name is generic
-3. Generate concise alt text from the description
-4. If it's a local file: copy to media dir with `cp`
-5. If it's a URL: download with `curl -L -o <media_dir>/<filename> <url>`
-6. Insert the image reference using the platform's syntax from the template (e.g., `![[filename|alt text]]` for Quartz, `![alt text](path/filename)` for others)
-7. Place it following the placement rules in `references/media-guide.md`
+      <ask-user-question>
+        <question>Generate an image of [description]?</question>
+        <option>Yes</option>
+        <option>No</option>
+      </ask-user-question>
 
-#### Images (Web Search)
+      <action>Generate the image and save to media dir.</action>
+      <action>Insert the reference with alt text using the platform's image syntax.</action>
 
-1. Ask the user for the topic or description of what they're looking for
-2. Use WebSearch to find relevant images (search `site:unsplash.com <topic>` or `creative commons <topic> photo`)
-3. Present 2-3 options with descriptions
-4. Download the selected image with `curl -L -o <media_dir>/<descriptive-filename> <url>`
-5. Generate alt text and insert the reference using the platform's image syntax
-6. Always include alt text describing the image content
+      <if condition="ai-image-generation-disabled">Do not offer this option.</if>
+    </phase>
 
-#### Images (AI Generated)
+    <phase name="video-embeds" number="5">
+      <action>Ask for the video URL (YouTube or Vimeo).</action>
+      <action>Extract the video ID from the URL.</action>
+      <action>Resolve the embed syntax from the platform template:</action>
+      <platform-specific platform="hugo">`{{</* youtube VIDEO_ID */>}}` or `{{</* vimeo VIDEO_ID */>}}`</platform-specific>
+      <platform-specific platform="zola">`{{ youtube(id="VIDEO_ID") }}` or `{{ vimeo(id="VIDEO_ID") }}`</platform-specific>
+      <platform-specific platform="all-others">Use HTML iframe embed.</platform-specific>
+      <action>Ask the user for a title/description for the video.</action>
+      <action>Insert a context sentence before the embed and a fallback link after it.</action>
+      <action>Use Edit to place the embed in the post.</action>
+    </phase>
+  </step>
 
-Only offer this if `ai_image_generation: true` in config.
+  <step id="review-changes" number="6">
+    <description>Review Changes</description>
 
-1. Check if image generation tools are available (e.g., Hugging Face MCP tools)
-2. If no tools available: tell the user and offer alternatives (web search, placeholder, skip)
-3. If tools available: ask the user to describe what they want
-4. Use AskUserQuestion to confirm before generating: "Generate an image of [description]?"
-5. Generate the image and save to media dir
-6. Insert the reference with alt text using the platform's image syntax
+    <action>After processing all selected media, read the updated post and show the user a summary.</action>
 
-If `ai_image_generation` is false or not set, do not offer this option.
+    <template name="media-summary">
 
-#### Video Embeds
+    > **Media added:**
+    > - Sequence diagram in "How Authentication Works" (line 26)
+    > - Architecture flowchart in "Architecture Overview" (line 48)
+    > - Downloaded `dashboard-before-after.png` (from unsplash.com)
+    > - YouTube embed in "Demo" section
 
-1. Ask for the video URL (YouTube or Vimeo)
-2. Extract the video ID from the URL
-3. Check the platform template for built-in shortcodes:
-   - **Hugo**: `{{</* youtube VIDEO_ID */>}}` or `{{</* vimeo VIDEO_ID */>}}`
-   - **Zola**: `{{ youtube(id="VIDEO_ID") }}` or `{{ vimeo(id="VIDEO_ID") }}`
-   - **All others**: Use HTML iframe embed
-4. Ask the user for a title/description for the video
-5. Insert a context sentence before the embed and a fallback link after it
-6. Use Edit to place the embed in the post
+    </template>
 
-### 6. Review Changes
+    <ask-user-question>
+      <question>What next?</question>
+      <option>Done -- I'm happy with the changes</option>
+      <option>Add more -- I want to add additional media</option>
+      <option>Undo last -- remove the last media item added</option>
+      <option>Start over -- revert all changes and try again</option>
+    </ask-user-question>
 
-After processing all selected media, read the updated post and show the user a summary:
+    <if condition="user-add-more">Go back to Step 4 to re-analyze (the post now has some media, so the analysis will be different).</if>
+    <if condition="user-undo-last">Use Edit to remove the last inserted media item and offer to continue or stop.</if>
+    <if condition="user-start-over">Re-read the original post content (from git or backup) and return to Step 4.</if>
+  </step>
 
-> **Media added:**
-> - Sequence diagram in "How Authentication Works" (line 26)
-> - Architecture flowchart in "Architecture Overview" (line 48)
-> - Downloaded `dashboard-before-after.png` (from unsplash.com)
-> - YouTube embed in "Demo" section
+  <step id="git-workflow" number="7">
+    <description>Handle Git Workflow</description>
 
-Use AskUserQuestion:
-- Done — I'm happy with the changes
-- Add more — I want to add additional media
-- Undo last — remove the last media item added
-- Start over — revert all changes and try again
+    <git-workflow>
+      <action>Before committing, pull latest changes from the remote (if one exists) to avoid conflicts.</action>
+      <command language="bash" tool="Bash">git -C <content_root> pull --rebase 2>/dev/null || true</command>
 
-If "Add more": go back to Step 4 to re-analyze (the post now has some media, so the analysis will be different).
-If "Undo last": use Edit to remove the last inserted media item and offer to continue or stop.
-If "Start over": re-read the original post content (from git or backup) and return to Step 4.
+      Based on the `git_workflow` setting from preferences.json (for the blog repo):
 
-### 7. Handle Git Workflow
+      <if condition="workflow-ask">
+        <ask-user-question>
+          <question>Would you like to commit and push these media changes?</question>
+          <option>Yes (commit + push)</option>
+          <option>Commit only</option>
+          <option>No</option>
+        </ask-user-question>
+      </if>
+      <if condition="workflow-auto">Automatically `git add` the post and any media files, `git commit -m "Add media to post: <title>"`, and `git push`.</if>
+      <if condition="workflow-manual">Tell the user the files have been updated and they can commit when ready.</if>
 
-Before committing, pull latest changes from the remote (if one exists) to avoid conflicts:
+      <constraint>When committing, include both the updated post file and any new files in the media directory.</constraint>
+    </git-workflow>
+  </step>
 
-```bash
-git -C <content_root> pull --rebase 2>/dev/null || true
-```
-
-Based on the `git_workflow` config setting:
-
-- **`ask`**: Use AskUserQuestion — "Would you like to commit and push these media changes?" with options: Yes (commit + push), Commit only, No
-- **`auto`**: Automatically `git add` the post and any media files, `git commit -m "Add media to post: <title>"`, and `git push`
-- **`manual`**: Tell the user the files have been updated and they can commit when ready
-
-When committing, include both the updated post file and any new files in the media directory.
+</steps>

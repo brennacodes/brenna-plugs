@@ -19,14 +19,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 QUESTIONS_DIR="$(cd "$SCRIPT_DIR/../questions" && pwd)"
 
 # Also check for custom questions
-CONFIG_FILE="$HOME/.claude/things.local.md"
+THINGS_PATH="$HOME/.things"
 CUSTOM_DIR=""
-if [[ -f "$CONFIG_FILE" ]]; then
-  THINGS_PATH=$(sed -n 's/^things_path: *"\?\([^"]*\)"\?$/\1/p' "$CONFIG_FILE" | head -1)
-  THINGS_PATH="${THINGS_PATH/#\~/$HOME}"
-  if [[ -d "$THINGS_PATH/interview-prep/question-overrides" ]]; then
-    CUSTOM_DIR="$THINGS_PATH/interview-prep/question-overrides"
-  fi
+if [[ -d "$THINGS_PATH/what-did-you-do/questions" ]]; then
+  CUSTOM_DIR="$THINGS_PATH/what-did-you-do/questions"
 fi
 
 # Parse arguments
