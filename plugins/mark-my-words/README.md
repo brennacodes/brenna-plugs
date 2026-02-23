@@ -18,7 +18,7 @@ Configure your blog platform, source location (local path or git remote), conten
 /setup-mmw
 ```
 
-Requires heres-the-thing to be set up first (`/setup-htt`).
+Requires things to be set up first (`/things:setup`).
 
 ### Supported Platforms
 
@@ -76,7 +76,7 @@ Requires heres-the-thing to be set up first (`/setup-htt`).
 /add-media [post filename or search term]
 ```
 
-**Migrate Data** - Move mark-my-words data from the old flat `~/.things/` layout to the per-plugin directory structure. Moves voice profiles and renames the blog working directory. Run `/setup-htt` first if config.json doesn't exist yet.
+**Migrate Data** - Move mark-my-words data from the old flat `~/.things/` layout to the per-plugin directory structure. Moves voice profiles and renames the blog working directory. Run `/things:setup` first if config.json doesn't exist yet.
 
 ```
 /migrate-mmw [--dry-run]
@@ -109,7 +109,7 @@ Configure a `media_dir` in setup to enable image management. When set, the writi
 
 ## Related Plugins
 
-- **heres-the-thing** - Manages `.things/` infrastructure that mark-my-words depends on
+- **things** - Manages `.things/` infrastructure that mark-my-words depends on
 - **i-did-a-thing** - Log professional experiences that feed into blog posts via `from-things`
 - **think-like** - Apply expert thinking profiles that can inform your writing perspective
 - **what-did-you-do** - Practice talking about your work in interviews

@@ -1,0 +1,12 @@
+{
+  "name": "things",
+  "version": "2.0.0",
+  "description": "Schema-aware data layer for .things/ -- manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["infrastructure", "data", "registry", "things", "config", "git", "validation", "tags"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

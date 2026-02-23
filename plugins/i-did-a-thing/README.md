@@ -12,7 +12,7 @@ Not everything worth remembering is a win. A hard lesson, deep expertise on a to
 
 ## Setup
 
-Requires heres-the-thing (`/setup-htt`). Configures logging preferences.
+Requires things (`/things:setup`). Configures logging preferences.
 
 ```
 /setup-idat
@@ -38,7 +38,7 @@ To reconfigure:
 /construct-resume [job listing URL or text]
 ```
 
-**Migrate Data** - Move i-did-a-thing data files from the old flat `~/.things/` layout to the per-plugin directory structure. Moves logs, arsenal, resumes, index.json, and tags.json. Run `/setup-htt` first if config.json doesn't exist yet.
+**Migrate Data** - Move i-did-a-thing data files from the old flat `~/.things/` layout to the per-plugin directory structure. Moves logs, arsenal, resumes, index.json, and tags.json. Run `/things:setup` first if config.json doesn't exist yet.
 
 ```
 /migrate-idat [--dry-run]
@@ -72,7 +72,7 @@ Logs include a Blog Seed section for use with `/from-things`, and the celebratio
 
 ```
 ~/.things/
-├── config.json                    # Shared config (managed by HTT)
+├── config.json                    # Shared config (managed by things)
 ├── shared/
 │   ├── professional-profile.json  # Career profile
 │   ├── roles/                     # Interviewer personas
@@ -86,18 +86,18 @@ Logs include a Blog Seed section for use with `/from-things`, and the celebratio
     └── tags.json                  # Auto-generated tag counts
 ```
 
-HTT's PostToolUse hook automatically regenerates `index.json`, `tags.json`, and all arsenal files after every new log via the registry rebuild dispatch.
+The things plugin's PostToolUse hook automatically regenerates `index.json`, `tags.json`, and all arsenal files after every new log via the registry rebuild dispatch.
 
 ## Configuration
 
-- Global config: `~/.things/config.json` (managed by heres-the-thing)
+- Global config: `~/.things/config.json` (managed by things)
 - Plugin preferences: `~/.things/i-did-a-thing/preferences.json`
 
 Run `/setup-idat` to reconfigure.
 
 ## Related Plugins
 
-- **heres-the-thing** - Foundation data layer that manages `.things/`, git sync, search, validation, and rebuild dispatch
+- **things** - Foundation data layer that manages `.things/`, git sync, search, validation, and rebuild dispatch
 - **what-did-you-do** - Practice interview questions coached by your arsenal, with evidence-type-aware feedback
 - **what-do-you-know** - Deepen your understanding through concept quizzing, gap analysis, and learning plans
 - **mark-my-words** - Turn your logs into blog posts with `/from-things`

@@ -1,5 +1,5 @@
 ---
-name: search-things
+name: search
 description: "Registry-aware search across .things/ - search by collection, tag, field, full-text, or find orphaned data. Use when user says 'search things', 'find in things', 'which profiles have [tag]'."
 disable-model-invocation: false
 allowed-tools: Read, Bash, Glob, Grep
@@ -21,7 +21,7 @@ Registry-aware search across all `.things/` data. Knows where to look and what s
     1. Read `<home>/.things/config.json`
     2. Read `<home>/.things/registry.json`
 
-    <if condition="config-missing">Tell the user to run `/setup-htt`.</if>
+    <if condition="config-missing">Tell the user to run `/things:setup`.</if>
     </load-config>
   </step>
 
@@ -42,16 +42,19 @@ Registry-aware search across all `.things/` data. Knows where to look and what s
     <step name="search-by-tag">
     Flag: `--tag <tag>` -- Filter by tag
 
-    For each collection that has a `master_index`:
+    <phase name="central-tag-index" number="1">
+    Read `<home>/.things/tags/index.json` (the central tag index). Look up the tag to find which collections contain it and their counts.
+    </phase>
 
-    <phase name="index-search" number="1">
-    1. Read the master index file
+    <phase name="index-search" number="2">
+    For each collection that has matching tags (from central index or master_index):
+    1. Read the master index file (if it exists)
     2. Filter entries where the `tags` array contains the specified tag
     3. Return matching entries with their collection context
     </phase>
 
-    <phase name="fallback-scan" number="2">
-    For collections without a master index, scan individual `index.json` files if the collection uses `directory_per_item`.
+    <phase name="fallback-scan" number="3">
+    For collections without a master index, scan individual `index.json` files if the collection uses `directory_per_item`, or scan files directly if the collection declares `tags_field`.
     </phase>
     </step>
 

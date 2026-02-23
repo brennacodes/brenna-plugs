@@ -18,7 +18,7 @@ Every review ends with a mandatory **counterpoint** - a genuine critique of the 
 
 | Skill | Description |
 |-------|-------------|
-| `/setup-tl` | Initialize think-like, register with heres-the-thing, install starter profiles |
+| `/setup-tl` | Initialize think-like, register with things, install starter profiles |
 | `/profile` | Apply a profile to code - the main entry point |
 | `/create-profile` | Build a new expert profile from research and references |
 | `/browse-profiles` | Preview and install bundled starter profiles |
@@ -73,4 +73,4 @@ When you run `/create-profile`, the profile builder researches the person, then 
 
 ## Requirements
 
-- heres-the-thing plugin (manages `.things/` infrastructure)
+- things plugin (manages `.things/` infrastructure)

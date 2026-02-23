@@ -1,13 +1,13 @@
 ---
 name: setup-idat
-description: "Configure i-did-a-thing plugin: register collections, create directories, set logging preferences. Requires heres-the-thing to be set up first."
+description: "Configure i-did-a-thing plugin: register collections, create directories, set logging preferences. Requires things to be set up first."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
 ---
 
 <purpose>
-Configure accomplishment logging within the `.things/` directory managed by heres-the-thing. Creates per-plugin directories, registers collections, seeds shared resources, and sets logging preferences.
+Configure accomplishment logging within the `.things/` directory managed by things. Creates per-plugin directories, registers collections, seeds shared resources, and sets logging preferences.
 </purpose>
 
 <steps>
@@ -21,7 +21,7 @@ Configure accomplishment logging within the `.things/` directory managed by here
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first to initialize your .things directory." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.<exit /></if>
 
       <read path="<home>/.things/registry.json" output="registry" />
 

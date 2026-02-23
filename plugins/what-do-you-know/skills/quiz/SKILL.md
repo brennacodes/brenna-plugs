@@ -23,7 +23,7 @@ Generate concept questions dynamically from your arsenal and index, present them
       <command language="bash" output="home" tool="Bash">echo $HOME</command>
       <constraint>Never pass `~` to the Read tool.</constraint>
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
       <read path="<home>/.things/what-do-you-know/preferences.json" output="preferences" />
       <if condition="preferences-missing">Tell the user: "Run `/setup-wdyk` first." Then stop.</if>

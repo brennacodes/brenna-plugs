@@ -100,7 +100,7 @@ Browse all thinking profiles on the user's system - including user-created profi
         </section>
       </if>
 
-      <hint>You can also search across all plugins with `/search-things --tag <tag>`.</hint>
+      <hint>You can also search across all plugins with `/things:search --tag <tag>`.</hint>
     </output-format>
   </step>
 

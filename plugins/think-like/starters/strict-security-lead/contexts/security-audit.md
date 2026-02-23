@@ -3,6 +3,7 @@ action: "security-audit"
 profile: "strict-security-lead"
 person_ref: "shared/people/strict-security-lead"
 description: "Strict Security Lead performs threat-model-driven security audits with prioritized, actionable findings"
+tools: [Read, Glob, Grep, Bash, LSP]
 created: 2025-02-20
 ---
 

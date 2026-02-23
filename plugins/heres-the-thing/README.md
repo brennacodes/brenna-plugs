@@ -1,46 +1,71 @@
 # heres-the-thing
 
-Schema-aware data layer for `.things/` - manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins.
+Persuasion and positioning engine -- take any subject, tailor it for any audience, in any medium, and track what works.
+
+**Core question**: "Can I make them care?"
 
 ## What it does
 
-heres-the-thing (HTT) is the foundation layer that other plugins build on. It manages the `.things/` directory - a git-tracked data store for career development, expert profiles, and knowledge artifacts.
-
-HTT is **domain-ignorant**: it doesn't know what logs, profiles, or resumes are. It knows about collections, indexes, and file structures. Plugins register their collections with HTT, and HTT provides the infrastructure (git sync, search, validation, rebuild dispatch).
+heres-the-thing takes any subject matter and tailors communication for a specific audience, context, and medium. It tracks outcomes and learns what works through a feedback loop that updates audience profiles and your professional profile.
 
 ## Skills
 
 | Skill | Description |
 |-------|-------------|
-| `/setup-htt` | Initialize `.things/` - create directory structure, config, registry, git repo |
-| `/register` | Add, update, or remove collection definitions in the registry |
-| `/status` | Show collection counts, last-modified dates, git state, tag aggregation |
-| `/search-things` | Search across collections by tag, field, text, or find orphaned items |
-| `/validate` | Check git health, registry integrity, structural correctness, orphan detection |
-| `/sync` | Git push, pull, or status for the `.things/` repository |
-| `/migrate` | Migrate shared resources and clean up old layout artifacts. Per-plugin data is handled by each plugin's own migrate command |
+| `/heres-the-thing:setup-htt` | Initialize directories, preferences, launchd agent, register collections with things |
+| `/heres-the-thing:pitch` | Guided interview to create a campaign with strategy brief and deliverables |
+| `/heres-the-thing:prep` | Generate or refine deliverables for a specific goal, includes Q&A prep sessions |
+| `/heres-the-thing:outcome` | Log what happened, capture reflections, push feedback to profiles |
+| `/heres-the-thing:review` | Cross-campaign analysis -- patterns, medium effectiveness, audience insights |
+| `/heres-the-thing:audience` | Create and manage reusable audience segment profiles |
+| `/heres-the-thing:create-type` | Create custom deliverable types with templates and tool requirements |
+| `/heres-the-thing:migrate-htt` | Future migration support |
 
-## Directory Structure
+## Data Structure
 
 ```
-.things/
-├── config.json              # Identity + git settings
-├── registry.json            # Collection registry
-├── .gitignore
-└── shared/
-    ├── people/{id}/          # Person profiles
-    ├── roles/                # Role definitions
-    ├── contexts/             # Activity definitions
-    └── companies/            # Company profiles
+~/.things/heres-the-thing/
+  preferences.json
+  campaigns/
+    <campaign-id>/
+      campaign.json
+      strategy/
+        <goal-id>-<timestamp>.md       # versioned strategy briefs
+      artifacts/
+        <goal-id>-<type>-<timestamp>.md # generated deliverables
+      outcomes/
+        <goal-id>-<timestamp>.json      # per-goal outcome logs
+  audiences/
+    <slug>.json                         # reusable audience segments
+  deliverable-types/
+    index.json                          # custom type registry
+    <type-id>.md                        # type templates
+  scripts/
+    notify.sh                           # scheduled check-in runner
 ```
 
-Plugins add their own directories (e.g., `think-like/`, `i-did-a-thing/`) and register their collections in `registry.json`.
+## Where it fits
 
-## Hooks
+| Plugin | Core question |
+|--------|---------------|
+| i-did-a-thing | What did I accomplish? |
+| what-did-you-do | Can I tell the story under pressure? |
+| what-do-you-know | Do I actually understand this? |
+| mark-my-words | Can I publish this clearly? |
+| think-like | How would an expert see this? |
+| **heres-the-thing** | **Can I make them care?** |
 
-HTT runs a PostToolUse hook on `Write|Edit` operations. When a file inside `.things/` is written, HTT checks the registry for a matching collection and invokes its `rebuild_command` if one is registered.
+## Cross-Plugin Integration
+
+- **things** (data layer): Registry, shared resources, tag index
+- **i-did-a-thing**: Source material for campaigns (logs, arsenal)
+- **mark-my-words**: Voice profiles for artifact generation
+- **think-like**: Audience perspective modeling for Q&A prep sessions
+- **what-did-you-do**: Strengths/weaknesses from practice sessions
+- **what-do-you-know**: Subject knowledge gaps
 
 ## Requirements
 
-- Python 3 (for registry lookup and validation scripts)
-- Git (for `.things/` version control)
+- things plugin (`/things:setup`) must be set up first
+- Python 3 (for notification scripts)
+- macOS (for launchd-based notifications, optional)

@@ -41,6 +41,7 @@ Collection paths are relative to `.things/` root (e.g., `shared/people`, `think-
 | `index_schema` | object | yes | Shape of index entries (can be empty `{}`) |
 | `master_index` | string/null | yes | Path to master index file (relative to `.things/`), or null |
 | `rebuild_command` | string/null | yes | Shell command to rebuild indexes after writes, or null |
+| `tags_field` | string/null | no | Path to tags within collection items (see Tags below), or null |
 
 ## Item Structure
 
@@ -115,6 +116,19 @@ Declares the expected fields in index entries. Used by HTT for validation and se
 
 An empty `index_schema` (`{}`) means the collection has no structured index - HTT won't validate index entries for this collection.
 
+## Tags Field
+
+When present, declares where tags live within collection items. The central tag index (`tags/index.json`) aggregates tags across all collections that declare `tags_field`.
+
+| Value | Description |
+|-------|-------------|
+| `"frontmatter.tags"` | YAML frontmatter `tags:` array in markdown files |
+| `"json.tags"` | Top-level `tags` array in JSON files |
+| `"json.goals[].tags"` | Nested path (e.g., goal-level tags in campaigns) |
+| `null` | Collection doesn't have tags |
+
+When the PostToolUse hook triggers a collection rebuild, it also triggers a central tag index rebuild via `tags/rebuild-tags.sh`.
+
 ## Rebuild Command
 
 When present, HTT's PostToolUse hook invokes this command after detecting a write to the collection's directory. The command receives `${THINGS_PATH}` as an environment variable.
@@ -129,6 +143,27 @@ The path is resolved to an absolute path at registration time. If the plugin is 
 
 If `rebuild_command` is `null`, no rebuild is triggered for writes to this collection.
 
+## Central Tag Index
+
+The central tag index at `tags/index.json` aggregates tags across all registered collections that declare `tags_field`:
+
+```json
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-23T14:00:00Z",
+  "tags": {
+    "deploy": {
+      "count": 5,
+      "last_used": "2026-02-23",
+      "sources": [
+        { "plugin": "i-did-a-thing", "collection": "i-did-a-thing/logs", "count": 3 },
+        { "plugin": "heres-the-thing", "collection": "heres-the-thing/campaigns", "count": 2 }
+      ]
+    }
+  }
+}
+```
+
 ## Example: Full Registry
 
 ```json
@@ -136,8 +171,9 @@ If `rebuild_command` is `null`, no rebuild is triggered for writes to this colle
   "version": "1.0.0",
   "collections": {
     "shared/people": {
-      "plugin": "heres-the-thing",
+      "plugin": "things",
       "description": "Shared people profiles accessible to all plugins",
+      "tags_field": null,
       "item_structure": {
         "directory_per_item": true,
         "required_files": ["profile.md", "index.json"],
@@ -162,6 +198,7 @@ If `rebuild_command` is `null`, no rebuild is triggered for writes to this colle
     "think-like/profiles": {
       "plugin": "think-like",
       "description": "Expert thinking profiles for code-focused activities",
+      "tags_field": null,
       "item_structure": {
         "directory_per_item": true,
         "required_files": ["index.json"],
@@ -183,6 +220,25 @@ If `rebuild_command` is `null`, no rebuild is triggered for writes to this colle
       },
       "master_index": "think-like/profiles/master-index.json",
       "rebuild_command": null
+    },
+    "i-did-a-thing/logs": {
+      "plugin": "i-did-a-thing",
+      "description": "Raw accomplishment log files",
+      "tags_field": "frontmatter.tags",
+      "item_structure": {
+        "directory_per_item": false,
+        "file_pattern": "*.md"
+      },
+      "index_schema": {
+        "required_fields": {
+          "filename": "string",
+          "title": "string",
+          "date": "date",
+          "tags": "string[]"
+        }
+      },
+      "master_index": "i-did-a-thing/index.json",
+      "rebuild_command": "python3 /path/to/rebuild-data.py ${THINGS_PATH}"
     }
   }
 }

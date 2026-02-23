@@ -58,3 +58,23 @@ if [[ -n "$REBUILD_CMD" ]]; then
   export THINGS_PATH
   eval "$REBUILD_CMD" || true
 fi
+
+# Rebuild central tag index if the affected collection declares tags_field
+HAS_TAGS=$(python3 -c "
+import json
+with open('$REGISTRY') as f:
+    reg = json.load(f)
+rel = '$REL_PATH'
+for path, col in reg.get('collections', {}).items():
+    if rel.startswith(path + '/') and col.get('tags_field'):
+        print('yes')
+        break
+" 2>/dev/null)
+
+if [[ "$HAS_TAGS" == "yes" ]]; then
+  TAG_SCRIPT="$THINGS_PATH/tags/rebuild-tags.sh"
+  if [[ -x "$TAG_SCRIPT" ]]; then
+    export THINGS_PATH
+    bash "$TAG_SCRIPT" || true
+  fi
+fi

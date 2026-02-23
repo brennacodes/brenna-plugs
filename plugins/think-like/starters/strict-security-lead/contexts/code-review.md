@@ -3,6 +3,7 @@ action: "code-review"
 profile: "strict-security-lead"
 person_ref: "shared/people/strict-security-lead"
 description: "Strict Security Lead reviews code through a security lens - input validation, auth, data handling"
+tools: [Read, Glob, Grep, LSP]
 created: 2025-02-20
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: setup-wdyd
-description: "Configure what-did-you-do plugin: register with heres-the-thing, set interview preferences, and initialize session tracking"
+description: "Configure what-did-you-do plugin: register with things, set interview preferences, and initialize session tracking"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
@@ -21,7 +21,7 @@ Configure the plugin to use your i-did-a-thing arsenal for interview preparation
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 

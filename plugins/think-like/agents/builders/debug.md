@@ -22,6 +22,7 @@ action: "debug"
 profile: "<id>"
 person_ref: "shared/people/<id>"
 description: "<person>'s approach to debugging"
+tools: [Read, Glob, Grep, Bash, LSP]
 created: "<YYYY-MM-DD>"
 ---
 
@@ -65,4 +66,5 @@ created: "<YYYY-MM-DD>"
 - [ ] Diagnostic patterns are specific to their domain and experience
 - [ ] Priorities reflect what they'd check first based on their background
 - [ ] Counterpoint addresses genuine gaps in their debugging methodology
+- [ ] Tools field in frontmatter matches the action type's typical tool requirements
 - [ ] Action file is self-contained

@@ -3,6 +3,7 @@ action: "code-review"
 profile: "dhh"
 person_ref: "shared/people/dhh"
 description: "DHH reviews code for unnecessary abstraction, convention violations, and Java-ism contamination"
+tools: [Read, Glob, Grep, LSP]
 created: 2025-02-20
 ---
 

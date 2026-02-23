@@ -18,7 +18,7 @@ Configure interview preferences, set follow-up depth (concise, detailed, or coac
 /setup-wdyd [reconfigure]
 ```
 
-Requires heres-the-thing to be set up first (`/setup-htt`).
+Requires things to be set up first (`/things:setup`).
 
 ## Skills
 
@@ -52,7 +52,7 @@ Requires heres-the-thing to be set up first (`/setup-htt`).
 /update-questions <url or 'manual'>
 ```
 
-**Migrate Data** - Move what-did-you-do data from the old `~/.things/interview-prep/` layout to the per-plugin directory structure. Moves sessions, question overrides, company prep plans, and converts the markdown progress dashboard to JSON. Run `/setup-htt` first if config.json doesn't exist yet.
+**Migrate Data** - Move what-did-you-do data from the old `~/.things/interview-prep/` layout to the per-plugin directory structure. Moves sessions, question overrides, company prep plans, and converts the markdown progress dashboard to JSON. Run `/things:setup` first if config.json doesn't exist yet.
 
 ```
 /migrate-wdyd [--dry-run]
@@ -113,14 +113,14 @@ A rolling readiness dashboard tracks dimension averages, trends, category breakd
 
 ## Configuration
 
-- **Global config**: `~/.things/config.json` (managed by heres-the-thing)
+- **Global config**: `~/.things/config.json` (managed by things)
 - **Plugin preferences**: `~/.things/what-did-you-do/preferences.json`
 
 Run `/setup-wdyd` to reconfigure.
 
 ## Related Plugins
 
-- **heres-the-thing** - Data layer that manages shared config and plugin coordination
+- **things** - Data layer that manages shared config and plugin coordination
 - **i-did-a-thing** - Log the accomplishments that power your interview feedback
 - **what-do-you-know** - Deepen your understanding through concept quizzing and learning plans, using the same personas
 - **think-like** - Expert thinking profiles for different perspectives on your preparation

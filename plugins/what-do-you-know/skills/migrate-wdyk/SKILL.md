@@ -9,7 +9,7 @@ argument-hint: "[--dry-run]"
 <purpose>
 Migrate what-do-you-know data files from the old `~/.things/learning/` layout to the per-plugin `~/.things/what-do-you-know/` directory structure. This moves session files and study plans, and converts the markdown progress dashboard and knowledge map to JSON.
 
-This skill handles **data file relocation only**. Config migration (config.yml -> config.json + preferences.json) is handled by `/setup-htt`. Run `/setup-htt` first if config.json doesn't exist yet.
+This skill handles **data file relocation only**. Config migration (config.yml -> config.json + preferences.json) is handled by `/things:setup`. Run `/things:setup` first if config.json doesn't exist yet.
 </purpose>
 
 <steps>
@@ -21,7 +21,7 @@ This skill handles **data file relocation only**. Config migration (config.yml -
       <command language="bash" output="home" tool="Bash">echo $HOME</command>
       <constraint>Never pass `~` to the Read tool.</constraint>
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
       <action>Check for old data.</action>
       <command language="bash" tool="Bash">ls -d <home>/.things/learning 2>/dev/null</command>
       <if condition="no-old-data-found">Tell the user: "No old what-do-you-know data found to migrate. Your data is already in the new location or hasn't been created yet." Then stop.</if>

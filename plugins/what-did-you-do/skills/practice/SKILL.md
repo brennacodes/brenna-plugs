@@ -27,7 +27,7 @@ Select a question using spaced repetition, adopt an interviewer persona, coach t
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 

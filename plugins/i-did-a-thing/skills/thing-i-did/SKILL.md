@@ -21,7 +21,7 @@ Walk the user through capturing a professional experience with enough depth and 
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 
@@ -402,7 +402,7 @@ Walk the user through capturing a professional experience with enough depth and 
   <step id="update-index-arsenal" number="10">
     <description>Update Index and Arsenal</description>
 
-    <constraint>The heres-the-thing PostToolUse hook automatically dispatches `rebuild-data.py` via the registry after writing a log file, which regenerates `i-did-a-thing/index.json`, `i-did-a-thing/tags.json`, and all arsenal files from scratch. No manual index or arsenal updates are needed.</constraint>
+    <constraint>The things PostToolUse hook automatically dispatches `rebuild-data.py` via the registry after writing a log file, which regenerates `i-did-a-thing/index.json`, `i-did-a-thing/tags.json`, and all arsenal files from scratch. No manual index or arsenal updates are needed.</constraint>
 
     <if condition="hook-did-not-fire">The rebuild can be run manually:
       <command language="bash" tool="Bash">python3 <plugin_root>/scripts/rebuild-data.py $HOME/.things</command>

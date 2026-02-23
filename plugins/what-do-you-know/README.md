@@ -18,7 +18,7 @@ Configure learning preferences, set learning depth, default persona, session len
 /setup-wdyk [reconfigure]
 ```
 
-Requires heres-the-thing to be set up first (`/setup-htt`).
+Requires things to be set up first (`/things:setup`).
 
 ## Skills
 
@@ -46,7 +46,7 @@ Requires heres-the-thing to be set up first (`/setup-htt`).
 /bridge <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
 ```
 
-**Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/setup-htt` first if config.json doesn't exist yet.
+**Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/things:setup` first if config.json doesn't exist yet.
 
 ```
 /migrate-wdyk [--dry-run]
@@ -113,14 +113,14 @@ A rolling progress dashboard tracks dimension averages, trends, topic breakdowns
 
 ## Configuration
 
-- **Global config**: `~/.things/config.json` (managed by heres-the-thing)
+- **Global config**: `~/.things/config.json` (managed by things)
 - **Plugin preferences**: `~/.things/what-do-you-know/preferences.json`
 
 Run `/setup-wdyk` to reconfigure.
 
 ## Related Plugins
 
-- **heres-the-thing** - Data layer that manages shared config and plugin coordination
+- **things** - Data layer that manages shared config and plugin coordination
 - **i-did-a-thing** - Log the experiences that power your learning sessions
 - **what-did-you-do** - Practice interview questions with the same personas and arsenal
 - **think-like** - Expert thinking profiles for different perspectives on your learning

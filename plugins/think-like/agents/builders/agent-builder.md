@@ -45,15 +45,33 @@ Write the context template following the established pattern:
 - Scope rules
 - Variants if applicable
 
-### 4. Build the Builder Agent
+### 4. Declare Tools
+
+Add a `tools` field to the action file frontmatter template in the new builder agent. This is advisory metadata documenting what tools the action type typically uses. Guidelines:
+
+- `Read`, `Glob`, `Grep` — **always included**. Every action type reads and searches code.
+- `LSP` — include for code-focused actions (code review, architecture, debugging, PR review). Omit for non-code actions (documentation review, style guide checks).
+- `Bash` — include for actions that need command execution (security audits running checks, architecture evaluation checking deployment configs, debugging running tests). Omit for pure code-reading actions (code review, code smell detection).
+
+Example for a code-focused action without command execution:
+```yaml
+tools: [Read, Glob, Grep, LSP]
+```
+
+Example for an action that runs commands:
+```yaml
+tools: [Read, Glob, Grep, Bash, LSP]
+```
+
+### 5. Build the Builder Agent
 
 Write the builder agent following the established pattern:
 - What You Receive / What You Produce structure
-- Action file template with all required sections
-- Quality checklist
+- Action file template with all required sections (including `tools` in frontmatter)
+- Quality checklist (including tools field verification)
 - Domain-specific notes
 
-### 5. Register the New Type
+### 6. Register the New Type
 
 After creating both files, tell the user:
 - The new template and builder are ready

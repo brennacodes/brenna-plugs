@@ -21,7 +21,7 @@ Show an overview of everything stored in `.things/`.
     1. Read `<home>/.things/config.json`
     2. Read `<home>/.things/registry.json`
 
-    <if condition="config-missing">Tell the user to run `/setup-htt`.</if>
+    <if condition="config-missing">Tell the user to run `/things:setup`.</if>
     </load-config>
   </step>
 
@@ -73,18 +73,14 @@ Show an overview of everything stored in `.things/`.
     <description>Optional Tag Aggregation (--tags)</description>
 
     <if condition="tags-flag">
-    Scan all `*/tags.json` files across plugin directories in `.things/`:
+    Read the central tag index:
 
-    ```bash
-    find <home>/.things -name "tags.json" -not -path "*/.git/*"
-    ```
-
-    <phase name="read-and-aggregate" number="1">
-    For each tags.json found, read it and aggregate tag counts across all plugins. Sort by total count descending.
+    <phase name="read-central-index" number="1">
+    Read `<home>/.things/tags/index.json`. If it doesn't exist, fall back to scanning `*/tags.json` files.
     </phase>
 
     <phase name="present-table" number="2">
-    Present as a table: tag name, total count, plugins that use it.
+    Present as a table: tag name, total count, last used, plugins/collections that use it. Sort by total count descending.
     </phase>
     </if>
   </step>

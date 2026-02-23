@@ -1,13 +1,13 @@
 ---
 name: setup-tl
-description: "Initialize think-like - verify heres-the-thing, register collections, create directory structure, and optionally install starter profiles. Use when user first uses think-like or says 'set up think-like'."
+description: "Initialize think-like - verify things, register collections, create directory structure, and optionally install starter profiles. Use when user first uses think-like or says 'set up think-like'."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
 ---
 
 <purpose>
-Configure think-like and register its collections with heres-the-thing. Creates the `.things/think-like/` directory structure, installs shared context templates, and optionally installs starter profiles.
+Configure think-like and register its collections with things. Creates the `.things/think-like/` directory structure, installs shared context templates, and optionally installs starter profiles.
 </purpose>
 
 <steps>
@@ -19,9 +19,9 @@ Configure think-like and register its collections with heres-the-thing. Creates 
       <command language="bash" output="home" tool="Bash">echo $HOME</command>
       <constraint>Never pass `~` to the Read tool.</constraint>
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
       <read path="<home>/.things/registry.json" output="registry" />
-      <if condition="registry-missing">Tell the user: "Run `/setup-htt` first." Then stop.</if>
+      <if condition="registry-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
     </load-config>
   </step>
 

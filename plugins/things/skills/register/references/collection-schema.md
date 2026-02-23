@@ -15,6 +15,12 @@ Each collection in the registry defines how a plugin's data is structured on dis
 | `master_index` | string/null | Path to master index file relative to `.things/`, or `null` |
 | `rebuild_command` | string/null | Shell command invoked after writes to this collection, or `null` |
 
+## Optional Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tags_field` | string/null | Path to tags within collection items. Values: `"frontmatter.tags"` (YAML frontmatter), `"json.tags"` (top-level JSON), `"json.goals[].tags"` (nested), or `null`. Used by central tag index. |
+
 ## Item Structure Patterns
 
 ### Pattern 1: Directory Per Item
@@ -151,7 +157,7 @@ Set to `null` for collections that don't need automated rebuilds.
 
 ```json
 {
-  "plugin": "heres-the-thing",
+  "plugin": "things",
   "description": "Shared role definitions accessible to all plugins",
   "item_structure": {
     "directory_per_item": false,

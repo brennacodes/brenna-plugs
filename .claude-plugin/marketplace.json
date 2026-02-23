@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "4.0.1",
+    "version": "4.1.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -90,10 +90,10 @@
       "category": "utilities"
     },
     {
-      "name": "heres-the-thing",
-      "source": "./plugins/heres-the-thing",
-      "description": "Schema-aware data layer for .things/ - manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
-      "version": "1.0.1",
+      "name": "things",
+      "source": "./plugins/things",
+      "description": "Schema-aware data layer for .things/ - manages setup, git sync, search, validation, collection registration, and central tag indexing for all brenna-plugs plugins",
+      "version": "2.0.0",
       "keywords": [
         "infrastructure",
         "data",
@@ -101,7 +101,8 @@
         "things",
         "config",
         "git",
-        "validation"
+        "validation",
+        "tags"
       ],
       "category": "infrastructure"
     },
@@ -119,6 +120,22 @@
         "profiles"
       ],
       "category": "engineering"
+    },
+    {
+      "name": "heres-the-thing",
+      "source": "./plugins/heres-the-thing",
+      "description": "Persuasion and positioning engine -- take any subject, tailor it for any audience, in any medium, and track what works",
+      "version": "1.0.0",
+      "keywords": [
+        "persuasion",
+        "positioning",
+        "pitch",
+        "communication",
+        "audience",
+        "strategy",
+        "outcomes"
+      ],
+      "category": "strategy"
     },
     {
       "name": "session-scout",

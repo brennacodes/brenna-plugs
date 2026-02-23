@@ -23,6 +23,7 @@ action: "security-audit"
 profile: "<id>"
 person_ref: "shared/people/<id>"
 description: "<person>'s approach to security analysis"
+tools: [Read, Glob, Grep, Bash, LSP]
 created: "<YYYY-MM-DD>"
 ---
 
@@ -67,6 +68,7 @@ created: "<YYYY-MM-DD>"
 - [ ] Red flags are concrete patterns, not abstract vulnerability categories
 - [ ] Severity calibration matches their philosophy (some people inflate, some understate)
 - [ ] Counterpoint addresses their specific blind spots about security tradeoffs
+- [ ] Tools field in frontmatter matches the action type's typical tool requirements
 - [ ] Action file is self-contained - no external files needed at execution time
 
 ## Domain Knowledge

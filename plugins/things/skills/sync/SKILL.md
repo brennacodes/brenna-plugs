@@ -20,12 +20,12 @@ Git workflow for the `.things/` repository.
 
     1. Read `<home>/.things/config.json`
 
-    <if condition="config-missing">Tell the user to run `/setup-htt`.</if>
+    <if condition="config-missing">Tell the user to run `/things:setup`.</if>
 
     <validate>
     Check that a git remote is configured in `config.json`.
     <if condition="no-remote-configured">
-    <output>No git remote configured for `.things/`. Use `/setup-htt reconfigure` to add one.</output>
+    <output>No git remote configured for `.things/`. Use `/things:setup reconfigure` to add one.</output>
     </if>
     </validate>
     </load-config>

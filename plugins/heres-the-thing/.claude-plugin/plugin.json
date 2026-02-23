@@ -1,12 +1,12 @@
 {
   "name": "heres-the-thing",
-  "version": "1.0.1",
-  "description": "Schema-aware data layer for .things/ -- manages setup, git sync, search, validation, and collection registration for all brenna-plugs plugins",
+  "version": "1.0.0",
+  "description": "Persuasion and positioning engine -- take any subject, tailor it for any audience, in any medium, and track what works",
   "author": {
     "name": "brennacodes",
     "email": "brennacodes@users.noreply.github.com"
   },
-  "keywords": ["infrastructure", "data", "registry", "things", "config", "git", "validation"],
+  "keywords": ["persuasion", "positioning", "pitch", "communication", "audience", "strategy", "outcomes"],
   "license": "MIT",
   "repository": "https://github.com/brennacodes/brenna-plugs"
 }

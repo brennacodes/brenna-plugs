@@ -1,6 +1,6 @@
 {
   "name": "think-like",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Apply expert thinking profiles to code reviews, architecture evaluation, and security audits -- think like DHH, Sandi Metz, or build your own expert profiles",
   "author": {
     "name": "brennacodes",

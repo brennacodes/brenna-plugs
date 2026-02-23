@@ -9,7 +9,7 @@ argument-hint: "[--dry-run]"
 <purpose>
 Migrate mark-my-words data files from the old flat `~/.things/` layout to the per-plugin `~/.things/mark-my-words/` directory structure. This moves voice profiles and renames the blog working directory.
 
-This skill handles **data file relocation only**. Config migration (config.yml -> config.json + preferences.json) is handled by `/setup-htt`. Run `/setup-htt` first if config.json doesn't exist yet.
+This skill handles **data file relocation only**. Config migration (config.yml -> config.json + preferences.json) is handled by `/things:setup`. Run `/things:setup` first if config.json doesn't exist yet.
 </purpose>
 
 <steps>
@@ -23,7 +23,7 @@ This skill handles **data file relocation only**. Config migration (config.yml -
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
     </load-config>
 
     <action>Check for old data.</action>

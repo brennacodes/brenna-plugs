@@ -22,7 +22,7 @@ See `references/collection-schema.md` for the full collection definition schema.
 
     1. Read `<home>/.things/registry.json`
 
-    <if condition="registry-missing">Tell the user to run `/setup-htt` first.</if>
+    <if condition="registry-missing">Tell the user to run `/things:setup` first.</if>
     </load-config>
   </step>
 

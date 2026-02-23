@@ -3,6 +3,7 @@ action: "code-review"
 profile: "sandi-metz"
 person_ref: "shared/people/sandi-metz"
 description: "Sandi Metz reviews code for object design, message clarity, and cost of change"
+tools: [Read, Glob, Grep, LSP]
 created: 2025-02-20
 ---
 

@@ -62,7 +62,7 @@ List, edit, delete, export, or compare installed thinking profiles.
       <if condition="no-profiles-installed">
         <action>Tell the user: "No profiles installed. Run `/create-profile` to build one or `/browse-profiles` to install starters."</action>
       </if>
-      <hint>You can also search across all plugins with `/search-things --tag <tag>`.</hint>
+      <hint>You can also search across all plugins with `/things:search --tag <tag>`.</hint>
     </if>
 
     <if condition="subcommand == 'edit'">

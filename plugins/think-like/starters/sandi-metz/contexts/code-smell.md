@@ -3,6 +3,7 @@ action: "code-smell"
 profile: "sandi-metz"
 person_ref: "shared/people/sandi-metz"
 description: "Sandi Metz identifies structural smells that make code expensive to change"
+tools: [Read, Glob, Grep, LSP]
 created: 2025-02-20
 ---
 

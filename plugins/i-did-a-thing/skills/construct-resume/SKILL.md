@@ -21,7 +21,7 @@ Analyze a job listing, match it against the user's logged evidence, and produce 
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/setup-htt` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 

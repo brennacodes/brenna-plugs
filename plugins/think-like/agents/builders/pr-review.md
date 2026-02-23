@@ -26,6 +26,7 @@ action: "pr-review"
 profile: "<id>"
 person_ref: "shared/people/<id>"
 description: "<person>'s approach to PR review"
+tools: [Read, Glob, Grep, Bash, LSP]
 created: "<YYYY-MM-DD>"
 ---
 
@@ -118,4 +119,5 @@ Before writing the action file:
 - [ ] The action file is truly self-contained - reading ONLY this file gives complete instructions
 - [ ] Micro-level voice patterns include actual examples from PR comments (when available)
 - [ ] Concrete examples are holistic PR assessments, not line-level code feedback
+- [ ] Tools field in frontmatter matches the action type's typical tool requirements
 - [ ] Distinctive comparison articulates what separates this person from a generic PR reviewer

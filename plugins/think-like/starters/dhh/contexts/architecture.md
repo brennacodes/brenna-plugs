@@ -3,6 +3,7 @@ action: "architecture"
 profile: "dhh"
 person_ref: "shared/people/dhh"
 description: "DHH evaluates system architecture through the majestic monolith lens"
+tools: [Read, Glob, Grep, LSP, Bash]
 created: 2025-02-20
 ---
 

@@ -23,6 +23,7 @@ action: "<variant>"
 profile: "<id>"
 person_ref: "shared/people/<id>"
 description: "<person>'s approach to <variant>"
+tools: [Read, Glob, Grep, LSP]
 created: "<YYYY-MM-DD>"
 ---
 
@@ -105,6 +106,7 @@ Before writing the action file:
 - [ ] The action file is truly self-contained - reading ONLY this file gives complete instructions
 - [ ] Micro-level voice patterns include actual examples from PR comments (when available)
 - [ ] Concrete examples are relevant to this specific action variant (not generic)
+- [ ] Tools field in frontmatter matches the action type's typical tool requirements
 - [ ] Distinctive comparison articulates what separates this person from a generic reviewer
 
 ## Variant-Specific Notes

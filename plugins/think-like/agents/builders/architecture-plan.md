@@ -23,6 +23,7 @@ action: "<variant>"
 profile: "<id>"
 person_ref: "shared/people/<id>"
 description: "<person>'s approach to <variant>"
+tools: [Read, Glob, Grep, LSP, Bash]
 created: "<YYYY-MM-DD>"
 ---
 
@@ -67,6 +68,7 @@ created: "<YYYY-MM-DD>"
 - [ ] Red flags connect to their philosophy (not generic anti-patterns)
 - [ ] Evolution guidance style matches their approach (incremental vs. transformational)
 - [ ] Counterpoint addresses genuine organizational/technical contexts where their approach falls short
+- [ ] Tools field in frontmatter matches the action type's typical tool requirements
 - [ ] Action file is self-contained
 
 ## Variant-Specific Notes

@@ -6,40 +6,41 @@ This is where I plugin.
 
 Forgive the cheezy names - we all have to get our kicks somewhere.
 
-## 8 Plugins
+## 9 Plugins
 
 | Plugin | What it does | Plugin-specific README |
 |--------|-------------|------------------------|
-| [**heres-the-thing**](#heres-the-thing) | Shared data layer for `~/.things/` — config, registry, migration, sync | [README](plugins/heres-the-thing/README.md) |
+| [**things**](#things) | Schema-aware data layer for `~/.things/` — config, registry, search, sync, tag indexing | [README](plugins/things/README.md) |
 | [**i-did-a-thing**](#i-did-a-thing) | Log professionally-relevant experiences, build a searchable evidence arsenal, generate tailored resumes | [README](plugins/i-did-a-thing/README.md) |
 | [**what-did-you-do**](#what-did-you-do) | Practice interviews with persona-driven coaching, powered by your logged evidence | [README](plugins/what-did-you-do/README.md) |
 | [**what-do-you-know**](#what-do-you-know) | Deepen understanding through concept quizzing, gap analysis, and learning plans | [README](plugins/what-do-you-know/README.md) |
 | [**mark-my-words**](#mark-my-words) | Write and publish blog posts across 7 static-site platforms — standalone or from your evidence logs | [README](plugins/mark-my-words/README.md) |
+| [**heres-the-thing**](#heres-the-thing) | Persuasion and positioning engine — tailor any subject for any audience, in any medium, and track what works | [README](plugins/heres-the-thing/README.md) |
 | [**think-like**](#think-like) | Expert thinking profiles for code review, architecture, security, and debugging | [README](plugins/think-like/README.md) |
 | [**screenshotr**](#screenshotr) | Precise macOS screenshots with crop, resize, and format control | [README](plugins/screenshotr/README.md) |
-| [**session-scout**](#session-scout) | Search, browse, and resume Claude Code sessions across all projects | |
+| [**session-scout**](#session-scout) | Search, browse, and resume Claude Code sessions across all projects | [README](plugins/session-scout/README.md) |
 
 ## Overview
 
 > [!WARNING]
 > **Upgrading from v3?** Version 4 introduced breaking changes to the config and data layout. Your data is safe, but you'll need to migrate. See [Migrating from v3](#migrating-from-v3) for details.
 
-Five career-focused plugins share a single config and data layer at `~/.things/`, powered by **heres-the-thing** (HTT). Log an experience once, then use that experience to for knowledge reinforcement through `what-do-you-know` or interview prep and resume building through `what-did-you-do`. Feed urls or reference material to `mark-my-words` and it creates a voice profile for you to use in blog posts. Feed those same urls or reference material to `think-like` and it creates expert-driven planning, reviews, and audits without re-telling the story. All git-tracked so you can take your things with you and never miss a beat.
+Seven plugins share a single config and data layer at `~/.things/`, powered by **things**. Log an experience once, then use that experience for knowledge reinforcement through `what-do-you-know`, interview prep and resume building through `what-did-you-do`, or persuasive positioning through `heres-the-thing`. Feed urls or reference material to `mark-my-words` and it creates a voice profile for you to use in blog posts. Feed those same urls or reference material to `think-like` and it creates expert-driven planning, reviews, and audits without re-telling the story. All git-tracked so you can take your things with you and never miss a beat.
 
 **screenshotr** and **session-scout** are standalone utilities with no `.things/` dependency.
 
 Set up the foundation first with:
 
 ```
-/setup-htt
+/things:setup
 ```
 
-Then configure each plugin's specialties with its own setup skill (e.g. `/setup-idat`, `/setup-wdyd`, etc.). When HTT detects an existing `config.yml`, it migrates all plugin configs automatically.
+Then configure each plugin's specialties with its own setup skill (e.g. `/setup-idat`, `/setup-wdyd`, `/setup-htt`, etc.).
 
-| Log it | Practice it | Learn from it | Write about it | Think like an expert |
-| --- | --- | --- | --- | --- |
-| `/thing-i-did` | `/practice` | `/explore` | `/from-things` | `/profile` |
-| **evidence arsenal**<br>**resume bullets**<br>**interview talking points** | **coached feedback**<br>**readiness scores**<br>**gap identification** | **concept maps**<br>**gap analysis**<br>**learning plans** | **published post**<br>**first-person story**<br>**blog with metrics** | **code review**<br>**architecture plans**<br>**security analysis** |
+| Log it | Practice it | Learn from it | Write about it | Make them care | Think like an expert |
+| --- | --- | --- | --- | --- | --- |
+| `/thing-i-did` | `/practice` | `/explore` | `/from-things` | `/pitch` | `/profile` |
+| **evidence arsenal**<br>**resume bullets**<br>**interview talking points** | **coached feedback**<br>**readiness scores**<br>**gap identification** | **concept maps**<br>**gap analysis**<br>**learning plans** | **published post**<br>**first-person story**<br>**blog with metrics** | **strategy briefs**<br>**tailored deliverables**<br>**outcome tracking** | **code review**<br>**architecture plans**<br>**security analysis** |
 
 ## Installation
 
@@ -50,7 +51,7 @@ Then configure each plugin's specialties with its own setup skill (e.g. `/setup-
 
 ### Install what you need
 ```
-/plugin install heres-the-thing@brenna-plugs
+/plugin install things@brenna-plugs
 ```
 ```
 /plugin install i-did-a-thing@brenna-plugs
@@ -65,29 +66,35 @@ Then configure each plugin's specialties with its own setup skill (e.g. `/setup-
 /plugin install mark-my-words@brenna-plugs
 ```
 ```
+/plugin install heres-the-thing@brenna-plugs
+```
+```
 /plugin install think-like@brenna-plugs
 ```
 ```
 /plugin install screenshotr@brenna-plugs
 ```
+```
+/plugin install session-scout@brenna-plugs
+```
 
 ---
 
-### heres-the-thing
+### things
 
-The shared data layer that powers the career plugin ecosystem. Creates and manages `~/.things/` — config, registry, professional profile, and cross-machine sync. Run this setup first; every other career plugin depends on it.
+The schema-aware data layer that powers the plugin ecosystem. Creates and manages `~/.things/` — config, registry, central tag index, and cross-machine sync. Domain-ignorant: it knows about collections, indexes, tags, and file structures — not what logs or resumes are. Run this setup first; every other `.things/` plugin depends on it.
 
 | Skill | Description |
 |-------|-------------|
-| `/setup-htt` | Initialize `~/.things/` with config.json, registry.json, and professional profile |
-| `/status` | Show current config state, registered plugins, and sync status |
-| `/search-things` | Search across all plugin data in `~/.things/` |
-| `/validate` | Validate config integrity and plugin registrations |
-| `/sync` | Git sync `~/.things/` across machines |
-| `/register` | Register a plugin with the Things registry |
-| `/migrate` | Migrate shared resources and clean up old layout artifacts |
+| `/things:setup` | Initialize `~/.things/` with config.json, registry.json, directory structure, and git repo |
+| `/things:status` | Show collection counts, last-modified dates, git state, and tag aggregation |
+| `/things:search` | Search across collections by tag, field, text, or find orphaned items |
+| `/things:validate` | Check git health, registry integrity, structural correctness, and orphan detection |
+| `/things:sync` | Git push, pull, or status for the `~/.things/` repository |
+| `/things:register` | Add, update, or remove collection definitions in the registry |
+| `/things:migrate` | Migrate shared resources and clean up old layout artifacts |
 
-[View the README](plugins/heres-the-thing/README.md)
+[View the README](plugins/things/README.md)
 
 ---
 
@@ -167,6 +174,27 @@ Knowledge reinforcement that draws from your actual experience. Explore topics w
 
 ---
 
+### heres-the-thing
+
+Persuasion and positioning engine — take any subject, tailor it for any audience, in any medium, and track what works. Creates campaign-based strategy briefs with audience analysis, generates deliverables across 6 built-in types (or create your own), and logs outcomes that feed back into audience and professional profiles.
+
+| Skill | Description |
+|-------|-------------|
+| `/setup-htt` | Initialize directories, preferences, and register collections with things |
+| `/pitch` | Guided interview to create a campaign with strategy brief and deliverables |
+| `/prep` | Generate or refine deliverables for a specific goal, includes Q&A prep |
+| `/outcome` | Log what happened, capture reflections, push feedback to profiles |
+| `/review` | Cross-campaign analysis — patterns, medium effectiveness, audience insights |
+| `/audience` | Create and manage reusable audience segment profiles |
+| `/create-type` | Create custom deliverable types with templates and tool requirements |
+| `/migrate-htt` | Migrate data files from old layout to per-plugin directories |
+
+Campaign workflow: pitch (create) → prep (refine) → outcome (track). Prep levels: zero → strategized → drafted → rehearsed. Integrates with i-did-a-thing for source material, mark-my-words for voice profiles, and think-like for audience perspective modeling.
+
+[View the README](plugins/heres-the-thing/README.md)
+
+---
+
 ### think-like
 
 Expert thinking profiles for code review, architecture, security, and debugging. Builder agents research a person's philosophy and produce self-contained action files that Claude follows directly. Ships with starter profiles for DHH, Sandi Metz, and a Strict Security Lead — or create your own from any public figure or archetype.
@@ -241,8 +269,8 @@ Yes. Migration reads from old locations and writes to new ones — nothing is de
 Every migration command supports `--dry-run`. Run it first to see exactly what data was found, what will move, and what will be created — without touching any files:
 
 ```
-/setup-htt --dry-run
-/migrate-htt --dry-run
+/things:setup --dry-run
+/things:migrate --dry-run
 /migrate-idat --dry-run
 ```
 
@@ -253,7 +281,7 @@ Run these in order. Each command is idempotent — safe to re-run if interrupted
 **1. Migrate the foundation**
 
 ```
-/setup-htt
+/things:setup
 ```
 
 This detects your existing `config.yml`, migrates settings to the new `config.json`, creates the registry, and sets up the directory structure. It will walk you through any decisions (like git workflow preferences that didn't exist in v3).
@@ -261,7 +289,7 @@ This detects your existing `config.yml`, migrates settings to the new `config.js
 **2. Migrate shared resources**
 
 ```
-/migrate-htt
+/things:migrate
 ```
 
 Moves shared data (people, roles, companies) from old locations into `~/.things/shared/`. Registers collections in the registry.
@@ -288,7 +316,7 @@ Each moves that plugin's data files from the old flat layout into per-plugin dir
 **4. Verify**
 
 ```
-/validate
+/things:validate
 ```
 
 Checks config integrity, registry entries, and data consistency across all migrated plugins. Fix anything it flags before cleaning up old files.
