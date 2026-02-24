@@ -1,0 +1,12 @@
+{
+  "name": "for-the-record",
+  "version": "1.0.0",
+  "description": "Capture structured documentation from Claude conversations - decisions, technical references, discussion summaries, how-to guides, and architecture docs with auto-tagging and full-text search",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["documentation", "capture", "reference", "knowledge", "conversation", "decisions", "architecture"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

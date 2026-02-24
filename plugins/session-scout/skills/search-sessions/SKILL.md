@@ -1,5 +1,5 @@
 ---
-name: search
+name: search-sessions
 description: Search Claude Code sessions by keyword across all projects. Searches summaries and first prompts by default, or full transcripts with --deep.
 disable-model-invocation: true
 allowed-tools: Bash, Read
@@ -15,11 +15,11 @@ Read and follow the formatting rules in `references/output-format.md`.
 Search Claude Code sessions by keyword across all projects. Searches summaries and first prompts by default, or full transcripts with --deep.
 
 ```
-/search auth bug               # Search index metadata
-/search plugin --deep           # Also search full transcripts
-/search "" --project bivvy      # List all sessions for a project
-/search refactor --since "3 days ago"
-/search fix --since 2026-02-01 --until 2026-02-15
+/search-sessions auth bug               # Search index metadata
+/search-sessions plugin --deep           # Also search full transcripts
+/search-sessions "" --project bivvy      # List all sessions for a project
+/search-sessions refactor --since "3 days ago"
+/search-sessions fix --since 2026-02-01 --until 2026-02-15
 ```
 </purpose>
 

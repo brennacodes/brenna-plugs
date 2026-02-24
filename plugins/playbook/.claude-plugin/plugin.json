@@ -1,0 +1,12 @@
+{
+  "name": "playbook",
+  "version": "1.0.0",
+  "description": "Orchestrate plans, workflows, implementation tracking, and reviews - import plans from Claude sessions, create XML-enhanced workflows, review implementations against plans, resume work, and track progress",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["plans", "workflows", "reviews", "implementation", "tracking", "progress", "orchestration"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

@@ -1,5 +1,5 @@
 ---
-name: search
+name: search-things
 description: "Registry-aware search across .things/ - search by collection, tag, field, full-text, or find orphaned data. Use when user says 'search things', 'find in things', 'which profiles have [tag]'."
 disable-model-invocation: false
 allowed-tools: Read, Bash, Glob, Grep

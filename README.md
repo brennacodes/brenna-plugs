@@ -88,7 +88,7 @@ The schema-aware data layer that powers the plugin ecosystem. Creates and manage
 |-------|-------------|
 | `/things:setup` | Initialize `~/.things/` with config.json, registry.json, directory structure, and git repo |
 | `/things:status` | Show collection counts, last-modified dates, git state, and tag aggregation |
-| `/things:search` | Search across collections by tag, field, text, or find orphaned items |
+| `/things:search-things` | Search across collections by tag, field, text, or find orphaned items |
 | `/things:validate` | Check git health, registry integrity, structural correctness, and orphan detection |
 | `/things:sync` | Git push, pull, or status for the `~/.things/` repository |
 | `/things:register` | Add, update, or remove collection definitions in the registry |

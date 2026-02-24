@@ -1,4 +1,4 @@
-# Output Format - /search
+# Output Format - /search-sessions
 
 ## Table Format
 
@@ -25,7 +25,7 @@ If `--deep` was used, note that transcript content was also searched.
 ## Empty Results
 
 If 0 results and `--deep` was not used:
-> No sessions found matching "{query}" in metadata. Try `/search {query} --deep` to also search inside session transcripts.
+> No sessions found matching "{query}" in metadata. Try `/search-sessions {query} --deep` to also search inside session transcripts.
 
 If 0 results with `--deep`:
 > No sessions found matching "{query}" in metadata or transcripts.

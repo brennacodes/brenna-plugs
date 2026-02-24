@@ -15,7 +15,7 @@ things is **domain-ignorant**: it doesn't know what logs, profiles, or resumes a
 | `/things:setup` | Initialize `.things/` - create directory structure, config, registry, git repo |
 | `/things:register` | Add, update, or remove collection definitions in the registry |
 | `/things:status` | Show collection counts, last-modified dates, git state, tag aggregation |
-| `/things:search` | Search across collections by tag, field, text, or find orphaned items |
+| `/things:search-things` | Search across collections by tag, field, text, or find orphaned items |
 | `/things:validate` | Check git health, registry integrity, structural correctness, orphan detection |
 | `/things:sync` | Git push, pull, or status for the `.things/` repository |
 | `/things:migrate` | Migrate shared resources and clean up old layout artifacts. Per-plugin data is handled by each plugin's own migrate command |
@@ -40,7 +40,7 @@ Plugins add their own directories (e.g., `think-like/`, `i-did-a-thing/`) and re
 
 ## Tags
 
-Collections can declare `tags_field` in their registry definition. The central tag index at `tags/index.json` aggregates tags across all registered collections, enabling cross-plugin tag search via `/things:search --tag <tag>`.
+Collections can declare `tags_field` in their registry definition. The central tag index at `tags/index.json` aggregates tags across all registered collections, enabling cross-plugin tag search via `/things:search-things --tag <tag>`.
 
 ## Hooks
 

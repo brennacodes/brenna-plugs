@@ -149,6 +149,38 @@
         "grep"
       ],
       "category": "utilities"
+    },
+    {
+      "name": "for-the-record",
+      "source": "./plugins/for-the-record",
+      "description": "Capture structured documentation from Claude conversations \u2014 decisions, technical references, discussion summaries, how-to guides, and architecture docs with auto-tagging and search",
+      "version": "1.0.0",
+      "keywords": [
+        "documentation",
+        "capture",
+        "reference",
+        "knowledge",
+        "conversation",
+        "decisions",
+        "architecture"
+      ],
+      "category": "content"
+    },
+    {
+      "name": "playbook",
+      "source": "./plugins/playbook",
+      "description": "Orchestrate plans, workflows, implementation tracking, and reviews \u2014 import plans from Claude sessions, create XML-enhanced workflows, review implementations, and track progress",
+      "version": "1.0.0",
+      "keywords": [
+        "plans",
+        "workflows",
+        "reviews",
+        "implementation",
+        "tracking",
+        "progress",
+        "orchestration"
+      ],
+      "category": "engineering"
     }
   ]
 }
