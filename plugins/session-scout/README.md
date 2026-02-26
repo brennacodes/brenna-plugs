@@ -27,7 +27,7 @@ List all projects with session counts, or drill into a specific project.
 
 ```
 /projects            # List all projects
-/projects bivvy      # Show all sessions for "bivvy"
+/projects [project]      # Show all sessions for <project>
 ```
 
 ### Search
@@ -37,7 +37,7 @@ Search sessions by keyword across all projects. Searches summaries and first pro
 ```
 /search auth bug               # Search index metadata
 /search plugin --deep           # Also search full transcripts
-/search "" --project bivvy      # List all sessions for a project
+/search "" --project <project>      # List all sessions for <project>
 /search refactor --since "3 days ago"
 /search fix --since 2026-02-01 --until 2026-02-15
 ```

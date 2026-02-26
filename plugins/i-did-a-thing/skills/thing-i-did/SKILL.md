@@ -21,7 +21,7 @@ Walk the user through capturing a professional experience with enough depth and 
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 
@@ -94,7 +94,7 @@ Walk the user through capturing a professional experience with enough depth and 
       - `duration` -- how long this took
       - `metrics` -- quantifiable outcomes
 
-      <constraint>Project/task context preservation: When the context references a specific project, codebase, tool, or task, capture that specificity in the body sections, in `team_or_org`, and in tags. Don't generalize away the details -- "redesigned bivvy's prompt routing system" is better than "improved a system."</constraint>
+      <constraint>Project/task context preservation: When the context references a specific project, codebase, tool, or task, capture that specificity in the body sections, in `team_or_org`, and in tags. Don't generalize away the details -- "redesigned MyApp's prompt routing system" is better than "improved a system."</constraint>
 
       <action>Classify each field as:</action>
       - **confident** -- clearly stated or directly quotable from the context

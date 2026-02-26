@@ -18,7 +18,7 @@ Configure interview preferences, set follow-up depth (concise, detailed, or coac
 /setup-wdyd [reconfigure]
 ```
 
-Requires things to be set up first (`/things:setup`).
+Requires things to be set up first (`/things:setup-things`).
 
 ## Skills
 
@@ -52,7 +52,7 @@ Requires things to be set up first (`/things:setup`).
 /update-questions <url or 'manual'>
 ```
 
-**Migrate Data** - Move what-did-you-do data from the old `~/.things/interview-prep/` layout to the per-plugin directory structure. Moves sessions, question overrides, company prep plans, and converts the markdown progress dashboard to JSON. Run `/things:setup` first if config.json doesn't exist yet.
+**Migrate Data** - Move what-did-you-do data from the old `~/.things/interview-prep/` layout to the per-plugin directory structure. Moves sessions, question overrides, company prep plans, and converts the markdown progress dashboard to JSON. Run `/things:setup-things` first if config.json doesn't exist yet.
 
 ```
 /migrate-wdyd [--dry-run]

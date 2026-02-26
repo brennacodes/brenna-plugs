@@ -19,7 +19,7 @@ Configure the plugin to use your i-did-a-thing arsenal for knowledge reinforceme
       <command language="bash" output="home" tool="Bash">echo $HOME</command>
       <constraint>Never pass `~` to the Read tool.</constraint>
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize your .things directory." Then stop.</if>
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
       <action>Check if `<home>/.things/what-do-you-know/preferences.json` exists.</action>
       <if condition="preferences-exist">

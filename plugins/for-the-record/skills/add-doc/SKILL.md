@@ -21,7 +21,7 @@ Capture a structured document from the current conversation context. Automatical
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/for-the-record/preferences.json" output="preferences" />
       <if condition="preferences-missing">Tell the user: "Run `/setup-ftr` first." Then stop.<exit /></if>
@@ -94,7 +94,7 @@ Capture a structured document from the current conversation context. Automatical
     - **detailed**: Full reasoning chains, all alternatives discussed, complete code blocks, edge cases, caveats, and context that future-you needs. Preserve the richness of the conversation.
     </constraint>
 
-    <constraint>Preserve specificity. "Configured bivvy's prompt routing to use XML workflow tags" is better than "set up the system." Capture project names, tool names, version numbers, file paths, and configuration details.</constraint>
+    <constraint>Preserve specificity. "Configured app's prompt routing to use XML workflow tags" is better than "set up the system." Capture project names, tool names, version numbers, file paths, and configuration details.</constraint>
   </step>
 
   <step id="generate-tags" number="6">

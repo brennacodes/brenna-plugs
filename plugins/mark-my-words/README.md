@@ -18,7 +18,7 @@ Configure your blog platform, source location (local path or git remote), conten
 /setup-mmw
 ```
 
-Requires things to be set up first (`/things:setup`).
+Requires things to be set up first (`/things:setup-things`).
 
 ### Supported Platforms
 
@@ -76,7 +76,7 @@ Requires things to be set up first (`/things:setup`).
 /add-media [post filename or search term]
 ```
 
-**Migrate Data** - Move mark-my-words data from the old flat `~/.things/` layout to the per-plugin directory structure. Moves voice profiles and renames the blog working directory. Run `/things:setup` first if config.json doesn't exist yet.
+**Migrate Data** - Move mark-my-words data from the old flat `~/.things/` layout to the per-plugin directory structure. Moves voice profiles and renames the blog working directory. Run `/things:setup-things` first if config.json doesn't exist yet.
 
 ```
 /migrate-mmw [--dry-run]

@@ -32,7 +32,7 @@ Seven plugins share a single config and data layer at `~/.things/`, powered by *
 Set up the foundation first with:
 
 ```
-/things:setup
+/things:setup-things
 ```
 
 Then configure each plugin's specialties with its own setup skill (e.g. `/setup-idat`, `/setup-wdyd`, `/setup-htt`, etc.).
@@ -86,7 +86,7 @@ The schema-aware data layer that powers the plugin ecosystem. Creates and manage
 
 | Skill | Description |
 |-------|-------------|
-| `/things:setup` | Initialize `~/.things/` with config.json, registry.json, directory structure, and git repo |
+| `/things:setup-things` | Initialize `~/.things/` with config.json, registry.json, directory structure, and git repo |
 | `/things:status` | Show collection counts, last-modified dates, git state, and tag aggregation |
 | `/things:search-things` | Search across collections by tag, field, text, or find orphaned items |
 | `/things:validate` | Check git health, registry integrity, structural correctness, and orphan detection |
@@ -269,7 +269,7 @@ Yes. Migration reads from old locations and writes to new ones — nothing is de
 Every migration command supports `--dry-run`. Run it first to see exactly what data was found, what will move, and what will be created — without touching any files:
 
 ```
-/things:setup --dry-run
+/things:setup-things --dry-run
 /things:migrate --dry-run
 /migrate-idat --dry-run
 ```
@@ -281,7 +281,7 @@ Run these in order. Each command is idempotent — safe to re-run if interrupted
 **1. Migrate the foundation**
 
 ```
-/things:setup
+/things:setup-things
 ```
 
 This detects your existing `config.yml`, migrates settings to the new `config.json`, creates the registry, and sets up the directory structure. It will walk you through any decisions (like git workflow preferences that didn't exist in v3).

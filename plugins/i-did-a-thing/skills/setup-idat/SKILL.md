@@ -21,7 +21,7 @@ Configure accomplishment logging within the `.things/` directory managed by thin
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize your .things directory." Then stop.<exit /></if>
 
       <read path="<home>/.things/registry.json" output="registry" />
 

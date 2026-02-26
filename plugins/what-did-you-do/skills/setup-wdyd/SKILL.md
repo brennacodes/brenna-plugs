@@ -21,7 +21,7 @@ Configure the plugin to use your i-did-a-thing arsenal for interview preparation
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize your .things directory." Then stop.</if>
 
       <read path="<home>/.things/shared/professional-profile.json" output="profile" />
 

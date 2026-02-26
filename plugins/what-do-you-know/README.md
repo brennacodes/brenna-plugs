@@ -18,7 +18,7 @@ Configure learning preferences, set learning depth, default persona, session len
 /setup-wdyk [reconfigure]
 ```
 
-Requires things to be set up first (`/things:setup`).
+Requires things to be set up first (`/things:setup-things`).
 
 ## Skills
 
@@ -46,7 +46,7 @@ Requires things to be set up first (`/things:setup`).
 /bridge <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
 ```
 
-**Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/things:setup` first if config.json doesn't exist yet.
+**Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/things:setup-things` first if config.json doesn't exist yet.
 
 ```
 /migrate-wdyk [--dry-run]

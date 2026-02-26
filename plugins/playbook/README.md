@@ -12,7 +12,7 @@ Plans sit in `~/.claude/plans/` after Claude Code plan mode. This plugin brings 
 
 ## Setup
 
-Requires things (`/things:setup`). Configures workflow targets, import behavior, and review defaults.
+Requires things (`/things:setup-things`). Configures workflow targets, import behavior, and review defaults.
 
 ```
 /setup-pb
@@ -32,7 +32,7 @@ To reconfigure:
 /capture-plan <thing> [--status active] [--project <name>] [--references path1,path2]
 ```
 
-**Create Workflow** - Create or update an XML-enhanced workflow file following the bivvy pattern. Structured steps with gates, prerequisites, verification commands, and principles. Writes an archive copy to `.things/` and optionally a working copy to the project's `.claude/workflows/` directory. Can reference from CLAUDE.md or embed directly into a SKILL.md.
+**Create Workflow** - Create or update an XML-enhanced workflow file. Structured steps with gates, prerequisites, verification commands, and principles. Writes an archive copy to `.things/` and optionally a working copy to the project's `.claude/workflows/` directory. Can reference from CLAUDE.md or embed directly into a SKILL.md.
 
 ```
 /create-workflow <scope> [--target <path>] [--update <existing>] [--embed-in <file>]
@@ -82,7 +82,7 @@ To reconfigure:
 
 ## Workflow Format
 
-Workflows use XML-enhanced markdown (the "bivvy pattern") with structured steps:
+Workflows use XML-enhanced markdown with structured steps:
 
 - `<step>` with `<title>`, `<goal>`, `<instructions>`, `<gate>`
 - `<prerequisite ref="">` for step dependencies

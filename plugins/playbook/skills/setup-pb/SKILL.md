@@ -21,7 +21,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize .things/." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize .things/." Then stop.<exit /></if>
 
       <if condition="reconfigure-argument">
         <read path="<home>/.things/playbook/preferences.json" output="existing-prefs" />
@@ -155,7 +155,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
     {
       "playbook/workflows": {
         "plugin": "playbook",
-        "description": "XML-enhanced workflow documents following the bivvy pattern",
+        "description": "XML-enhanced workflow documents",
         "tags_field": "frontmatter.tags",
         "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },
         "index_schema": {

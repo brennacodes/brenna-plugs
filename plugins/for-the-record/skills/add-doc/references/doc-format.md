@@ -98,4 +98,4 @@ Tags should be consistent with the existing tag vocabulary in `tags.json`. Commo
 - Technologies: `rust`, `python`, `claude-code`, `mcp`
 - Domains: `architecture`, `security`, `performance`, `testing`
 - Activity types: `decision`, `reference`, `how-to`, `discussion`
-- Project names: `bivvy`, `brenna-plugs`
+- Project names: `my-app`, `brenna-plugs`

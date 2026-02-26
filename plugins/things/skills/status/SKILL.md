@@ -21,7 +21,7 @@ Show an overview of everything stored in `.things/`.
     1. Read `<home>/.things/config.json`
     2. Read `<home>/.things/registry.json`
 
-    <if condition="config-missing">Tell the user to run `/things:setup`.</if>
+    <if condition="config-missing">Tell the user to run `/things:setup-things`.</if>
     </load-config>
   </step>
 

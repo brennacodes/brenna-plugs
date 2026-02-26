@@ -66,6 +66,6 @@ heres-the-thing takes any subject matter and tailors communication for a specifi
 
 ## Requirements
 
-- things plugin (`/things:setup`) must be set up first
+- things plugin (`/things:setup-things`) must be set up first
 - Python 3 (for notification scripts)
 - macOS (for launchd-based notifications, optional)

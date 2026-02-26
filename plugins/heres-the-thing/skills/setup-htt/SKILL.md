@@ -19,10 +19,10 @@ Configure heres-the-thing and register its collections with things. Creates the 
     Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below -- never pass `~` to the Read tool.
 
     1. Read `<home>/.things/config.json`
-       <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
+       <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize your .things directory." Then stop.</if>
 
     2. Read `<home>/.things/registry.json`
-       <if condition="registry-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
+       <if condition="registry-missing">Tell the user: "Run `/things:setup-things` first." Then stop.</if>
 
     3. Check if `<home>/.things/heres-the-thing/preferences.json` exists
        <if condition="preferences-exist">Show current settings and ask (via AskUserQuestion) if they want to reconfigure.</if>

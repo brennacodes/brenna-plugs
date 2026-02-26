@@ -12,7 +12,7 @@ Stop manually telling Claude "capture this as a markdown document." The plugin e
 
 ## Setup
 
-Requires things (`/things:setup`). Configures documentation preferences.
+Requires things (`/things:setup-things`). Configures documentation preferences.
 
 ```
 /setup-ftr
@@ -80,7 +80,7 @@ The plugin maintains:
     ├── preferences.json
     ├── docs/
     │   ├── 2026-02-23-things-config-architecture.md
-    │   ├── 2026-02-20-bivvy-prompt-routing.md
+    │   ├── 2026-02-20-my-app-prompt-routing.md
     │   └── ...
     ├── discussions/
     │   ├── 2026-02-23-api-design-debate.md

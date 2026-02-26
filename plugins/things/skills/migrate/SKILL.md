@@ -13,7 +13,7 @@ argument-hint: "[--dry-run]"
 <purpose>
 Migrate shared resources and infrastructure from the old flat `.things/` layout to the new per-plugin directory structure. This handles directory relocation, shared data (personas, companies), bootstrap cleanup, and config.yml archival.
 
-**Config migration** (config.yml -> config.json + per-plugin preferences.json) is handled by `/things:setup`. Run `/things:setup` first if config.json doesn't exist yet.
+**Config migration** (config.yml -> config.json + per-plugin preferences.json) is handled by `/things:setup-things`. Run `/things:setup-things` first if config.json doesn't exist yet.
 
 **Per-plugin data migration** is handled by each plugin's own migrate command:
 - `/migrate-idat` -- logs, arsenal, resumes, index files
@@ -32,7 +32,7 @@ Migrate shared resources and infrastructure from the old flat `.things/` layout 
 
       <phase name="check-config">
         1. Check if `<home>/.things/config.json` exists.
-           <if condition="config-json-missing">Tell the user: "Run `/things:setup` first - it handles config migration and directory setup." Then stop.</if>
+           <if condition="config-json-missing">Tell the user: "Run `/things:setup-things` first - it handles config migration and directory setup." Then stop.</if>
 
         2. Read `<home>/.things/config.json` for git workflow settings.
       </phase>

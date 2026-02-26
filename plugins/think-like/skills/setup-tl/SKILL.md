@@ -19,9 +19,9 @@ Configure think-like and register its collections with things. Creates the `.thi
       <command language="bash" output="home" tool="Bash">echo $HOME</command>
       <constraint>Never pass `~` to the Read tool.</constraint>
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first to initialize your .things directory." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first to initialize your .things directory." Then stop.</if>
       <read path="<home>/.things/registry.json" output="registry" />
-      <if condition="registry-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
+      <if condition="registry-missing">Tell the user: "Run `/things:setup-things` first." Then stop.</if>
     </load-config>
   </step>
 

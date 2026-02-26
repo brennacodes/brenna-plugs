@@ -1,5 +1,5 @@
 ---
-name: setup
+name: setup-things
 description: "Initialize or reconfigure the .things/ directory - creates config, registry, shared resources, and git repository. Detects and migrates existing config.yml automatically. Required before any brenna-plugs career plugin can store data."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion

@@ -12,7 +12,7 @@ Not everything worth remembering is a win. A hard lesson, deep expertise on a to
 
 ## Setup
 
-Requires things (`/things:setup`). Configures logging preferences.
+Requires things (`/things:setup-things`). Configures logging preferences.
 
 ```
 /setup-idat
@@ -38,7 +38,7 @@ To reconfigure:
 /construct-resume [job listing URL or text]
 ```
 
-**Migrate Data** - Move i-did-a-thing data files from the old flat `~/.things/` layout to the per-plugin directory structure. Moves logs, arsenal, resumes, index.json, and tags.json. Run `/things:setup` first if config.json doesn't exist yet.
+**Migrate Data** - Move i-did-a-thing data files from the old flat `~/.things/` layout to the per-plugin directory structure. Moves logs, arsenal, resumes, index.json, and tags.json. Run `/things:setup-things` first if config.json doesn't exist yet.
 
 ```
 /migrate-idat [--dry-run]

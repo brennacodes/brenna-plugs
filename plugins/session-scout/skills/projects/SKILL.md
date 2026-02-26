@@ -16,7 +16,7 @@ List all Claude Code projects with session counts and last modified dates, or vi
 
 ```
 /projects            # List all projects with session counts
-/projects bivvy      # Show all sessions for the "bivvy" project
+/projects <project>      # Show all sessions for the <project> project
 ```
 </purpose>
 

@@ -25,7 +25,7 @@ This skill exists specifically because `/add-doc` intelligently structures and s
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/for-the-record/preferences.json" output="preferences" />
       <if condition="preferences-missing">Tell the user: "Run `/setup-ftr` first." Then stop.<exit /></if>

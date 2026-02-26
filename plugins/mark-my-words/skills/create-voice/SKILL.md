@@ -25,7 +25,7 @@ You are creating a voice profile from the user's writing samples. The profile wi
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.</if>
 
       <read path="<home>/.things/mark-my-words/preferences.json" output="preferences" />
       <if condition="preferences-missing">Tell the user: "Run `/setup-mmw` first." Then stop.</if>

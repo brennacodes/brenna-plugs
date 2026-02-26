@@ -20,7 +20,7 @@ You are configuring the mark-my-words plugin for the user's blog. Your job is to
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.</if>
     </load-config>
 
     <validate name="existing-preferences">

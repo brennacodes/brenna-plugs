@@ -21,7 +21,7 @@ Validate XML workflow files for structural correctness and format compliance. De
       <constraint>Never pass `~` to the Read tool.</constraint>
 
       <read path="<home>/.things/config.json" output="config" />
-      <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.<exit /></if>
+      <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.<exit /></if>
 
       <read path="<home>/.things/playbook/preferences.json" output="preferences" />
       <if condition="preferences-missing">Tell the user: "Run `/setup-pb` first." Then stop.<exit /></if>

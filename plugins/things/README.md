@@ -12,7 +12,7 @@ things is **domain-ignorant**: it doesn't know what logs, profiles, or resumes a
 
 | Skill | Description |
 |-------|-------------|
-| `/things:setup` | Initialize `.things/` - create directory structure, config, registry, git repo |
+| `/things:setup-things` | Initialize `.things/` - create directory structure, config, registry, git repo |
 | `/things:register` | Add, update, or remove collection definitions in the registry |
 | `/things:status` | Show collection counts, last-modified dates, git state, tag aggregation |
 | `/things:search-things` | Search across collections by tag, field, text, or find orphaned items |

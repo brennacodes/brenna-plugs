@@ -19,7 +19,7 @@ Analyze patterns across all campaigns and outcomes. Surface insights about what 
     Resolve the user's home directory (run `echo $HOME` via Bash). Use this absolute path for all file operations below -- never pass `~` to the Read tool.
 
     1. Read `<home>/.things/config.json`
-       <if condition="config-missing">Tell the user: "Run `/things:setup` first." Then stop.</if>
+       <if condition="config-missing">Tell the user: "Run `/things:setup-things` first." Then stop.</if>
 
     2. Read `<home>/.things/shared/professional-profile.json`
     </load-config>

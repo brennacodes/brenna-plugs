@@ -17,7 +17,7 @@ Search Claude Code sessions by keyword across all projects. Searches summaries a
 ```
 /search-sessions auth bug               # Search index metadata
 /search-sessions plugin --deep           # Also search full transcripts
-/search-sessions "" --project bivvy      # List all sessions for a project
+/search-sessions "" --project <name>      # List all sessions for a project
 /search-sessions refactor --since "3 days ago"
 /search-sessions fix --since 2026-02-01 --until 2026-02-15
 ```
