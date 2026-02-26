@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "4.1.0",
+    "version": "5.0.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -79,7 +79,7 @@
       "name": "screenshotr",
       "source": "./plugins/screenshotr",
       "description": "Precise screenshot capabilities for macOS \u2014 capture screens, windows, regions, or URLs with resize, crop, delay, and format control",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "keywords": [
         "screenshot",
         "macos",
@@ -93,7 +93,7 @@
       "name": "things",
       "source": "./plugins/things",
       "description": "Schema-aware data layer for .things/ - manages setup, git sync, search, validation, collection registration, and central tag indexing for all brenna-plugs plugins",
-      "version": "2.0.0",
+      "version": "1.0.0",
       "keywords": [
         "infrastructure",
         "data",

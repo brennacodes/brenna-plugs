@@ -19,11 +19,23 @@ if [ "${2:-}" = "--all" ]; then
   ALL_MODE=true
 fi
 
+find_python_with_quartz() {
+  for py in python3 /usr/bin/python3; do
+    if command -v "$py" >/dev/null 2>&1 && "$py" -c "import Quartz" 2>/dev/null; then
+      echo "$py"
+      return 0
+    fi
+  done
+  return 1
+}
+
+PYTHON3=""
+
 get_windows_python() {
   local app_name="$1"
   local all_mode="$2"
 
-  python3 << PYEOF
+  $PYTHON3 << PYEOF
 import Quartz
 import sys
 
@@ -179,7 +191,7 @@ ASEOF
 RESULT=""
 EXIT_CODE=1
 
-if python3 -c "import Quartz" 2>/dev/null; then
+if PYTHON3=$(find_python_with_quartz); then
   RESULT=$(get_windows_python "$APP_NAME" "$ALL_MODE" 2>/dev/null) && EXIT_CODE=0 || true
 fi
 
