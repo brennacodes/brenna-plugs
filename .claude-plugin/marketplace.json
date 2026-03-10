@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of Claude Code plugins by brennacodes",
-    "version": "5.0.0",
+    "version": "6.0.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
@@ -181,6 +181,22 @@
         "orchestration"
       ],
       "category": "engineering"
+    },
+    {
+      "name": "claude-scout",
+      "source": "./plugins/claude-scout",
+      "description": "Track filesystem changes in ~/.claude/ and other directories \u2014 git snapshots, changelog parsing, diff queries, and plugin dependency health checks",
+      "version": "1.0.0",
+      "keywords": [
+        "tracking",
+        "changelog",
+        "diff",
+        "snapshots",
+        "health",
+        "plugins",
+        "infrastructure"
+      ],
+      "category": "infrastructure"
     }
   ]
 }

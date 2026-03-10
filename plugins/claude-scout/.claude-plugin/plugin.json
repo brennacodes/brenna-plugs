@@ -1,0 +1,12 @@
+{
+  "name": "claude-scout",
+  "version": "1.0.0",
+  "description": "Track filesystem changes in ~/.claude/ and other directories — git snapshots, changelog parsing, diff queries, and plugin dependency health checks",
+  "author": {
+    "name": "brennacodes",
+    "email": "brennacodes@users.noreply.github.com"
+  },
+  "keywords": ["tracking", "changelog", "diff", "snapshots", "health", "plugins", "infrastructure"],
+  "license": "MIT",
+  "repository": "https://github.com/brennacodes/brenna-plugs"
+}

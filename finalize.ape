@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ape version="2.2" xmlns="https://ape-lang.dev/schema/2.2">
+
+  <meta>
+    <n>Finalize Work</n>
+    <description>Finalize work with proper tests, atomic commits with git trailers, changelog entries, and optionally a PR.</description>
+    <authors>
+      <author>SOFware Team</author>
+    </authors>
+
+    <actors>
+      <actor id="agent" type="agent">
+        <description>AI agent orchestrating the finalize workflow.</description>
+        <responsibilities>
+          <responsibility>Run commands and capture output</responsibility>
+          <responsibility>Evaluate gates and enforce commit conventions</responsibility>
+          <responsibility>Draft PR content when requested</responsibility>
+        </responsibilities>
+      </actor>
+      <actor id="developer" type="human">
+        <description>Developer finalizing their work.</description>
+        <responsibilities>
+          <responsibility>Fix test failures</responsibility>
+          <responsibility>Review staged changes and commit messages</responsibility>
+          <responsibility>Decide whether to open a PR</responsibility>
+        </responsibilities>
+      </actor>
+    </actors>
+
+    <imports>
+      <import src="./reference.md" as="ref" />
+    </imports>
+
+    <variables>
+      <var name="no_pr" type="boolean" default="false" />
+      <var name="max_subject_length" type="number" default="50" />
+    </variables>
+
+    <resources>
+      <resource id="git" type="executable" />
+      <resource id="gh" type="executable" required="false">
+        <description>GitHub CLI. Required only if creating a PR.</description>
+      </resource>
+      <resource id="rspec" type="executable" path="bin/rspec" />
+      <resource id="reference" type="file" path="./reference.md" access="read">
+        <description>SOFware commit conventions and git trailer guidelines.</description>
+      </resource>
+    </resources>
+
+    <commands>
+      <command id="git-status" set="changed_files">git status --short 2>/dev/null || echo "Not a git repo"</command>
+      <command id="git-branch" set="current_branch">git branch --show-current 2>/dev/null || echo "Unknown"</command>
+      <command id="run-tests">CI=1 bin/rspec</command>
+    </commands>
+  </meta>
+
+  <steps>
+
+    <!-- Step 1: Gather State -->
+    <step number="1" id="current-state" uses="git">
+      <title>Current State</title>
+      <goal>Understand what has changed and where we are before proceeding.</goal>
+
+      <instructions>
+        <task>
+          <description>Capture changed files and current branch.</description>
+          <command ref="git-status" />
+          <command ref="git-branch" />
+        </task>
+      </instructions>
+    </step>
+
+    <!-- Step 2: Run Tests -->
+    <step number="2" id="run-tests" uses="rspec">
+      <title>Run Tests</title>
+      <goal>Verify all tests pass before committing.</goal>
+
+      <prerequisites>
+        <prerequisite ref="current-state">State captured</prerequisite>
+      </prerequisites>
+
+      <warning>
+        <constraint>Do not proceed if tests fail. Fix failures first.</constraint>
+      </warning>
+
+      <instructions>
+        <task>
+          <command ref="run-tests" />
+          <expect>All tests pass (exit code 0)</expect>
+        </task>
+      </instructions>
+
+      <gate>
+        <criteria>All tests pass</criteria>
+        <on-fail retry="true" max="3" then="halt">Test failures remain after retries</on-fail>
+      </gate>
+    </step>
+
+    <!-- Step 3: Stage and Commit -->
+    <step number="3" id="stage-and-commit" uses="git, reference">
+      <title>Stage and Commit</title>
+      <goal>Create an atomic commit following SOFware conventions.</goal>
+
+      <prerequisites>
+        <prerequisite ref="run-tests">Tests passing</prerequisite>
+      </prerequisites>
+
+      <rules>
+        <rule>Subject line under {{ max_subject_length }} characters</rule>
+        <rule>Start with imperative verb: Add, Fix, Update, Remove, Refactor</rule>
+        <rule>No period at end of subject</rule>
+      </rules>
+
+      <instructions>
+        <note>See reference.md for detailed SOFware commit conventions and git trailer guidelines.</note>
+
+        <task>
+          <description>Stage the relevant changed files. Review what's being staged.</description>
+          <command>git add -p</command>
+          <rationale>Interactive staging ensures only related changes are included in the commit.</rationale>
+        </task>
+
+        <task>
+          <description>Determine whether this commit has API impact requiring git trailers.</description>
+
+          <note>Trailers document API changes for qualified gem consumers.</note>
+
+          <rules>
+            <rule>Added: — New methods, endpoints, features</rule>
+            <rule>Changed: — Modified behavior, signatures</rule>
+            <rule>Fixed: — Bug fixes</rule>
+            <rule>Removed: — Removed functionality</rule>
+            <rule>Deprecated: — Deprecated features</rule>
+            <rule>Security: — Security fixes</rule>
+          </rules>
+
+          <warning>
+            <constraint>Add trailers when: new or changed API endpoints, methods, or classes; changed method signatures or return values; new aggregate types or repository methods; GraphQL schema changes; performance improvements developers can leverage.</constraint>
+            <constraint>Skip trailers when: internal refactoring with no API surface change; CI/CD and build configuration; test improvements (unless fixing a regression); developer tooling for Qualify contributors (not consumers).</constraint>
+          </warning>
+        </task>
+
+        <task>
+          <description>Write the commit message and commit.</description>
+
+          <format name="commit-message">
+            <line>Imperative subject, under {{ max_subject_length }} chars</line>
+            <line />
+            <line>Optional body explaining why (not what).</line>
+            <line />
+            <line>Added: description (if API impact)</line>
+            <line>Changed: description (if API impact)</line>
+          </format>
+
+          <warning>
+            <constraint>Verify before committing: 1) subject under {{ max_subject_length }} chars, 2) imperative mood, 3) proper git trailers if API changes.</constraint>
+          </warning>
+        </task>
+      </instructions>
+
+      <gate>
+        <criteria>Commit created with correct message format, appropriate trailers, and only related changes staged</criteria>
+        <on-fail retry="true" max="3" then="halt">Commit message does not follow conventions</on-fail>
+      </gate>
+    </step>
+
+    <!-- Step 4: Pull Request -->
+    <step number="4" id="pull-request" uses="gh">
+      <title>Pull Request</title>
+      <goal>Optionally create a draft PR for the committed work.</goal>
+
+      <prerequisites>
+        <prerequisite ref="stage-and-commit">Commit created</prerequisite>
+      </prerequisites>
+
+      <instructions>
+        <when>
+          <if test="{{ no_pr }} == true">
+            <note>PR creation skipped (--no-pr flag).</note>
+            <task>
+              <description>No API impact and no PR requested. If applicable, apply the no-changelog-needed label to a future PR.</description>
+            </task>
+          </if>
+          <else>
+            <ask-user-question var="should_create_pr" type="confirm">Should I open a PR for this work?</ask-user-question>
+
+            <when>
+              <if test="{{ should_create_pr }} == true">
+                <task>
+                  <description>Create a draft PR with a summary, test plan, and Linear ticket reference.</description>
+                  <command>gh pr create --draft --title "{{ pr_title }}" --body "{{ pr_body }}"</command>
+                  <rationale>Draft PRs signal work is ready for review without implying it's final.</rationale>
+                </task>
+              </if>
+              <else>
+                <note>User declined PR creation. Workflow complete.</note>
+              </else>
+            </when>
+          </else>
+        </when>
+      </instructions>
+    </step>
+
+  </steps>
+
+  <principles>
+    <principle name="Atomic">Each commit contains one logical change with its tests and documentation.</principle>
+    <principle name="Conventional">Follow SOFware commit conventions consistently.</principle>
+    <principle name="Traceable">API changes are documented via git trailers for downstream consumers.</principle>
+  </principles>
+
+</ape>

@@ -26,59 +26,89 @@ To reconfigure:
 
 ## Skills
 
-**Capture Plan** - Import a plan from `~/.claude/plans/` into playbook with versioning, references, and status tracking. Searches available plans by content, generates a title, tags, and status, and writes to a versioned directory `playbook/plans/<slug>/v<N>.md`. Plans can link to other `.things/` data via references.
+| Skill | Description |
+|-------|-------------|
+| [capture-plan](#capture-plan) | Import plans from `~/.claude/plans/` into playbook. |
+| [create-workflow](#create-workflow) | Create a workflow file optimized for Claude use. |
+| [review-against-plan](#review-against-plan) | Review current branch work against what was planned. |
+| [resume-plan](#resume-plan) | Resume work on a plan that was previously suspended. |
+| [implement-items](#implement-items) | Implement specific actionable items from a review. |
+| [update-plan](#update-plan) | Evolve a plan over time. |
+| [progress-dashboard](#progress-dashboard) | Show progress for a specific plan or all active plans. |
+| [import-plans](#import-plans) | Import Claude plan documents from `~/.claude/plans/` into playbook in bulk. |
+| [prune-plans](#prune-plans) | Delete old plan versions or entire plans based on retention preferences, explicit age, or interactive selection. |
+
+### **Capture Plan**
 
 ```
 /capture-plan <thing> [--status active] [--project <name>] [--references path1,path2]
 ```
 
-**Create Workflow** - Create or update an XML-enhanced workflow file. Structured steps with gates, prerequisites, verification commands, and principles. Writes an archive copy to `.things/` and optionally a working copy to the project's `.claude/workflows/` directory. Can reference from CLAUDE.md or embed directly into a SKILL.md.
+Import a plan from `~/.claude/plans/` into playbook with versioning, references, and status tracking. Searches available plans by content, generates a title, tags, and status, and writes to a versioned directory `playbook/plans/<slug>/v<N>.md`. Plans can link to other `.things/` data via references.
+
+### **Create Workflow**
 
 ```
 /create-workflow <scope> [--target <path>] [--update <existing>] [--embed-in <file>]
 ```
 
-**Review Against Plan** - Review current branch work against a plan. Compares plan items against branch changes, classifies each as done or actionable, resolves ambiguity through targeted questions, and writes a structured review. Optionally apply a think-like profile lens (e.g., `as:dhh`) for expert-perspective reviews.
+Create or update an XML-enhanced workflow file. Structured steps with gates, prerequisites, verification commands, and principles. Writes an archive copy to `.things/` and optionally a working copy to the project's `.claude/workflows/` directory. Can reference from CLAUDE.md or embed directly into a SKILL.md.
+
+### **Review Against Plan**
 
 ```
 /review-against <plan> [as:<profile-name>] [--branch <name>]
 ```
 
-**Resume Plan** - Resume implementing a plan from where you left off. Reads the plan, latest review, and current branch state. Shows what's done vs. what's next, then starts working on the next actionable item.
+Review current branch work against a plan. Compares plan items against branch changes, classifies each as done or actionable, resolves ambiguity through targeted questions, and writes a structured review. Optionally apply a think-like profile lens (e.g., `as:dhh`) for expert-perspective reviews.
+
+### **Resume Plan**
 
 ```
 /resume-plan <plan>
 ```
 
-**Implement Items** - Implement specific actionable items from a review. Shows remaining items as a numbered list, lets you pick which to implement, does the work, and marks them as resolved in the review document.
+Resume implementing a plan from where you left off. Reads the plan, latest review, and current branch state. Shows what's done vs. what's next, then starts working on the next actionable item.
+
+### **Implement Items**
 
 ```
 /implement <item-or-review>
 ```
 
-**Update Plan** - Evolve a plan over time. Update status (active, in-progress, completed, superseded, abandoned), append dated implementation notes, rewrite sections based on new information, or supersede with a new version.
+Implement specific actionable items from a review. Shows remaining items as a numbered list, lets you pick which to implement, does the work, and marks them as resolved in the review document.
+
+### **Update Plan**
 
 ```
 /update <plan> [--status <status>] [--notes]
 ```
 
-**Progress Dashboard** - Show progress for a specific plan or all active plans. Displays done/actionable counts, progress bars, latest review dates, and branch status. Offers quick actions to resume implementation or run a review.
+Evolve a plan over time. Update status (active, in-progress, completed, superseded, abandoned), append dated implementation notes, rewrite sections based on new information, or supersede with a new version.
+
+### **Progress Dashboard**
 
 ```
 /progress [plan]
 ```
 
-**Import Plans** - Import Claude plan documents from `~/.claude/plans/` into playbook in bulk. Discovers plans, displays them with titles, descriptions, and scope estimates, marks which ones are already imported, and lets you pick and choose. Imports with proper frontmatter, versioning, and status tracking.
+Show progress for a specific plan or all active plans. Displays done/actionable counts, progress bars, latest review dates, and branch status. Offers quick actions to resume implementation or run a review.
+
+### **Import Plans**
 
 ```
 /import-pb [--dry-run]
 ```
 
-**Prune Plans** - Delete old plan versions or entire plans based on retention preferences, explicit age, or interactive selection. Age-based modes keep the latest version per plan. Interactive mode allows fine-grained control.
+Import Claude plan documents from `~/.claude/plans/` into playbook in bulk. Discovers plans, displays them with titles, descriptions, and scope estimates, marks which ones are already imported, and lets you pick and choose. Imports with proper frontmatter, versioning, and status tracking.
+
+### **Prune Plans**
 
 ```
 /prune-plans [--older-than <days>] [--interactive]
 ```
+
+Delete old plan versions or entire plans based on retention preferences, explicit age, or interactive selection. Age-based modes keep the latest version per plan. Interactive mode allows fine-grained control.
 
 ## Workflow Format
 
