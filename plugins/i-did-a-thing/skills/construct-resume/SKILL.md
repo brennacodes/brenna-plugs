@@ -245,7 +245,7 @@ Analyze a job listing, match it against the user's logged evidence, and produce 
     4. Practice these interview questions (likely to come up for this role):
        - "(question from question bank that tests a key requirement)"
 
-    Run `/practice` to drill specific questions, or `/prep-for` to build a full preparation plan for this company.
+    Run `/practice-wdyd` to drill specific questions, or `/prep-for-wdyd` to build a full preparation plan for this company.
     </completion-message>
   </step>
 

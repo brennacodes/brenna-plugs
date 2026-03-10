@@ -31,7 +31,7 @@ source_type: "conversation|import"
 
 ## Body Content
 
-The body is **verbatim, unmodified content**. Unlike `/add-doc` documents which are structured into sections, discussion files preserve the exact text as provided -- no summarization, rewording, restructuring, or omission.
+The body is **verbatim, unmodified content**. Unlike `/add-doc-ftr` documents which are structured into sections, discussion files preserve the exact text as provided -- no summarization, rewording, restructuring, or omission.
 
 ## Filename Convention
 

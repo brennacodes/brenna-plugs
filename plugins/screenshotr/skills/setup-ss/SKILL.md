@@ -133,7 +133,7 @@ Configure the screenshotr plugin. Verify the environment, gather preferences, an
     <completion-message>
     Config saved! Available skills:
 
-    - `/capture` -- capture a screenshot with full control over target, format, and post-processing
+    - `/capture-ss` -- capture a screenshot with full control over target, format, and post-processing
     - `/list-windows` -- list open windows and their IDs
     - The `screenshot` skill can be invoked automatically by Claude when context suggests a screenshot is needed
     </completion-message>

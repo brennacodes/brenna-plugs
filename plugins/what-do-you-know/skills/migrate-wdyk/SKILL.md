@@ -185,7 +185,7 @@ echo "knowledge-map.json: $([ -f <home>/.things/what-do-you-know/knowledge-map.j
     - progress.md converted to `~/.things/what-do-you-know/progress.json`
     - knowledge-map.md converted to `~/.things/what-do-you-know/knowledge-map.json`
 
-    Your data is now in the per-plugin directory structure. Use `/explore` to start learning.
+    Your data is now in the per-plugin directory structure. Use `/explore-wdyk` to start learning.
     </completion-message>
   </step>
 

@@ -271,8 +271,8 @@ Configure heres-the-thing and register its collections with things. Creates the 
     - heres-the-thing/outcomes
 
     Start using it:
-    - `/heres-the-thing:pitch` -- Create a campaign with strategy brief
-    - `/heres-the-thing:audience` -- Define a reusable audience segment
+    - `/heres-the-thing:pitch-htt` -- Create a campaign with strategy brief
+    - `/heres-the-thing:audience-htt` -- Define a reusable audience segment
     </completion-message>
   </step>
 

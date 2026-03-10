@@ -56,7 +56,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
     </ask-user-question>
 
     <ask-user-question>
-      <question>Do you have a default think-like profile for code reviews? (Used by /review-against as:<profile>)</question>
+      <question>Do you have a default think-like profile for code reviews? (Used by /review-against-pb as:<profile>)</question>
       <option label="None">No default -- I'll specify per review</option>
       <option-with-text-input>Set a default profile ID</option-with-text-input>
     </ask-user-question>
@@ -229,10 +229,10 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
     - Collections registered: `playbook/plans`, `playbook/workflows`, `playbook/reviews`
 
     Get started:
-    - `/capture-plan <thing>` -- Import a plan from ~/.claude/plans/
-    - `/create-workflow <scope>` -- Create an XML-enhanced workflow
-    - `/review-against <plan>` -- Review branch work against a plan
-    - `/progress` -- See progress dashboard for active plans
+    - `/capture-plan-pb <thing>` -- Import a plan from ~/.claude/plans/
+    - `/create-workflow-pb <scope>` -- Create an XML-enhanced workflow
+    - `/review-against-pb <plan>` -- Review branch work against a plan
+    - `/progress-pb` -- See progress dashboard for active plans
     </completion-message>
   </step>
 

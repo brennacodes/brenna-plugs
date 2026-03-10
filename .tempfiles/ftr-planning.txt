@@ -1,0 +1,87 @@
+❯ I've been rapidly expanding my "suite" of plugins based on how I'm actually using Claude Code and what features I need. I've been keeping a set of markdown files that capture things I've either discussed with Claude Code, or that it
+  helped me with inside of `~/.references/*`. I use those to do so many things - sometimes it's used to create a blog post using the `mark-my-words` plugin I made, but sometimes it's used as "checks and balances" for work completed or
+  work to be done. I want to stop doing the work myself of telling claude to "capture this discussion as a new markdown document in "~/.references" titled X". I'd rather just run a slash command that adds it to the marketplace's data
+  layer. The ideal scenarios:
+  - run `/add-doc security-risks-in-claude-code --detailed` -> Claude Code creates a markdown document inside of `~/.things/<whereever this should go>/*.md` with a more fine-grained level of detail (not a summary, not an overview/more
+  detailed, but as much context as possible)
+  - run `/planned <thing-that-was-planned>` -> Claude Code copies the plan doc from where it was stored by Claude to `~/.things/<wherever this should go>/<new name of the doc taht makes more sense>` and adds appropriate frontmatter to it
+  so the user can use it as outlined below
+  - run `/review-against <plan>` -> Claude pulls the plan doc and reviews work in the current branch against it, creates a summary document of its findings where everything is treated either as "actionable" or "needs more information" -
+  the User should be interviewed about each item needing more information until they are all actionable, and the summary document should only contain actionable items by the end of it.
+  - run `/create-workflow <for-this-thing>` -> Claude creates an XML-enhanced workflow file in the target location for the defined scope (user-defined or inferred by context) and updates the relevant CLAUDE.md (or SKILL) to point to it
+  (or fully implment it in the case of a SKILL). Use `bivvy` as an example of a repo that implments the aspirational "CLAUDE.md->workflow file" setup. (Bivvy is in `<home>/Documents/personal/bivvy` for reference)
+
+⏺ This is a meaty feature request. Let me explore the existing architecture and the bivvy repo to understand the patterns before planning this out.
+
+⏺ Entered plan mode
+  Claude is now exploring and designing an implementation approach.
+
+⏺ Let me explore the existing architecture, conventions, and the bivvy repo in parallel.
+
+⏺ 3 Explore agents finished (ctrl+o to expand)
+   ├─ Explore existing plugin architecture · 32 tool uses · 79.0k tokens
+   │  ⎿  Done
+   ├─ Explore playbook repo patterns · 32 tool uses · 67.4k tokens
+   │  ⎿  Done
+   └─ Explore .things and .references dirs · 25 tool uses · 62.2k tokens
+      ⎿  Done
+
+⏺ Excellent. I have a thorough understanding of the architecture. Now let me design the plugin with a Plan agent.
+
+⏺ Plan(Design new docs plugin plan)
+  ⎿  Done (33 tool uses · 111.6k tokens · 3m 54s)
+
+⏺ Good, I have thorough research from all angles. Let me ask a couple of design questions before finalizing.
+
+⏺ User answered Claude's questions:
+  ⎿  · What should the plugin be named? Following the conversational-phrase pattern of your other plugins (i-did-a-thing, mark-my-words, etc.): → I kind of think this should be 2 separate plugins. 1 called "for-the-record" that's about
+     capturing records from Claude conversations. Another called ? that's about orchestrating, planning, reviewing, and optimizing for Claude use. It can create optimized workflows based on whatever workflow you want to capture and what
+     for. It can incorporate those workflows where needed. It can update them in real time if a user identifies a need while woring. It can copy plan docs for reference. It can track their successful implementation. It allows users to save
+      other plan docs to their `things` so they can update them, review them, evolve them, implement them. It allows a user to run a `/resume-implementation` from a project and Claude picks up where it left off. It allows the user to run a
+      `/review-implementation as:<profile-name>` and it pulls the profile to assume for the implementation review. It allows a user to address "actionable" items from any review or summary in it's purview. That's all I can think of for
+     now.
+     · Should the migration skill offer to bulk-import your existing ~/.references/ files into the new plugin's data layer? → It should ask the user if they  have any files they want to import and from where if so. It should ask the user
+     if they want to import any existing plan docs from Claude sessions and show the user what's available for import in a numbered list with a brief description so they can pick and choose by supplying a list of numbers if they want to.
+     · For /create-workflow, where should the working copy of workflow files go by default? → Workflows are saved to `.claude/workflows` and referenced in CLAUDE.md if the session where it's being created from has both of those things.
+     Otherwise, it's saved to `.things` in the plugin subdirectory, wherever it's determined it should go once the plugin design for that is completed.
+
+⏺ Great, the scope is much clearer now - two separate plugins. Before I finalize the plan, let me ask about the name for the second one.
+
+⏺ User answered Claude's questions:
+  ⎿  · What should the orchestration/planning/workflow plugin be called? This one handles plans, workflows, implementation tracking, reviews, and resuming work. → i like "playbook" (no "the")
+
+⏺ Let me read a few critical files to nail the implementation details before writing the final plan.
+
+⏺ Read 3 files (ctrl+o to expand)
+  ⎿  PreToolUse:Read hook error
+  ⎿  PreToolUse:Read hook error
+  ⎿  PreToolUse:Read hook error
+
+⏺ Now let me also quickly check the think-like profile skill to understand the integration pattern for /review-implementation as:<profile>.
+
+⏺ Read 2 files (ctrl+o to expand)
+  ⎿  PreToolUse:Read hook error
+  ⎿  PreToolUse:Read hook error
+
+⏺ Now I have everything I need. Let me write the final plan.
+
+⏺ Updated plan
+  ⎿  PreToolUse:Write hook error
+  ⎿  /plan to preview
+  ⎿  Running PostToolUse hooks…
+  ⎿  PostToolUse:Write hook error
+
+⏺ The plan covers both plugins end-to-end. Here's the summary:
+
+  for-the-record (3 skills): /setup-ftr, /add-doc, /migrate-ftr
+  - Captures docs from conversations into ~/.things/for-the-record/docs/
+  - Migration imports from ~/.references/ and ~/.claude/plans/ with pick-and-choose
+
+  playbook (7 skills): /setup-pb, /planned, /workflow, /review, /resume, /address, /migrate-pb
+  - Plans: import from Claude sessions, track status through implementation
+  - Workflows: XML-enhanced bivvy format, dual-write (archive + working copy), auto-reference in CLAUDE.md
+  - Reviews: compare branch work against plan, interview loop for ambiguous items, think-like profile integration via as:<profile>
+  - Resume: pick up where you left off based on plan + latest review
+  - Address: work through actionable items from any review
+
+  Both plugins register collections in the registry so on-write.sh handles rebuild dispatch automatically — no new hooks needed.

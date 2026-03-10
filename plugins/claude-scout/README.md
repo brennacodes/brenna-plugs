@@ -13,7 +13,7 @@ Claude Code's `~/.claude/` directory changes silently with every update. New fil
 | `/setup-cs` | Initialize a tracking target — configure path, set up git snapshots, detect changelogs |
 | `/cs-snapshot` | Capture current state as a git commit on the tracking branch |
 | `/diff-cs` | Show changes between snapshots — filter by time, path, or change type |
-| `/whats-new` | Human-friendly change summary with changelog correlation |
+| `/whats-new-cs` | Human-friendly change summary with changelog correlation |
 | `/cs-changelog` | Parse and query changelog files — filter by version, type, or keyword |
 | `/cs-dep-doctor` | Plugin health check — scan dependencies and cross-reference with changes |
 
@@ -36,7 +36,7 @@ Take a snapshot after a Claude Code update:
 See what changed:
 
 ```
-/whats-new
+/whats-new-cs
 /diff-cs --since "1 week ago"
 ```
 

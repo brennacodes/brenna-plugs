@@ -178,7 +178,7 @@ echo "progress.json: $([ -f <home>/.things/what-did-you-do/progress.json ] && ec
     - Company prep plans -> `~/.things/what-did-you-do/`
     - progress.md converted to `~/.things/what-did-you-do/progress.json`
 
-    Your data is now in the per-plugin directory structure. Use `/practice` to start drilling.
+    Your data is now in the per-plugin directory structure. Use `/practice-wdyd` to start drilling.
     </completion-message>
   </step>
 

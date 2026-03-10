@@ -25,31 +25,31 @@ Requires things to be set up first (`/things:setup-things`).
 **Practice** - Drill a single question with a selected interviewer persona. Questions are chosen via spaced repetition - weighted toward your weak areas, filtered to avoid recent repeats, and boosted for aspirational skills. Feedback scores five dimensions and references your arsenal.
 
 ```
-/practice [behavioral|technical|leadership|situational|system-design]
+/practice-wdyd [behavioral|technical|leadership|situational|system-design]
 ```
 
 **Mock Interview** - Simulate a full interview round. Multiple timed questions from a consistent persona with no feedback between questions - just like the real thing. Comprehensive debrief at the end with per-question scores, company value alignment, and action items. Supports Amazon, Google, Meta, and custom company profiles.
 
 ```
-/mock [amazon|google|meta] [--stage phone-screen|onsite|bar-raiser]
+/mock-wdyd [amazon|google|meta] [--stage phone-screen|onsite|bar-raiser]
 ```
 
 **Review Readiness** - Analyze all your sessions to produce a readiness assessment. Dimension trends (improving, stable, declining), category breakdowns, persistent anti-pattern tracking, skill coverage gaps, and company-specific calibration against level expectations.
 
 ```
-/review [--company amazon|google|meta] [--since YYYY-MM-DD]
+/review-wdyd [--company amazon|google|meta] [--since YYYY-MM-DD]
 ```
 
 **Prep For** - Build a preparation plan for a specific company. Maps your arsenal to their values, walks through each interview stage with persona and format details, predicts likely questions, and generates a practice timeline scaled to when your interview is.
 
 ```
-/prep-for <company> [--role <target role>] [--level <level>]
+/prep-for-wdyd <company> [--role <target role>] [--level <level>]
 ```
 
 **Update Questions** - Add questions from trusted external sources or manual entry. Validates against your trusted domains, deduplicates against existing questions, and auto-generates metadata (skills tested, difficulty, follow-ups, red/green flags).
 
 ```
-/update-questions <url or 'manual'>
+/update-questions-wdyd <url or 'manual'>
 ```
 
 **Migrate Data** - Move what-did-you-do data from the old `~/.things/interview-prep/` layout to the per-plugin directory structure. Moves sessions, question overrides, company prep plans, and converts the markdown progress dashboard to JSON. Run `/things:setup-things` first if config.json doesn't exist yet.

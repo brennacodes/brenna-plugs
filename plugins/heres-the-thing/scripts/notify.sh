@@ -126,7 +126,7 @@ for campaign_dir in sorted(glob.glob(os.path.join(campaigns_dir, '*'))):
                 outcome_files = glob.glob(os.path.join(outcomes_dir, f'{goal_id}-*.json')) if os.path.isdir(outcomes_dir) else []
                 if not outcome_files:
                     notifications.append(
-                        f"Goal '{goal_id}' delivered but no outcome logged. Run /heres-the-thing:outcome"
+                        f"Goal '{goal_id}' delivered but no outcome logged. Run /heres-the-thing:outcome-htt"
                     )
             continue
 

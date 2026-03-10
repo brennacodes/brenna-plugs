@@ -37,43 +37,43 @@ Requires things to be set up first (`/things:setup-things`).
 **New Post** - Write a new blog post. Walks you through title, length, key points, tags, and draft status, then generates a platform-compatible post with proper frontmatter and structure.
 
 ```
-/new-post [topic or idea]
+/new-post-mmw [topic or idea]
 ```
 
 **Update Post** - Edit an existing post. Supports targeted section edits, appending content, full rewrites, and metadata-only changes. Preserves your original voice for partial edits.
 
 ```
-/update-post [filename or search term]
+/update-post-mmw [filename or search term]
 ```
 
 **Manage Posts** - List all posts with metadata, view and publish drafts, and organize tags across your blog (add, remove, rename tags in bulk).
 
 ```
-/manage-post [list, drafts, publish, tags]
+/manage-post-mmw [list, drafts, publish, tags]
 ```
 
 **Create Voice** - Build a voice profile from your writing samples. Analyzes your tone, sentence patterns, vocabulary, and habits to create a compact style guide that makes posts sound like you.
 
 ```
-/create-voice [voice name]
+/create-voice-mmw [voice name]
 ```
 
 **Update Voice** - Refine an existing voice profile with new samples, manual edits, or a full regeneration.
 
 ```
-/update-voice [voice name]
+/update-voice-mmw [voice name]
 ```
 
 **From Things** - Transform i-did-a-thing evidence logs into blog posts. Finds candidates via the JSON index by blog potential, pulls in the Blog Seed hook, narrative structure, and metrics. You choose the angle - tutorial, retrospective, or one of the angles suggested in the log itself.
 
 ```
-/from-things [log filename or search query]
+/from-things-mmw [log filename or search query]
 ```
 
 **Add Media** - Add images, diagrams, and video embeds to an existing post. Analyzes your post for visual opportunities and walks you through each one - generate diagrams, provide your own images, search the web, or embed videos.
 
 ```
-/add-media [post filename or search term]
+/add-media-mmw [post filename or search term]
 ```
 
 **Migrate Data** - Move mark-my-words data from the old flat `~/.things/` layout to the per-plugin directory structure. Moves voice profiles and renames the blog working directory. Run `/things:setup-things` first if config.json doesn't exist yet.

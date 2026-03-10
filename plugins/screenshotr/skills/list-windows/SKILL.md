@@ -6,7 +6,7 @@ allowed-tools: Read, Bash
 ---
 
 <purpose>
-List the currently open windows on the user's Mac so they can identify targets for `/capture`.
+List the currently open windows on the user's Mac so they can identify targets for `/capture-ss`.
 </purpose>
 
 <steps>
@@ -44,7 +44,7 @@ List the currently open windows on the user's Mac so they can identify targets f
     <completion-message>
     To capture a specific window:
     ```
-    /capture window "AppName"
+    /capture-ss window "AppName"
     ```
 
     If there are multiple windows for the same app, the capture skill will let you choose which one.

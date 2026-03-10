@@ -1,0 +1,1773 @@
+⏺ Yeah, I think you're right that this is new plugin territory. Let me think through why:
+
+  Why it doesn't fit i-did-a-thing: IDAT's core concern is capturing and organizing your evidence — logging what you did, tagging it, building an arsenal. Even construct-resume is about selecting and arranging your evidence for a target. The
+  new thing you're describing has a fundamentally different core concern: understanding an audience and shaping a message for them. The "thing you made" is just the input — the real work is the audience modeling and adaptation.
+
+  Why it feels like its own plugin: Each of your plugins has a clear verb/question at its center:
+  - i-did-a-thing → "What did I accomplish?"
+  - what-did-you-do → "Can I tell the story under pressure?"
+  - what-do-you-know → "Do I actually understand this?"
+  - mark-my-words → "Can I publish this clearly?"
+  - think-like → "How would an expert see this?"
+
+  What you're describing is something like "Can I make them care?" — it's about persuasion, positioning, audience empathy. That's a distinct concern. The starting point is you and your tool, but the work is all about the other person: their
+  role, their priorities, their objections, what language resonates with them.
+
+  It also has its own natural set of capabilities that don't belong anywhere else:
+  - Audience profiles (not writer voices, not interviewer personas, not expert thinking models)
+  - Pitch/positioning generation targeted per-audience
+  - Possibly pitch practice with audience-perspective feedback (adjacent to WDYD but different framing)
+  - Tracking what pitches you've given, to whom, what landed
+
+  And it would consume from the other plugins (IDAT logs as input, HTT shared resources for people/company data, maybe think-like profiles for deeper audience modeling) without being owned by any of them.
+
+  Does that match your intuition, or are you seeing the boundaries differently?
+
+❯ damn. i feel like this should be called "here's the thing" and "here's the thing" should be called "things" that's frustrating.
+
+  I think this new plugin should be able to take anything you feed it:
+  - a log from your arsenal
+  - a blog post you wrote
+  - a blog post you didn't write
+  - a project you made
+  - a project you didn't make
+  - a topic you care about
+  - a powerpoint you made
+  - someething else...
+
+  And tailor it for a person, place, and/or some other context, such as:
+  - conference talk
+  - conference talk proposal
+  - arguing for/against something
+  - convincing someone to take action on something
+  - something else
+
+  Ideally it would be able to be more finely tuned to consider things like:
+  - the goal(s) - define the goal(s) and whether they're short term or long term goals or if there are both and they're different (short term, long term, some combination, something else?)
+  - the "target audience" - a person, a place, an event, a website, a company, something else?
+  - reference material(s) - logs, profiles, websites, supplementary materials, and anything else that provides context for the "subject matter", the "target audience", the "current landscape", etc...
+  - Time to prepare - is it 15 minutes? 1 day? 1 week? 1 year? etc.
+  - medium: is the target medium a speech? a 1:1 meeting? a meeting with multiple people? a cold call? a cold email? something else?
+  - user's known strengths/weaknesses based on what's in the system for them already, or how they define their strengths and weknesses if not available
+  - any precedent that applies
+
+  Let me know if that doesn't make sense or if there are unknowns that should be fleshed out so we can design a proper plugin for this.
+
+⏺ This makes a lot of sense. It's essentially a persuasion/positioning engine — medium-agnostic, audience-aware, context-rich. The input is "something you want to communicate about" and the output is "the most effective way to communicate it
+  to this audience in this context."
+
+  A few things I want to flesh out before designing:
+
+⏺ User answered Claude's questions:
+  ⎿  · On the naming — are you actually considering renaming heres-the-thing to 'things' and using 'heres-the-thing' for this new plugin? Or was that just a passing frustration and we should find a different name? → Rename both
+     · How do you see the output working? Should it generate the actual artifact (the email draft, the slide outline, the talk script), or more of a strategy/brief that you then execute yourself, or both depending on context? → Both,
+     context-dependent
+     · For the 'time to prepare' dimension — is this about scoping the output (e.g., '15 min prep' = quick bullet points vs '1 week' = full strategy), or is it more about pacing/coaching (e.g., 'you have a week, here's a day-by-day prep
+     plan')? → Both, as well as tracking performance and outcomes compared to the defined goals over time.
+     · Should this plugin track outcomes? e.g., 'I pitched X to Y, they said Z, next step is W' — building a history of what worked, what didn't, with whom? → Yes, core feature
+
+⏺ Okay, this is crystallizing nicely. The answers make the plugin much richer — outcome tracking + time-as-coaching + goal comparison over time means this isn't just a generator, it's a persuasion practice loop (similar to how WDYD isn't just
+  question generation, it's an interview practice loop).
+
+  Let me lay out the design. The rename of HTT → "things" is a real effort but separate — let's focus on the new plugin first.
+
+  ---
+  heres-the-thing — Plugin Design
+
+  Core question: "Can I make them care?"
+
+  Core entity: A campaign — one positioning effort with a subject, audience, context, goals, and tracked outcomes.
+
+  Data model (~/.things/heres-the-thing/)
+
+  heres-the-thing/
+    preferences.json          # plugin settings
+    campaigns/
+      <date>-<slug>.md        # individual campaigns (frontmatter + body)
+    outcomes/
+      <campaign-slug>-<date>.md   # per-interaction outcomes
+    audiences/                # reusable audience profiles (beyond shared/people/)
+      <slug>.md               # "skeptical-senior-engineers", "executive-stakeholders"
+
+  A campaign would look roughly like:
+
+  ---
+  id: cli-tool-adoption
+  status: active        # draft | active | delivered | closed
+  subject: "Internal CLI tool for deploy automation"
+  subject_type: project # project | log | post | topic | artifact | other
+  source_refs:          # anything that describes the subject
+    - type: idat_log
+      ref: 2026-01-15-deploy-cli.md
+    - type: url
+      ref: https://...
+  audience:
+    - type: person
+      ref: jane-smith         # → shared/people/
+    - type: role
+      value: "Platform team leads"
+  context: "Team adoption push, Q2 planning window"
+  medium: meeting_group       # 1on1 | meeting_group | email | talk | proposal | cold_outreach | async_doc | other
+  goals:
+    short_term: "Get 3 engineers to trial it this sprint"
+    long_term: "Org-wide standard by Q4"
+  time_available: "1 week"
+  strengths_to_leverage: []   # auto-populated from professional-profile if available
+  weaknesses_to_mitigate: []
+  precedent: []               # links to past campaigns that are relevant
+  created: 2026-02-23
+  ---
+
+  The body would contain the generated strategy, artifacts, and prep plan as sections.
+
+  Skills
+  ┌─────────────┬─────────────────────────────────────────────────────────────────────────────┐
+  │    Skill    │                                   Purpose                                   │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ setup-htt   │ Initialize dirs, preferences, register with things                          │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ pitch       │ Main workflow — guided interview → strategy + artifacts. The big one.       │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ prep        │ Generate or refine a time-boxed preparation plan for an existing campaign   │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ outcome     │ Log what happened — results vs. goals, what landed, what didn't, next steps │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ review      │ Look across campaigns — patterns, audience insights, what works for you     │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ audience    │ Create/manage reusable audience profiles                                    │
+  ├─────────────┼─────────────────────────────────────────────────────────────────────────────┤
+  │ migrate-htt │ Future migration support                                                    │
+  └─────────────┴─────────────────────────────────────────────────────────────────────────────┘
+  How /pitch would work
+
+  1. What — What are you positioning? (free input, or pull from IDAT log, MMW post, URL, file, etc.)
+  2. Who — Who's the audience? (load from shared/people/, audiences/, or describe ad-hoc)
+  3. Why — What's the goal? (short-term, long-term, or both)
+  4. Where/How — What's the medium and context?
+  5. When — How much time do you have?
+  6. With what — Reference materials, supplementary context
+  7. Strengths/weaknesses — Pull from professional profile or ask
+
+  Then generate based on the medium + time:
+  - 15 min prep, 1:1 email → just the email draft
+  - 1 week, conference talk proposal → strategy brief + proposal draft + prep plan
+  - 2 days, group meeting → talking points, anticipated objections, key framings + day-by-day prep
+
+  How /outcome would work
+
+  Select a campaign, then log:
+  - What happened (narrative)
+  - Result vs. goals (did short-term goal land? long-term still on track?)
+  - What resonated / what fell flat
+  - Audience reaction
+  - Next steps
+  - Status update (active → delivered → closed)
+
+  Over time, this builds a persuasion arsenal — you learn which framings work with which audience types, which mediums you're strongest in, which goals you tend to hit/miss.
+
+  Cross-plugin integration
+
+  - i-did-a-thing → source material (logs, arsenal entries)
+  - things (née HTT) → shared resources (people, companies, professional profile), registry
+  - mark-my-words → voice profiles for artifact generation, blog posts as source material
+  - think-like → audience perspective modeling (could load a think-like profile to simulate audience reaction)
+  - what-did-you-do → strengths/weaknesses data from practice sessions
+
+  ---
+  Open questions
+
+  1. Audiences vs. shared/people/: Should audience profiles live in heres-the-thing/audiences/ (plugin-owned) or extend shared/people/ with pitch-relevant fields? I'm leaning plugin-owned since audiences can be abstract ("skeptical senior
+  engineers") not just real people.
+  2. Campaign granularity: Is a campaign one pitch to one audience, or can it be a multi-audience effort? e.g., "Get CLI tool adopted" might involve pitching Jane differently than pitching the VP. Are those separate campaigns or one campaign
+  with multiple audience tracks?
+  3. Skill naming: pitch feels right for the main workflow, but it might be too narrow — you described use cases like "arguing for/against something" or "conference talk proposal" that aren't really "pitches." Alternative names: position,
+  frame, make-the-case? Or is pitch broad enough colloquially?
+
+✻ Cooked for 1m 40s
+
+❯ 1. Yes, but if the target is person it should create a shared profile of the person if one doesn't exist.
+  2. A campaign can have related short and long term goals - for example: Long term goal is to get all teams to adopt tool X. Short term goal is to convince person Y to approve a trial for tool X in team Z.
+  3. Pitch probably is just fine here
+
+  But the plan should be more clear about establishing a sort of decision matrix for how it handles different "inputs" for different situations. It should answer things like:
+  - Time to prepare <= 15min && medium == 1:1 && current level of preparation == 0 && stakes == high && meeeting length <= 30minutes ? Identify top x "pivotal points" to cover, offer Q&A prep session to nail those points, and offer an
+  optional "meeting prep" formatted document they can print and take to the meeting or refernce during the meeting so they have talking points if they need them
+
+⏺ This is the right instinct — the plugin needs to be opinionated about what it produces. Let me define the framework.
+
+  Decision Framework
+
+  Input Dimensions
+
+  These are the variables the plugin assesses (some gathered explicitly, some inferred):
+  ┌────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────┬────────────────────────────────────┐
+  │       Dimension        │                                        Values                                         │           How determined           │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Time to prepare        │ urgent (≤15min), short (hours), moderate (days), extended (weeks+)                    │ Asked                              │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Medium                 │ 1:1, group_meeting, email, talk, proposal, cold_outreach, async_doc, written_argument │ Asked                              │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Prep level             │ zero, researched, strategized, drafted, rehearsed                                     │ Inferred from campaign state       │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Stakes                 │ low, medium, high, critical                                                           │ Asked or inferred from goals       │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Delivery length        │ brief (≤15min), standard (15-45min), long (45min+), async (no time constraint)        │ Asked if applicable                │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Audience familiarity   │ unknown, some_context, profiled, well_known                                           │ Inferred from available data       │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Subject familiarity    │ new_to_me, familiar, i_built_it, expert                                               │ Asked or inferred from source refs │
+  ├────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┤
+  │ Audience receptiveness │ hostile, skeptical, neutral, warm, champion                                           │ Asked or inferred from context     │
+  └────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────┘
+  Output Components
+
+  These are the building blocks the plugin can produce, mixed and matched per situation:
+  ┌─────────────────────────┬───────────────────────────────────────────────────────────────────────────────────┐
+  │        Component        │                                    What it is                                     │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Pivotal points          │ The X most important things to cover, ranked by impact                            │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Strategy brief          │ Audience analysis, framing approach, key messages, landmines to avoid             │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Audience research tasks │ "Find out X about Y before proceeding" — things you need to learn                 │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Objection map           │ Anticipated pushback + prepared responses                                         │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Q&A prep session        │ Interactive practice: plugin plays devil's advocate on your pivotal points        │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Artifact draft          │ The actual deliverable (email, slide outline, talk script, proposal, doc)         │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Meeting prep doc        │ Printable/referenceable cheat sheet — talking points, key phrases, traps to avoid │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Prep plan               │ Time-boxed schedule: what to do when, milestones, checkpoints                     │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Rehearsal plan          │ Structured practice sessions (dry runs, timed delivery, etc.)                     │
+  ├─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+  │ Follow-up template      │ Post-delivery follow-up draft based on goals                                      │
+  └─────────────────────────┴───────────────────────────────────────────────────────────────────────────────────┘
+  Decision Rules
+
+  The logic flows through a priority system: triage first, then layer.
+
+  Phase 1: Triage (what's the minimum viable output?)
+
+  IF time == urgent AND prep_level == zero:
+    → ALWAYS produce: pivotal points (max 3-5)
+    → The rest depends on medium + stakes
+
+  IF time == urgent AND prep_level > zero:
+    → ALWAYS produce: refined pivotal points from existing strategy
+    → Focus on gap-filling, not starting from scratch
+
+  IF time >= moderate AND prep_level == zero:
+    → ALWAYS produce: strategy brief first
+    → Then layer additional components based on medium + stakes
+
+  Phase 2: Layer by situation
+
+  Urgent + High Stakes (the "oh shit" path)
+  time <= urgent, stakes >= high, prep_level == zero
+
+    ALWAYS:
+      → Pivotal points (3-5 max, ruthlessly prioritized)
+      → One-line framing for each point ("lead with X because audience cares about Y")
+
+    IF medium == 1:1 OR medium == group_meeting:
+      → Meeting prep doc (printable)
+      → Q&A prep session (offer, time-boxed to remaining prep time)
+      → Top 3 objections with responses
+
+    IF medium == email OR medium == cold_outreach:
+      → Artifact draft (just write the email, no strategy needed)
+      → Subject line options
+
+    IF medium == talk:
+      → Opening hook + 3 key points + closing CTA (skeleton only)
+
+  Short prep, any stakes
+  time == short (hours), any stakes
+
+    ALWAYS:
+      → Strategy brief (condensed — 1 page, not 5)
+      → Pivotal points
+
+    IF stakes >= high:
+      → Objection map
+      → Q&A prep session (offer)
+
+    IF medium is synchronous (meeting, talk, call):
+      → Meeting prep doc
+
+    IF medium is async (email, doc, proposal):
+      → Artifact draft
+
+  Moderate prep, high stakes
+  time == moderate (days), stakes >= high
+
+    ALWAYS:
+      → Full strategy brief (audience analysis, framing, messaging)
+      → Pivotal points
+      → Objection map
+      → Artifact draft
+
+    IF audience_familiarity <= some_context:
+      → Audience research tasks (before generating strategy)
+
+    IF medium is synchronous:
+      → Meeting prep doc
+      → Rehearsal plan (at least 1 dry run)
+      → Q&A prep session
+
+    IF medium == talk OR medium == proposal:
+      → Prep plan (day-by-day)
+      → Follow-up template
+
+  Extended prep (weeks+)
+  time == extended, any stakes
+
+    ALWAYS:
+      → Full strategy brief
+      → Prep plan with milestones
+      → Audience research tasks (even if audience is well_known — always dig deeper)
+      → Artifact draft (iterative — first draft early, refine over time)
+
+    IF stakes >= high:
+      → Rehearsal plan (multiple sessions)
+      → Q&A prep session (multiple rounds)
+      → Objection map (comprehensive)
+      → Follow-up template
+
+    IF medium == talk:
+      → Slide outline / talk structure
+      → Timing breakdown per section
+      → Transition phrases
+
+  Phase 3: Modifiers
+
+  These adjust any output based on additional context:
+
+  IF audience_receptiveness == hostile OR skeptical:
+    → Boost objection map priority (always include, even in urgent)
+    → Add "landmines to avoid" section
+    → Reframe pivotal points defensively ("acknowledge X, then pivot to Y")
+
+  IF audience_receptiveness == champion:
+    → Shift from "convince" to "equip" — give them ammo to advocate for you
+    → Add "talking points they can use with others"
+
+  IF subject_familiarity == new_to_me:
+    → Add subject research tasks before strategy
+    → Flag confidence level in outputs ("this framing assumes X — verify")
+
+  IF prep_level > zero (resuming work):
+    → Diff against existing campaign state
+    → Only produce components that are missing or need updating
+    → Highlight what changed since last session
+
+  ---
+  Campaign Structure (updated)
+
+  Based on your feedback on goals and person profile creation:
+
+  ---
+  id: cli-tool-adoption
+  status: active
+  subject: "Deploy automation CLI"
+  subject_type: project
+  source_refs:
+    - type: idat_log
+      ref: 2026-01-15-deploy-cli.md
+
+  audience:
+    - type: person
+      ref: jane-smith           # auto-creates shared/people/ profile if missing
+    - type: segment
+      ref: platform-team-leads  # from heres-the-thing/audiences/
+
+  goals:
+    - id: trial-approval
+      type: short_term
+      description: "Get Jane to approve a trial in Platform team"
+      parent: org-adoption      # links to long-term goal
+      status: active
+    - id: org-adoption
+      type: long_term
+      description: "Org-wide standard by Q4"
+      status: active
+
+  context: "Q2 planning window, team just had a bad deploy incident"
+  medium: meeting_1on1
+  delivery_length: 30min
+  time_available: 2d
+  stakes: high
+  audience_receptiveness: skeptical
+  ---
+
+  Goals form a tree — short-term goals roll up to long-term goals, and outcomes track progress at each level.
+
+  ---
+  Does this decision framework feel right? The main things I want to validate:
+
+  1. Are the dimensions correct? Missing any key variable that changes what you'd want?
+  2. Are the output components right? Anything missing from the toolkit, or anything that doesn't belong?
+  3. Does the triage → layer → modify flow make sense as the logic structure, vs. a flat matrix or something else?
+
+❯ "medium" should allow for "other". "audience familiarity" should allow for input if other data is not available or if available data doesn't help determine this.
+  I think "strategy brief" should be the "always produce" item. In fact, it may replace or consume the "pivotal points".
+  Additionally once we solidify everything, we need to make sure the plan for this plugin reflects where all of the documents will be kept, and how progress is tracked, how outcomes are tracked, etc. Just saying this while it's top of
+  mind, but we should ask the user if they want to allow timed notifications for suggested preparation, check-ins, etc. and make a script that is capable of executing those on a schedule.
+
+  On the "always a strategy brief" - the 5-pager is an "always, no matter the path" because it also becomes a reference-quality "permanent record" for other things - whether that's outcomes, or whether that's from other plugins
+  (`what-did-you-do`, `what-do-you-know`, `i-did-a-thing`, etc.)
+  We should also allow the user to update their outcomes with things like "this is how X landed with Y." or "i fumbled a bit when talking about Z". These are things that can sharpen how the model tailors certain things for the user,
+  whether its updating what the user "knows" aout their target and how they respond to certain things, or whether that's updating what the system "knows" about the user and their strengths and weaknesses around certain skills related to
+  their goals/pitch/campaign.
+
+  I think the strategy brief should evolve (as new, timestamped documents) as inputs change and evolve.
+
+  I also think that "audience" should be nested under "goals", not declared separately. The first goal has a specific target audience, the second might have a different one (or ones). It should be explicit what applies where. Same note
+  for the medium and deliery length. "Time available" should be calculated based on the target_date for the goals and s hould also be separate per-goal. The "audience_receptiveness" is a quality of the audience type and should be nested
+  there.
+
+  Also, this "structure" should probably be in JSON if the plugins are using JSON to establish structure.
+
+  To answer your questions:
+  1. I think it's too "flat" and difficult to follow to be able to say for sure. A long block of text doesn't read like a decision matrix or decision tree.
+  2. I think what I've seen looks right for v1 and known types, but it should be flexible to allow for user-defined deliverable types.
+  3. I don't love your approach, no. It's hard to follow and therefore difficult to defend. It may be doing too much, it may be doing not enough.
+
+⏺ Good feedback all around. Let me redo this properly.
+
+  Revised Campaign Structure (JSON)
+
+  Goals are the organizing unit. Audience, medium, timing, and deliverables all live at the goal level.
+
+  {
+    "id": "cli-tool-adoption",
+    "status": "active",
+    "created": "2026-02-23",
+    "subject": {
+      "title": "Deploy automation CLI",
+      "type": "project",
+      "description": "Internal CLI that automates the 12-step deploy process",
+      "source_refs": [
+        { "type": "idat_log", "ref": "2026-01-15-deploy-cli.md" },
+        { "type": "url", "value": "https://github.internal/..." }
+      ]
+    },
+    "tags": ["deploy", "cli", "automation", "tooling", "accomplishment", "improvement", "stakeholder_adoption", "strategy"],
+    "context": "Q2 planning window. Team just had a bad deploy incident last week.",
+    "goals": [
+      {
+        "id": "trial-approval",
+        "type": "short_term",
+        "description": "Get Jane to approve a 2-week trial in Platform team",
+        "parent_goal": "org-adoption",
+        "target_date": "2026-03-07",
+        "status": "active",
+        "stakes": "high",
+        "audience": [
+          {
+            "type": "person",
+            "ref": "jane-smith",
+            "receptiveness": "skeptical",
+            "familiarity": "well_known",
+            "familiarity_notes": "Worked with her for 2 years, she's risk-averse on tooling changes"
+          }
+        ],
+        "medium": "meeting_1on1",
+        "delivery_length": "30min",
+        "deliverables": ["strategy_brief", "meeting_prep_doc", "objection_map"]
+      },
+      {
+        "id": "org-adoption",
+        "type": "long_term",
+        "description": "Org-wide standard by Q4",
+        "target_date": "2026-10-01",
+        "status": "active",
+        "stakes": "high",
+        "audience": [
+          {
+            "type": "segment",
+            "ref": "engineering-leadership",
+            "receptiveness": "neutral"
+          },
+          {
+            "type": "person",
+            "ref": "vp-engineering",
+            "receptiveness": "unknown",
+            "familiarity": "low",
+            "familiarity_notes": "Only met once at all-hands"
+          }
+        ],
+        "medium": "proposal",
+        "delivery_length": null,
+        "deliverables": ["strategy_brief", "artifact_draft", "prep_plan"]
+      }
+    ]
+  }
+
+  Key changes from before:
+  - Everything audience/medium/timing scoped to goal, not campaign
+  - time_available is gone — calculated from target_date
+  - familiarity_notes allows free text when data isn't available
+  - medium accepts any string (not an enum)
+  - deliverables are explicit per-goal, can include user-defined types
+
+  File Structure
+
+  ~/.things/heres-the-thing/
+    preferences.json
+    campaigns/
+      cli-tool-adoption/
+        campaign.json                              # the structure above
+        strategy/
+          trial-approval-2026-02-23T14:00.md       # goal-scoped, timestamped
+          trial-approval-2026-02-28T09:00.md       # evolved version
+          org-adoption-2026-03-10T10:00.md
+        artifacts/
+          trial-approval-meeting-prep-2026-03-05.md
+          trial-approval-objection-map-2026-03-05.md
+          org-adoption-proposal-draft-2026-04-01.md
+        outcomes/
+          trial-approval-2026-03-07.json           # per-goal outcome logs
+          trial-approval-2026-03-14.json           # follow-up outcome
+    audiences/
+      engineering-leadership.json                  # reusable segment profiles
+    scripts/
+      notify.sh                                    # scheduled check-in runner
+
+  Strategy Brief Versioning
+
+  Every strategy brief is a new timestamped file, never overwritten. The latest is the current version. Previous versions are the history. Each brief references what changed:
+
+  # Strategy Brief: trial-approval
+  ## Version: 2026-02-28T09:00
+  ## Changes from previous: Updated after learning Jane's team is also evaluating Tool Y
+
+  ...full 5-page brief...
+
+  Outcome Structure
+
+  {
+    "goal_id": "trial-approval",
+    "date": "2026-03-07",
+    "result": "approved_with_conditions",
+    "goal_status_update": "active",
+    "narrative": "Jane approved a 2-week trial but only for the staging environment first",
+    "what_landed": [
+      "The deploy incident framing — she immediately connected it to last week",
+      "Showing the 12-step vs 3-step comparison"
+    ],
+    "what_didnt": [
+      "ROI numbers didn't resonate — she cares more about reliability than speed"
+    ],
+    "user_reflections": "I fumbled when she asked about rollback capabilities. Need to prep that better.",
+    "feedback_to_system": {
+      "audience_updates": {
+        "jane-smith": "Cares more about reliability and rollback than speed. Responds well to concrete comparisons, not abstract ROI."
+      },
+      "user_skill_updates": {
+        "strengths": ["concrete comparisons", "incident-based framing"],
+        "weaknesses": ["handling unexpected technical deep-dive questions"]
+      }
+    },
+    "next_steps": [
+      "Set up staging trial by March 10",
+      "Prepare rollback capability demo for follow-up"
+    ]
+  }
+
+  The feedback_to_system section is what closes the loop — it pushes learnings back to:
+  - shared/people/<person>.md (audience knowledge)
+  - professional-profile.json (user strengths/weaknesses)
+  - Future strategy briefs for this campaign (automatically incorporated)
+
+  Decision Framework
+
+  Instead of the pseudocode wall, here's how the plugin decides what to produce. The strategy brief is always the anchor. Everything else is additive.
+
+  Always Produced
+
+  Strategy brief — every goal gets one, regardless of context. It's the permanent record, the reference document, the foundation everything else is derived from.
+
+  Additive Layers
+
+  Each layer is a single question that adds deliverables:
+
+                                  ┌───────────────────────┐
+                                  │   STRATEGY BRIEF      │
+                                  │   (always produced)   │
+                                  └──────────┬────────────┘
+                                             │
+              ┌──────────────────────────────┼──────────────────────────────┐
+              ▼                              ▼                              ▼
+        Is delivery                      Are stakes                   Is audience
+        synchronous?                     >= high?                     skeptical/hostile?
+        (meeting, talk,                      │                             │
+         call, etc.)                         │                             │
+        │             │                      │                             │
+     YES│           NO│                   YES│                          YES│
+        ▼             ▼                      ▼                             ▼
+ Meeting prep    Artifact draft         Objection map                 Objection map (if
+ doc / talking   (the actual            Q&A prep                      not already added)
+ points           deliverable)          session offer                 Reframe strategy
+                                             │                        defensively
+                                             │
+                                        Days+ to
+                                        prepare?
+                                             │
+                                          YES│
+                                             ▼
+                                        Prep plan
+                                        Rehearsal plan
+
+
+
+  Time Modulates Depth, Not Type
+
+  Time doesn't change which components — it changes how thorough each one is:
+  ┌──────────────────┬─────────────────────────────────────────┬───────────────────────┬───────────────────────────┬────────────────────────────────────┐
+  │    Component     │    Urgent (≤15min)                      │     Short (hours)     │      Moderate (days)      │         Extended (weeks+)          │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Strategy brief   │ Full                                    │ Full                  │ Full (5 pages)            │ Full + research phase              │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Objection map    │ -                                       │ Top 5 with responses  │ Comprehensive             │ Comprehensive + counter-strategies │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Meeting prep doc │ Bullets + key phrases                   │ Bullets + key phrases │ Full doc with transitions │ Full + rehearsal notes             │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Artifact draft   │ —                                       │ First pass            │ Polished draft            │ Multiple iterations                │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Prep plan        │ —                                       │ —                     │ Day-by-day                │ Week-by-week with milestones       │
+  ├──────────────────┼─────────────────────────────────────────┼───────────────────────┼───────────────────────────┼────────────────────────────────────┤
+  │ Q&A prep         │ 5-min rapid fire  w/ resuls overview    │ 15-min session        │ Full session              │ Multiple rounds                    │
+  └──────────────────┴─────────────────────────────────────────┴───────────────────────┴───────────────────────────┴────────────────────────────────────┘
+  User-Defined Deliverable Types
+
+  The built-in types are defaults. Users can define their own in preferences:
+  ```
+  /things:create-deliverable-type <name> <description> [template]
+  ```
+  Deliverable types are stored in:
+  ~/.things/heres-the-thing/deliverable-types/index.json
+  Deliverable types templates are stored in:
+  ~/.things/heres-the-thing/deliverable-types/* with the appropriate file extension if relevant to the type.
+  Custom deliverable types should support user-defined MCPs and plugins/tools. (e.g., a pdf template, a Google Doc mcp server, etc.)
+  ```json
+  {
+    "custom_deliverable_types": [
+      {
+        "id": "exec_one_pager",
+        "name": "Executive One-Pager",
+        "description": "Post-mortem form",
+        "template": "post-mortem.pdf",
+        "mcp": "executive-one-pager",
+        "tools": [Bash("echo 'hello'")]
+      }
+    ]
+  }
+  ```
+  This necessitates a sort of "custom deliverable" type registry and a "custom deliverable type" agent that knows how to handle them.
+
+  And reference them in goal deliverables like any built-in type.
+
+
+ What's Missing or Underrepresented
+
+  1. Precedent field — The conversation had precedent: [] as a campaign-level field. The final design has context (free text) but no structured way to reference
+  prior campaigns. This was explicitly discussed as an input. The precedent can reference anything as precedent - a prior campaign, an accomplishment, a PR comment, etc.
+
+  2. Subject familiarity dimension — The conversation defined subject_familiarity (new_to_me, familiar, i_built_it, expert) as a modifier that triggers subject research tasks and confidence flags.
+   The design doc's decision tree and campaign structure don't capture this anywhere.
+
+  3. Audience research tasks — Listed as an output component in the conversation ("Find out X about Y before proceeding"). The design doc's decision tree doesn't include this as a branch, even
+  though the conversation's "moderate prep + low audience familiarity" path produced them.
+
+  4. Champion audience path — The conversation explicitly described: "IF audience_receptiveness == champion → shift from 'convince' to 'equip' — give them ammo to advocate for you." The design
+  doc's tree only handles the skeptical/hostile branch.
+
+  5. Resuming work / prep level — The conversation described prep_level (zero, researched, strategized, drafted, rehearsed) and a modifier: "IF prep_level > zero → diff against existing campaign
+  state, only produce missing/changed components." This is partially covered by the /prep skill description but the diff behavior isn't specified.
+
+  6. Q&A prep session as interactive practice — Described in the conversation as "plugin plays devil's advocate on your pivotal points." The design doc references it in the time-depth table but
+  never defines what it actually is — it's a significant interactive feature (analogous to WDYD mock sessions) that deserves more description.
+
+  7. Conference talk specific outputs — The conversation mentioned "slide outline / talk structure, timing breakdown per section, transition phrases" for extended prep + talk medium. The tree
+  simplified away medium-specific branches beyond sync/async.
+
+  8. Custom deliverable agent — The conversation said this needs "a 'custom deliverable type' agent that knows how to handle them." The design doc mentions the concept (line 459) but doesn't
+  define it as an actual agent in the plugin architecture (no entry in an agents/ directory or similar).
+
+  9. Tags on outcomes — The outcome structure in the design doc includes tags (line 374), which is good, but the conversation's outcome example also discussed how outcome tags integrate with the
+  central tag index. The collection registration for outcomes isn't included — only campaigns and audiences are registered (lines 636-663).
+
+  Minor Inconsistencies
+
+  - /things:create-type is described in Part 2 as a things data layer skill but it should really be owned by `heres-the-thing`.
+  - The decision tree branches on "Is delivery synchronous?" and "Is delivery async?" as separate branches (lines 480-494), but these are the same question with opposite answers — the NO branch of
+   synchronous IS async. The tree reads like there are three independent checks at the top level when really "synchronous vs async" is one fork. The artifact and/or any user-defined custom type deliverables should be created in the NO branch.
+
+--------
+
+ Two New Plugins: for-the-record + playbook
+
+ Context
+
+ The user manually tells Claude "capture this discussion as a markdown document in ~/.references/" — repeatedly. They want automated slash commands that capture docs, import plans, review implementations, create workflows, and resume work —
+ all indexed and searchable in the .things/ data layer.
+
+ The scope splits naturally into two plugins:
+ 1. for-the-record — Capture records from Claude conversations into .things/
+ 2. playbook — Orchestrate plans, workflows, implementation tracking, and reviews
+
+ ---
+ Plugin 1: for-the-record (v1.0.0)
+
+ Purpose
+
+ Capture structured documentation from Claude conversations. Replaces the manual ~/.references/ workflow.
+
+ Data Location: ~/.things/for-the-record/
+
+ for-the-record/
+   preferences.json
+   docs/                          # Captured documents
+     <YYYY-MM-DD>-<slug>.md       # Flat files with YAML frontmatter
+   index.json                     # Auto-rebuilt master index
+   tags.json                      # Auto-rebuilt tag aggregation
+
+ Registry Collection: for-the-record/docs
+
+ {
+   "plugin": "for-the-record",
+   "description": "Structured documentation captured from conversations and context",
+   "tags_field": "frontmatter.tags",
+   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },
+   "index_schema": {
+     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },
+     "optional_fields": { "description": "string", "detail_level": "string", "source_type": "string" }
+   },
+   "master_index": "for-the-record/index.json",
+   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+ }
+
+ Document Frontmatter Schema
+
+ ---
+ title: "Descriptive title"
+ date: YYYY-MM-DD
+ description: "1-2 sentence summary"
+ detail_level: "concise|detailed"
+ source_type: "conversation|import|manual"
+ tags: [tag1, tag2]
+ related_docs: ["playbook/plans/some-plan.md"]  # optional cross-refs
+ ---
+
+ Skills (3)
+
+ /setup-ftr
+
+ - disable-model-invocation: true
+ - Create for-the-record/docs/ directory
+ - Register for-the-record/docs collection in registry
+ - Write preferences.json (ask: default detail level concise|detailed, auto-tag from context true|false)
+ - Write empty index.json and tags.json
+ - Update environment tracking in config.json
+ - Git workflow
+
+ /add-doc <topic> [--detailed] [--tags tag1,tag2]
+
+ - disable-model-invocation: false
+ - Core skill. Steps:
+   a. Load config + preferences
+   b. Parse arguments for topic, --detailed flag, --tags
+   c. Gather context from conversation history — scope to topic if provided. If no useful context, ask user what to document
+   d. Detail level: --detailed captures maximum context (full reasoning chains, code blocks, all alternatives discussed). Default (concise) captures key points, decisions, outcomes
+   e. Auto-choose document structure based on content:
+       - Decision doc: Context → Options → Evaluation → Decision → Rationale
+     - Technical reference: Overview → Details → Usage → Caveats
+     - Discussion summary: Topic → Key Points → Conclusions → Open Questions
+     - How-to guide: Goal → Prerequisites → Steps → Verification
+     - Architecture doc: Overview → Components → Data Flow → Constraints
+   f. Auto-generate tags (technologies, keywords, cross-reference existing tags for consistency). Present for review via AskUserQuestion
+   g. Generate filename: <YYYY-MM-DD>-<slugified-topic>.md
+   h. Write to <home>/.things/for-the-record/docs/<filename>
+   i. Git workflow
+   j. Confirm with location, tags, search hint
+
+ /migrate-ftr [--dry-run]
+
+ - disable-model-invocation: false
+ - Steps:
+   a. Ask user if they have existing files to import. If yes, ask from where (default suggestion: ~/.references/)
+   b. Scan source directory, show numbered list with brief description of each file
+   c. User picks by number list (or "all")
+   d. For each selected file: read content, generate frontmatter (title from filename or first heading, date from file mtime, auto-tags), write to for-the-record/docs/
+   e. Ask user if they want to import any Claude plan docs. List available plans from ~/.claude/plans/ with brief descriptions. User picks by number
+   f. For selected plans: read, generate frontmatter, write to for-the-record/docs/ (these are reference copies; /playbook:planned is for tracked plans)
+   g. Git workflow
+
+ Scripts
+
+ scripts/rebuild-index.py
+
+ - Python 3, no dependencies
+ - Modeled on i-did-a-thing/scripts/rebuild-data.py (reuse parse_frontmatter, try_number, slugify, write_atomic)
+ - Scans docs/*.md, parses frontmatter, writes:
+   - index.json: { version, last_updated, total_items, items: [{ filename, title, date, description, tags, detail_level, source_type }] }
+   - tags.json: { last_updated, tags: { tag: { count, last_used } } }
+
+ Files to Create
+
+ plugins/for-the-record/
+   .claude-plugin/plugin.json
+   hooks/hooks.json               # (empty — things plugin handles PostToolUse dispatch)
+   scripts/rebuild-index.py
+   skills/
+     setup/SKILL.md
+     add-doc/SKILL.md
+     add-doc/references/doc-format.md
+     migrate/SKILL.md
+   README.md
+
+ ---
+ Plugin 2: playbook (v1.0.0)
+
+ Purpose
+
+ Orchestrate plans, workflows, implementation tracking, and reviews. Create optimized workflows, import and evolve plans, review implementations (optionally through a think-like profile), resume work where Claude left off, and address
+ actionable items.
+
+ Data Location: ~/.things/playbook/
+
+ playbook/
+   preferences.json
+   plans/                         # Imported/tracked plans
+     <slug>.md                    # Flat files with YAML frontmatter
+   workflows/                     # XML-enhanced workflow archive copies
+     <slug>.md                    # Flat files with frontmatter + XML body
+   reviews/                       # Review outputs
+     <YYYY-MM-DD>-<slug>.md       # Flat files with actionable items
+   index.json                     # Unified master index (all types)
+   tags.json                      # Tag aggregation
+
+ Registry Collections (3)
+
+ playbook/plans
+ {
+   "plugin": "playbook",
+   "description": "Plans imported from Claude sessions or created manually, tracked through implementation",
+   "tags_field": "frontmatter.tags",
+   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },
+   "index_schema": {
+     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },
+     "optional_fields": { "status": "string", "source_plan": "string", "project": "string" }
+   },
+   "master_index": "playbook/index.json",
+   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+ }
+
+ playbook/workflows
+ {
+   "plugin": "playbook",
+   "description": "XML-enhanced workflow documents following the bivvy pattern",
+   "tags_field": "frontmatter.tags",
+   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },
+   "index_schema": {
+     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },
+     "optional_fields": { "scope": "string", "target_path": "string", "step_count": "number" }
+   },
+   "master_index": "playbook/index.json",
+   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+ }
+
+ playbook/reviews
+ {
+   "plugin": "playbook",
+   "description": "Implementation reviews with actionable items and interview results",
+   "tags_field": "frontmatter.tags",
+   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },
+   "index_schema": {
+     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },
+     "optional_fields": { "plan_ref": "string", "branch": "string", "status": "string", "actionable_count": "number" }
+   },
+   "master_index": "playbook/index.json",
+   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+ }
+
+ Frontmatter Schemas
+
+ Plans:
+ ---
+ title: "Plan title"
+ date: YYYY-MM-DD
+ description: "Summary"
+ doc_type: "plan"
+ status: "active|in-progress|completed|superseded|abandoned"
+ source_plan: "ethereal-mixing-spark.md"  # original Claude plan filename
+ project: "project-name-or-path"
+ tags: [tag1, tag2]
+ ---
+
+ Workflows:
+ ---
+ title: "Workflow title"
+ date: YYYY-MM-DD
+ description: "What this workflow covers"
+ doc_type: "workflow"
+ scope: "development|release|review|testing|custom"
+ target_path: ".claude/workflows/my-workflow.md"
+ step_count: N
+ referenced_from: ["CLAUDE.md", "plugins/x/skills/y/SKILL.md"]
+ tags: [tag1, tag2]
+ ---
+
+ Reviews:
+ ---
+ title: "Review: <plan> against <branch>"
+ date: YYYY-MM-DD
+ description: "Summary"
+ doc_type: "review"
+ plan_ref: "plans/the-plan.md"
+ branch: "feature/branch-name"
+ profile_used: "dhh"                # optional, if reviewed as a think-like profile
+ status: "all-actionable|has-open-items|in-progress"
+ actionable_count: N
+ done_count: N
+ tags: [tag1, tag2]
+ ---
+
+ Skills (10)
+
+ /setup-pb
+
+ - disable-model-invocation: true
+ - Create playbook/plans/, playbook/workflows/, playbook/reviews/
+ - Register all 3 collections in registry
+ - Write preferences.json:
+   - default_workflow_target: .claude/workflows/ (or custom)
+   - plan_import_behavior: copy|move (whether to delete source from ~/.claude/plans/)
+   - default_review_profile: null (or a think-like profile ID)
+ - Write empty index.json and tags.json
+ - Update environment tracking
+ - Git workflow
+
+ /planned <thing> [--status active] [--project <name>]
+
+ - disable-model-invocation: false
+ - Import a plan from ~/.claude/plans/ into .things/playbook/plans/ with proper frontmatter
+ - Steps:
+   a. Load config + preferences
+   b. Search ~/.claude/plans/ — list all .md files, read first ~30 lines of each, match against <thing> by content
+   c. If multiple matches → numbered list via AskUserQuestion. If none → list all available for selection
+   d. Read full plan content
+   e. Generate frontmatter: derive title from content (first H1 or summary), description, status from flag or default active, source_plan (original filename), project from flag or infer, auto-tags
+   f. Generate filename: <slugified-title>.md (no date prefix — plans are referenced by name)
+   g. Check for existing slug — ask update or create new
+   h. Write to playbook/plans/<slug>.md (frontmatter prepended to original content)
+   i. Handle source: copy or move based on preference
+   j. Git workflow
+   k. Confirm, mention /playbook:review as next step
+
+ /workflow <scope> [--target <path>] [--update <existing>] [--embed-in <file>]
+
+ - disable-model-invocation: false
+ - Create or update an XML-enhanced workflow file following the bivvy pattern
+ - Reference file: references/workflow-format.md (documents all XML tags)
+ - Steps:
+   a. Load config + preferences
+   b. If --update: read existing workflow, identify what to change. Otherwise: determine scope from args or ask
+   c. Gather workflow context from conversation — existing process descriptions, steps, constraints, verification criteria
+   d. If context sparse, brief interview: "What triggers this?", "Walk me through the steps", "Are there gates/checkpoints?", "What commands verify success?"
+   e. Design workflow using XML pattern:
+       - <workflow-summary> with <step ref=""> entries
+     - Numbered <step> elements with <title>, <goal>, <instructions>, <gate>
+     - <principles> if applicable
+     - <verification-commands> if automated checks exist
+   f. Write two copies:
+       - Archive: <home>/.things/playbook/workflows/<slug>.md (with YAML frontmatter)
+     - Working copy: If session has .claude/workflows/ dir and CLAUDE.md → write to .claude/workflows/<slug>.md (no frontmatter). Otherwise → archive only
+   g. Incorporate into target files — detect or accept target type:
+       - CLAUDE.md: Add <reference path=".claude/workflows/<slug>.md"> tag to <references> section (create section if missing)
+     - SKILL.md (via --embed-in): Ask user which mode:
+           - Reference mode: Add <reference name="workflow" path="references/<slug>.md" /> and copy workflow to the skill's references/ dir
+       - Embed mode: Convert the XML workflow into SKILL.md step definitions directly — translate <step> elements into the skill's <steps> format, preserving gates as <if> conditions and verification commands as <command> elements. This fully
+  implements the workflow as a skill
+     - Ask via AskUserQuestion before modifying any existing file
+   h. Git workflow (for .things/ changes only — don't auto-commit project files)
+   i. Confirm archive location, working copy location, and what references were updated
+
+ /review <plan> [as:<profile-name>] [--branch <name>]
+
+ - disable-model-invocation: false
+ - Review current branch work against a plan. Optionally apply a think-like profile lens
+ - Steps:
+   a. Load config + preferences
+   b. Find plan in playbook/plans/ by filename or content match. Fallback to ~/.claude/plans/ (offer to import first)
+   c. If as:<profile> specified: load think-like profile's action file from <home>/.things/think-like/profiles/<id>/code-review.md (or most relevant action). The review adopts that expert's voice, priorities, and lens
+   d. Determine branch: from --branch flag or git rev-parse --abbrev-ref HEAD
+   e. Gather branch work: git log --oneline main..HEAD, git diff main..HEAD --stat, read changed files
+   f. Compare plan items against branch work. Classify each as:
+       - done: Clear evidence in branch
+     - actionable: Not done, clear what's needed next
+     - needs-more-information: Ambiguous
+   g. Present initial review
+   h. Interview loop: For each "needs-more-information" item, ask user via AskUserQuestion with targeted question. Reclassify based on answer. Continue until none remain
+   i. Write final review to playbook/reviews/<date>-<plan-slug>-review.md — only "done" and "actionable" items. Structure:
+   ## Summary (done: N, actionable: N)
+ ## Done (with evidence)
+ ## Actionable Items (with specific next steps and context from interview)
+   j. Update plan status if appropriate (e.g., if all done → suggest marking completed)
+   k. Git workflow
+   l. Confirm with summary counts
+
+ /resume <plan>
+
+ - disable-model-invocation: false
+ - Resume implementing a plan — Claude picks up where it left off
+ - Steps:
+   a. Load config + preferences
+   b. Find plan in playbook/plans/
+   c. Find most recent review for this plan in playbook/reviews/ (if any)
+   d. Read the plan, the review, and the current branch state
+   e. Determine what's been done vs. what's actionable (from review, or by running a quick implicit review)
+   f. Present a "Resuming implementation" summary:
+       - What's done (from review or branch analysis)
+     - What's next (first actionable item)
+     - Current branch state
+   g. Begin working on the next actionable item. After completing each item, check off and move to the next
+   h. Offer to update the review doc as items are completed
+
+ /address <item-or-review>
+
+ - disable-model-invocation: false
+ - Address actionable items from any review or summary
+ - Steps:
+   a. Load config + preferences
+   b. If argument is a review filename or slug: load that review. Otherwise: list recent reviews, let user pick
+   c. Show remaining actionable items as a numbered list
+   d. User picks which to address (single number or range)
+   e. For each selected item: read context, implement the action, mark as resolved in the review doc
+   f. After addressing, update the review doc (decrement actionable_count, update status if all resolved)
+   g. Git workflow
+
+ /update <plan> [--status <status>] [--notes]
+
+ - disable-model-invocation: false
+ - Evolve a plan's content, status, or notes over time
+ - Steps:
+   a. Load config + preferences
+   b. Find plan in playbook/plans/ by slug or content match
+   c. Read current plan content and frontmatter
+   d. Determine what to update based on args and context:
+       - If --status: update frontmatter status (active → in-progress → completed/superseded/abandoned)
+     - If --notes: append a dated note section to the plan body (learnings, scope changes, decisions made since import)
+     - If no flags: ask what the user wants to update. Options:
+           - "Update the plan content" → Claude reads conversation context + current plan, rewrites sections that have changed based on new information
+       - "Add implementation notes" → append dated notes section
+       - "Change status" → update frontmatter status
+       - "Supersede with new version" → create a new plan file, mark the old one as superseded with a superseded_by field
+   e. Show diff of changes to user for approval
+   f. Write updated plan
+   g. Git workflow
+   h. Confirm with change summary
+
+ /progress [plan]
+
+ - disable-model-invocation: false
+ - Show progress dashboard for a specific plan or all active plans
+ - Steps:
+   a. Load config + preferences + index.json
+   b. If <plan> specified: show detailed progress for that plan. Otherwise: show overview of all non-completed plans
+   c. For each plan, gather:
+       - Plan status from frontmatter
+     - Latest review (if any) from playbook/reviews/ — done count, actionable count
+     - Branch status (if project path known — check if branch exists, last commit date)
+   d. Display progress dashboard:
+   Active Plans
+ ─────────────────────────────────────────
+ my-feature-plan          in-progress   ██████░░░░  6/10 done  (4 actionable)
+   └─ Last review: 2026-02-20 | Branch: feature/my-feature
+ another-plan             active        ░░░░░░░░░░  Not reviewed yet
+   └─ Imported: 2026-02-18 | No branch detected
+   e. For detailed view (single plan): show all items with done/actionable status
+   f. Offer quick actions: "Mark as completed", "Run a review", "Resume implementation"
+
+ /migrate-pb [--dry-run]
+
+ - disable-model-invocation: false
+ - Placeholder for v1. Offers to import Claude plan docs:
+   a. List ~/.claude/plans/*.md with brief descriptions in a numbered list
+   b. User picks by number
+   c. Import selected plans via the same flow as /planned
+
+ Scripts
+
+ scripts/rebuild-index.py
+
+ - Python 3, no dependencies
+ - Scans all 3 subdirectories (plans/, workflows/, reviews/)
+ - Writes unified index.json with doc_type field distinguishing entries
+ - Writes tags.json
+ - Index structure:
+ {
+   "version": 1,
+   "last_updated": "YYYY-MM-DD",
+   "total_items": N,
+   "by_type": { "plan": N, "workflow": N, "review": N },
+   "items": [{ "filename": "plans/slug.md", "doc_type": "plan", ... }]
+ }
+
+ Reference Files
+
+ skills/workflow/references/workflow-format.md
+
+ Documents the bivvy XML workflow format — all tags, attributes, examples:
+ - <workflow-summary>, <step> (number, id, ref), <title>, <goal>
+ - <instructions>, <instruction>, <command>, <expected>, <rationale>
+ - <gate>, <condition>, <on_fail> (goto), <prerequisite> (ref)
+ - <principles>, <principle> (name)
+ - <verification-commands>, <command-sequence>
+ - <critical>, <conditional>, <action>
+
+ skills/planned/references/plan-format.md
+
+ Documents plan frontmatter schema, status lifecycle, relationship to reviews.
+
+ skills/review/references/review-format.md
+
+ Documents review document structure, item classification rules, interview loop pattern.
+
+ Files to Create
+
+ plugins/playbook/
+   .claude-plugin/plugin.json
+   hooks/hooks.json               # (empty — things plugin handles PostToolUse dispatch)
+   scripts/rebuild-index.py
+   skills/
+     setup/SKILL.md
+     planned/SKILL.md
+     planned/references/plan-format.md
+     workflow/SKILL.md
+     workflow/references/workflow-format.md
+     review/SKILL.md
+     review/references/review-format.md
+     resume/SKILL.md
+     address/SKILL.md
+     update/SKILL.md
+     progress/SKILL.md
+     migrate/SKILL.md
+   README.md
+
+ ---
+ Hooks
+
+ Neither plugin needs its own PostToolUse hook — the things plugin's on-write.sh already dispatches rebuilds via registry for any write to ~/.things/. The registered rebuild_command will fire automatically.
+
+ No PreToolUse validation hooks for v1 — keep it simple. Add validation later if needed.
+
+ Both plugins get an empty hooks/hooks.json:
+ { "hooks": {} }
+
+ ---
+ Marketplace Updates
+
+ marketplace.json changes
+
+ - Add for-the-record entry (category: "content")
+ - Add playbook entry (category: "engineering")
+ - Bump metadata.version from "4.1.0" to "5.0.0"
+
+ ---
+ Implementation Order
+
+ Phase 1: for-the-record (foundation first — simpler plugin, establishes patterns)
+
+ 1. Create plugin scaffold: plugin.json, hooks/hooks.json, directory structure
+ 2. Write scripts/rebuild-index.py
+ 3. Write skills/setup/SKILL.md
+ 4. Write skills/add-doc/SKILL.md + references/doc-format.md
+ 5. Write skills/migrate/SKILL.md
+ 6. Write README.md
+
+ Phase 2: playbook (builds on for-the-record patterns)
+
+ 7. Create plugin scaffold
+ 8. Write scripts/rebuild-index.py (extended version — 3 subdirectories)
+ 9. Write skills/setup/SKILL.md
+ 10. Write skills/planned/SKILL.md + references/plan-format.md
+ 11. Write skills/workflow/SKILL.md + references/workflow-format.md
+ 12. Write skills/review/SKILL.md + references/review-format.md
+ 13. Write skills/resume/SKILL.md
+ 14. Write skills/address/SKILL.md
+ 15. Write skills/update/SKILL.md
+ 16. Write skills/progress/SKILL.md
+ 17. Write skills/migrate/SKILL.md
+ 18. Write README.md
+
+ Phase 3: Integration
+
+ 19. Update marketplace.json — add both plugins, bump version
+ 20. Update MEMORY.md with new plugin entries
+
+ Key Dependencies
+
+ - things:setup must be run before either plugin's setup
+ - for-the-record's rebuild script pattern is reused by playbook
+ - /playbook:review references plans from playbook/plans/ (so /planned should exist first)
+ - /playbook:review as:<profile> reads from think-like/profiles/ (existing, no changes needed)
+ - /playbook:resume reads from both playbook/plans/ and playbook/reviews/
+
+ Critical Files to Reference During Implementation
+
+ - plugins/i-did-a-thing/scripts/rebuild-data.py — reuse parse_frontmatter, try_number, slugify, write_atomic
+ - plugins/i-did-a-thing/skills/thing-i-did/SKILL.md — pattern for context assessment + fast path
+ - plugins/things/skills/setup/SKILL.md — pattern for setup with collection registration
+ - plugins/things/skills/register/references/collection-schema.md — collection schema reference
+ - plugins/think-like/skills/profile/SKILL.md — pattern for think-like integration in review skill
+ - /Users/brenna/Documents/personal/rust-projects/bivvy/.claude/bivvy-dev-workflow.md — XML workflow format source of truth
+
+ ---
+ Verification
+
+ 1. Run /setup-ftr — verify directories and registry entries created
+ 2. Run /add-doc test-topic --detailed — verify document written with frontmatter, index rebuilt
+ 3. Run /things:search --tag <auto-tag> — verify document is discoverable
+ 4. Run /setup-pb — verify directories and 3 registry entries created
+ 5. Place a test plan in ~/.claude/plans/, run /planned test-plan — verify import with frontmatter
+ 6. Run /playbook:workflow development — verify XML workflow created
+ 7. Run /playbook:review <plan> as:dhh — verify think-like integration works
+ 8. Verify index.json files rebuild correctly after each write
+
+----------
+ Plan to implement                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Two New Plugins: for-the-record + playbook                                                                                                                                                                                                      │
+│                                                                                                                                                                                                                                                 │
+│ Context                                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ The user manually tells Claude "capture this discussion as a markdown document in ~/.references/" — repeatedly. They want automated slash commands that capture docs, import plans, review implementations, create workflows, and resume work — │
+│  all indexed and searchable in the .things/ data layer.                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ The scope splits naturally into two plugins:                                                                                                                                                                                                    │
+│ 1. for-the-record — Capture records from Claude conversations into .things/                                                                                                                                                                     │
+│ 2. playbook — Orchestrate plans, workflows, implementation tracking, and reviews                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Plugin 1: for-the-record (v1.0.0)                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Purpose                                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ Capture structured documentation from Claude conversations. Replaces the manual ~/.references/ workflow.                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ Data Location: ~/.things/for-the-record/                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ for-the-record/                                                                                                                                                                                                                                 │
+│   preferences.json                                                                                                                                                                                                                              │
+│   docs/                          # Captured documents                                                                                                                                                                                           │
+│     <YYYY-MM-DD>-<slug>.md       # Flat files with YAML frontmatter                                                                                                                                                                             │
+│   index.json                     # Auto-rebuilt master index                                                                                                                                                                                    │
+│   tags.json                      # Auto-rebuilt tag aggregation                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ Registry Collection: for-the-record/docs                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ {                                                                                                                                                                                                                                               │
+│   "plugin": "for-the-record",                                                                                                                                                                                                                   │
+│   "description": "Structured documentation captured from conversations and context",                                                                                                                                                            │
+│   "tags_field": "frontmatter.tags",                                                                                                                                                                                                             │
+│   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },                                                                                                                                                                    │
+│   "index_schema": {                                                                                                                                                                                                                             │
+│     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },                                                                                                                                         │
+│     "optional_fields": { "description": "string", "detail_level": "string", "source_type": "string" }                                                                                                                                           │
+│   },                                                                                                                                                                                                                                            │
+│   "master_index": "for-the-record/index.json",                                                                                                                                                                                                  │
+│   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"                                                                                                                                                   │
+│ }                                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Document Frontmatter Schema                                                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ title: "Descriptive title"                                                                                                                                                                                                                      │
+│ date: YYYY-MM-DD                                                                                                                                                                                                                                │
+│ description: "1-2 sentence summary"                                                                                                                                                                                                             │
+│ detail_level: "concise|detailed"                                                                                                                                                                                                                │
+│ source_type: "conversation|import|manual"                                                                                                                                                                                                       │
+│ tags: [tag1, tag2]                                                                                                                                                                                                                              │
+│ related_docs: ["playbook/plans/some-plan.md"]  # optional cross-refs                                                                                                                                                                            │
+│ ---                                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Skills (3)                                                                                                                                                                                                                                      │
+│                                                                                                                                                                                                                                                 │
+│ /setup-ftr                                                                                                                                                                                                                                      │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: true                                                                                                                                                                                                                │
+│ - Create for-the-record/docs/ directory                                                                                                                                                                                                         │
+│ - Register for-the-record/docs collection in registry                                                                                                                                                                                           │
+│ - Write preferences.json (ask: default detail level concise|detailed, auto-tag from context true|false)                                                                                                                                         │
+│ - Write empty index.json and tags.json                                                                                                                                                                                                          │
+│ - Update environment tracking in config.json                                                                                                                                                                                                    │
+│ - Git workflow                                                                                                                                                                                                                                  │
+│                                                                                                                                                                                                                                                 │
+│ /add-doc <topic> [--detailed] [--tags tag1,tag2]                                                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Core skill. Steps:                                                                                                                                                                                                                            │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. Parse arguments for topic, --detailed flag, --tags                                                                                                                                                                                         │
+│   c. Gather context from conversation history — scope to topic if provided. If no useful context, ask user what to document                                                                                                                     │
+│   d. Detail level: --detailed captures maximum context (full reasoning chains, code blocks, all alternatives discussed). Default (concise) captures key points, decisions, outcomes                                                             │
+│   e. Auto-choose document structure based on content:                                                                                                                                                                                           │
+│       - Decision doc: Context → Options → Evaluation → Decision → Rationale                                                                                                                                                                     │
+│     - Technical reference: Overview → Details → Usage → Caveats                                                                                                                                                                                 │
+│     - Discussion summary: Topic → Key Points → Conclusions → Open Questions                                                                                                                                                                     │
+│     - How-to guide: Goal → Prerequisites → Steps → Verification                                                                                                                                                                                 │
+│     - Architecture doc: Overview → Components → Data Flow → Constraints                                                                                                                                                                         │
+│   f. Auto-generate tags (technologies, keywords, cross-reference existing tags for consistency). Present for review via AskUserQuestion                                                                                                         │
+│   g. Generate filename: <YYYY-MM-DD>-<slugified-topic>.md                                                                                                                                                                                       │
+│   h. Write to <home>/.things/for-the-record/docs/<filename>                                                                                                                                                                                     │
+│   i. Git workflow                                                                                                                                                                                                                               │
+│   j. Confirm with location, tags, search hint                                                                                                                                                                                                   │
+│                                                                                                                                                                                                                                                 │
+│ /migrate-ftr [--dry-run]                                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Ask user if they have existing files to import. If yes, ask from where (default suggestion: ~/.references/)                                                                                                                                │
+│   b. Scan source directory, show numbered list with brief description of each file                                                                                                                                                              │
+│   c. User picks by number list (or "all")                                                                                                                                                                                                       │
+│   d. For each selected file: read content, generate frontmatter (title from filename or first heading, date from file mtime, auto-tags), write to for-the-record/docs/                                                                          │
+│   e. Ask user if they want to import any Claude plan docs. List available plans from ~/.claude/plans/ with brief descriptions. User picks by number                                                                                             │
+│   f. For selected plans: read, generate frontmatter, write to for-the-record/docs/ (these are reference copies; /playbook:planned is for tracked plans)                                                                                         │
+│   g. Git workflow                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Scripts                                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ scripts/rebuild-index.py                                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ - Python 3, no dependencies                                                                                                                                                                                                                     │
+│ - Modeled on i-did-a-thing/scripts/rebuild-data.py (reuse parse_frontmatter, try_number, slugify, write_atomic)                                                                                                                                 │
+│ - Scans docs/*.md, parses frontmatter, writes:                                                                                                                                                                                                  │
+│   - index.json: { version, last_updated, total_items, items: [{ filename, title, date, description, tags, detail_level, source_type }] }                                                                                                        │
+│   - tags.json: { last_updated, tags: { tag: { count, last_used } } }                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                 │
+│ Files to Create                                                                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ plugins/for-the-record/                                                                                                                                                                                                                         │
+│   .claude-plugin/plugin.json                                                                                                                                                                                                                    │
+│   hooks/hooks.json               # (empty — things plugin handles PostToolUse dispatch)                                                                                                                                                         │
+│   scripts/rebuild-index.py                                                                                                                                                                                                                      │
+│   skills/                                                                                                                                                                                                                                       │
+│     setup/SKILL.md                                                                                                                                                                                                                              │
+│     add-doc/SKILL.md                                                                                                                                                                                                                            │
+│     add-doc/references/doc-format.md                                                                                                                                                                                                            │
+│     migrate/SKILL.md                                                                                                                                                                                                                            │
+│   README.md                                                                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Plugin 2: playbook (v1.0.0)                                                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ Purpose                                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ Orchestrate plans, workflows, implementation tracking, and reviews. Create optimized workflows, import and evolve plans, review implementations (optionally through a think-like profile), resume work where Claude left off, and address       │
+│ actionable items.                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Data Location: ~/.things/playbook/                                                                                                                                                                                                              │
+│                                                                                                                                                                                                                                                 │
+│ playbook/                                                                                                                                                                                                                                       │
+│   preferences.json                                                                                                                                                                                                                              │
+│   plans/                         # Imported/tracked plans                                                                                                                                                                                       │
+│     <slug>.md                    # Flat files with YAML frontmatter                                                                                                                                                                             │
+│   workflows/                     # XML-enhanced workflow archive copies                                                                                                                                                                         │
+│     <slug>.md                    # Flat files with frontmatter + XML body                                                                                                                                                                       │
+│   reviews/                       # Review outputs                                                                                                                                                                                               │
+│     <YYYY-MM-DD>-<slug>.md       # Flat files with actionable items                                                                                                                                                                             │
+│   index.json                     # Unified master index (all types)                                                                                                                                                                             │
+│   tags.json                      # Tag aggregation                                                                                                                                                                                              │
+│                                                                                                                                                                                                                                                 │
+│ Registry Collections (3)                                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ playbook/plans                                                                                                                                                                                                                                  │
+│ {                                                                                                                                                                                                                                               │
+│   "plugin": "playbook",                                                                                                                                                                                                                         │
+│   "description": "Plans imported from Claude sessions or created manually, tracked through implementation",                                                                                                                                     │
+│   "tags_field": "frontmatter.tags",                                                                                                                                                                                                             │
+│   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },                                                                                                                                                                    │
+│   "index_schema": {                                                                                                                                                                                                                             │
+│     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },                                                                                                                                         │
+│     "optional_fields": { "status": "string", "source_plan": "string", "project": "string" }                                                                                                                                                     │
+│   },                                                                                                                                                                                                                                            │
+│   "master_index": "playbook/index.json",                                                                                                                                                                                                        │
+│   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"                                                                                                                                                   │
+│ }                                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ playbook/workflows                                                                                                                                                                                                                              │
+│ {                                                                                                                                                                                                                                               │
+│   "plugin": "playbook",                                                                                                                                                                                                                         │
+│   "description": "XML-enhanced workflow documents following the bivvy pattern",                                                                                                                                                                 │
+│   "tags_field": "frontmatter.tags",                                                                                                                                                                                                             │
+│   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },                                                                                                                                                                    │
+│   "index_schema": {                                                                                                                                                                                                                             │
+│     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },                                                                                                                                         │
+│     "optional_fields": { "scope": "string", "target_path": "string", "step_count": "number" }                                                                                                                                                   │
+│   },                                                                                                                                                                                                                                            │
+│   "master_index": "playbook/index.json",                                                                                                                                                                                                        │
+│   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"                                                                                                                                                   │
+│ }                                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ playbook/reviews                                                                                                                                                                                                                                │
+│ {                                                                                                                                                                                                                                               │
+│   "plugin": "playbook",                                                                                                                                                                                                                         │
+│   "description": "Implementation reviews with actionable items and interview results",                                                                                                                                                          │
+│   "tags_field": "frontmatter.tags",                                                                                                                                                                                                             │
+│   "item_structure": { "directory_per_item": false, "file_pattern": "*.md" },                                                                                                                                                                    │
+│   "index_schema": {                                                                                                                                                                                                                             │
+│     "required_fields": { "filename": "string", "title": "string", "date": "date", "tags": "string[]" },                                                                                                                                         │
+│     "optional_fields": { "plan_ref": "string", "branch": "string", "status": "string", "actionable_count": "number" }                                                                                                                           │
+│   },                                                                                                                                                                                                                                            │
+│   "master_index": "playbook/index.json",                                                                                                                                                                                                        │
+│   "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"                                                                                                                                                   │
+│ }                                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Frontmatter Schemas                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Plans:                                                                                                                                                                                                                                          │
+│ ---                                                                                                                                                                                                                                             │
+│ title: "Plan title"                                                                                                                                                                                                                             │
+│ date: YYYY-MM-DD                                                                                                                                                                                                                                │
+│ description: "Summary"                                                                                                                                                                                                                          │
+│ doc_type: "plan"                                                                                                                                                                                                                                │
+│ status: "active|in-progress|completed|superseded|abandoned"                                                                                                                                                                                     │
+│ source_plan: "ethereal-mixing-spark.md"  # original Claude plan filename                                                                                                                                                                        │
+│ project: "project-name-or-path"                                                                                                                                                                                                                 │
+│ tags: [tag1, tag2]                                                                                                                                                                                                                              │
+│ ---                                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Workflows:                                                                                                                                                                                                                                      │
+│ ---                                                                                                                                                                                                                                             │
+│ title: "Workflow title"                                                                                                                                                                                                                         │
+│ date: YYYY-MM-DD                                                                                                                                                                                                                                │
+│ description: "What this workflow covers"                                                                                                                                                                                                        │
+│ doc_type: "workflow"                                                                                                                                                                                                                            │
+│ scope: "development|release|review|testing|custom"                                                                                                                                                                                              │
+│ target_path: ".claude/workflows/my-workflow.md"                                                                                                                                                                                                 │
+│ step_count: N                                                                                                                                                                                                                                   │
+│ referenced_from: ["CLAUDE.md", "plugins/x/skills/y/SKILL.md"]                                                                                                                                                                                   │
+│ tags: [tag1, tag2]                                                                                                                                                                                                                              │
+│ ---                                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Reviews:                                                                                                                                                                                                                                        │
+│ ---                                                                                                                                                                                                                                             │
+│ title: "Review: <plan> against <branch>"                                                                                                                                                                                                        │
+│ date: YYYY-MM-DD                                                                                                                                                                                                                                │
+│ description: "Summary"                                                                                                                                                                                                                          │
+│ doc_type: "review"                                                                                                                                                                                                                              │
+│ plan_ref: "plans/the-plan.md"                                                                                                                                                                                                                   │
+│ branch: "feature/branch-name"                                                                                                                                                                                                                   │
+│ profile_used: "dhh"                # optional, if reviewed as a think-like profile                                                                                                                                                              │
+│ status: "all-actionable|has-open-items|in-progress"                                                                                                                                                                                             │
+│ actionable_count: N                                                                                                                                                                                                                             │
+│ done_count: N                                                                                                                                                                                                                                   │
+│ tags: [tag1, tag2]                                                                                                                                                                                                                              │
+│ ---                                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Skills (10)                                                                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ /setup-pb                                                                                                                                                                                                                                       │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: true                                                                                                                                                                                                                │
+│ - Create playbook/plans/, playbook/workflows/, playbook/reviews/                                                                                                                                                                                │
+│ - Register all 3 collections in registry                                                                                                                                                                                                        │
+│ - Write preferences.json:                                                                                                                                                                                                                       │
+│   - default_workflow_target: .claude/workflows/ (or custom)                                                                                                                                                                                     │
+│   - plan_import_behavior: copy|move (whether to delete source from ~/.claude/plans/)                                                                                                                                                            │
+│   - default_review_profile: null (or a think-like profile ID)                                                                                                                                                                                   │
+│ - Write empty index.json and tags.json                                                                                                                                                                                                          │
+│ - Update environment tracking                                                                                                                                                                                                                   │
+│ - Git workflow                                                                                                                                                                                                                                  │
+│                                                                                                                                                                                                                                                 │
+│ /planned <thing> [--status active] [--project <name>]                                                                                                                                                                                           │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Import a plan from ~/.claude/plans/ into .things/playbook/plans/ with proper frontmatter                                                                                                                                                      │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. Search ~/.claude/plans/ — list all .md files, read first ~30 lines of each, match against <thing> by content                                                                                                                               │
+│   c. If multiple matches → numbered list via AskUserQuestion. If none → list all available for selection                                                                                                                                        │
+│   d. Read full plan content                                                                                                                                                                                                                     │
+│   e. Generate frontmatter: derive title from content (first H1 or summary), description, status from flag or default active, source_plan (original filename), project from flag or infer, auto-tags                                             │
+│   f. Generate filename: <slugified-title>.md (no date prefix — plans are referenced by name)                                                                                                                                                    │
+│   g. Check for existing slug — ask update or create new                                                                                                                                                                                         │
+│   h. Write to playbook/plans/<slug>.md (frontmatter prepended to original content)                                                                                                                                                              │
+│   i. Handle source: copy or move based on preference                                                                                                                                                                                            │
+│   j. Git workflow                                                                                                                                                                                                                               │
+│   k. Confirm, mention /playbook:review-against as next step                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ /create-workflow <scope> [--target <path>] [--update <existing>] [--embed-in <file>]                                                                                                                                                            │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Create or update an XML-enhanced workflow file following the bivvy pattern                                                                                                                                                                    │
+│ - Reference file: references/workflow-format.md (documents all XML tags)                                                                                                                                                                        │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. If --update: read existing workflow, identify what to change. Otherwise: determine scope from args or ask                                                                                                                                  │
+│   c. Gather workflow context from conversation — existing process descriptions, steps, constraints, verification criteria                                                                                                                       │
+│   d. If context sparse, brief interview: "What triggers this?", "Walk me through the steps", "Are there gates/checkpoints?", "What commands verify success?"                                                                                    │
+│   e. Design workflow using XML pattern:                                                                                                                                                                                                         │
+│       - <workflow-summary> with <step ref=""> entries                                                                                                                                                                                           │
+│     - Numbered <step> elements with <title>, <goal>, <instructions>, <gate>                                                                                                                                                                     │
+│     - <principles> if applicable                                                                                                                                                                                                                │
+│     - <verification-commands> if automated checks exist                                                                                                                                                                                         │
+│   f. Write two copies:                                                                                                                                                                                                                          │
+│       - Archive: <home>/.things/playbook/workflows/<slug>.md (with YAML frontmatter)                                                                                                                                                            │
+│     - Working copy: If session has .claude/workflows/ dir and CLAUDE.md → write to .claude/workflows/<slug>.md (no frontmatter). Otherwise → archive only                                                                                       │
+│   g. Incorporate into target files — detect or accept target type:                                                                                                                                                                              │
+│       - CLAUDE.md: Add <reference path=".claude/workflows/<slug>.md"> tag to <references> section (create section if missing)                                                                                                                   │
+│     - SKILL.md (via --embed-in): Ask user which mode:                                                                                                                                                                                           │
+│           - Reference mode: Add <reference name="workflow" path="references/<slug>.md" /> and copy workflow to the skill's references/ dir                                                                                                      │
+│       - Embed mode: Convert the XML workflow into SKILL.md step definitions directly — translate <step> elements into the skill's <steps> format, preserving gates as <if> conditions and verification commands as <command> elements. This     │
+│ fully implements the workflow as a skill                                                                                                                                                                                                        │
+│     - Ask via AskUserQuestion before modifying any existing file                                                                                                                                                                                │
+│   h. Git workflow (for .things/ changes only — don't auto-commit project files)                                                                                                                                                                 │
+│   i. Confirm archive location, working copy location, and what references were updated                                                                                                                                                          │
+│                                                                                                                                                                                                                                                 │
+│ /review-against <plan> [as:<profile-name>] [--branch <name>]                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Review current branch work against a plan. Optionally apply a think-like profile lens                                                                                                                                                         │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. Find plan in playbook/plans/ by filename or content match. Fallback to ~/.claude/plans/ (offer to import first)                                                                                                                            │
+│   c. If as:<profile> specified: load think-like profile's action file from <home>/.things/think-like/profiles/<id>/code-review.md (or most relevant action). The review adopts that expert's voice, priorities, and lens                        │
+│   d. Determine branch: from --branch flag or git rev-parse --abbrev-ref HEAD                                                                                                                                                                    │
+│   e. Gather branch work: git log --oneline main..HEAD, git diff main..HEAD --stat, read changed files                                                                                                                                           │
+│   f. Compare plan items against branch work. Classify each as:                                                                                                                                                                                  │
+│       - done: Clear evidence in branch                                                                                                                                                                                                          │
+│     - actionable: Not done, clear what's needed next                                                                                                                                                                                            │
+│     - needs-more-information: Ambiguous                                                                                                                                                                                                         │
+│   g. Present initial review                                                                                                                                                                                                                     │
+│   h. Interview loop: For each "needs-more-information" item, ask user via AskUserQuestion with targeted question. Reclassify based on answer. Continue until none remain                                                                        │
+│   i. Write final review to playbook/reviews/<date>-<plan-slug>-review.md — only "done" and "actionable" items. Structure:                                                                                                                       │
+│   ## Summary (done: N, actionable: N)                                                                                                                                                                                                           │
+│ ## Done (with evidence)                                                                                                                                                                                                                         │
+│ ## Actionable Items (with specific next steps and context from interview)                                                                                                                                                                       │
+│   j. Update plan status if appropriate (e.g., if all done → suggest marking completed)                                                                                                                                                          │
+│   k. Git workflow                                                                                                                                                                                                                               │
+│   l. Confirm with summary counts                                                                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ /resume-plan <plan>                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Resume implementing a plan — Claude picks up where it left off                                                                                                                                                                                │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. Find plan in playbook/plans/                                                                                                                                                                                                               │
+│   c. Find most recent review for this plan in playbook/reviews/ (if any)                                                                                                                                                                        │
+│   d. Read the plan, the review, and the current branch state                                                                                                                                                                                    │
+│   e. Determine what's been done vs. what's actionable (from review, or by running a quick implicit review)                                                                                                                                      │
+│   f. Present a "Resuming implementation" summary:                                                                                                                                                                                               │
+│       - What's done (from review or branch analysis)                                                                                                                                                                                            │
+│     - What's next (first actionable item)                                                                                                                                                                                                       │
+│     - Current branch state                                                                                                                                                                                                                      │
+│   g. Begin working on the next actionable item. After completing each item, check off and move to the next                                                                                                                                      │
+│   h. Offer to update the review doc as items are completed                                                                                                                                                                                      │
+│                                                                                                                                                                                                                                                 │
+│ /address <item-or-review>                                                                                                                                                                                                                       │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Address actionable items from any review or summary                                                                                                                                                                                           │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. If argument is a review filename or slug: load that review. Otherwise: list recent reviews, let user pick                                                                                                                                  │
+│   c. Show remaining actionable items as a numbered list                                                                                                                                                                                         │
+│   d. User picks which to address (single number or range)                                                                                                                                                                                       │
+│   e. For each selected item: read context, implement the action, mark as resolved in the review doc                                                                                                                                             │
+│   f. After addressing, update the review doc (decrement actionable_count, update status if all resolved)                                                                                                                                        │
+│   g. Git workflow                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ /update <plan> [--status <status>] [--notes]                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Evolve a plan's content, status, or notes over time                                                                                                                                                                                           │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences                                                                                                                                                                                                                  │
+│   b. Find plan in playbook/plans/ by slug or content match                                                                                                                                                                                      │
+│   c. Read current plan content and frontmatter                                                                                                                                                                                                  │
+│   d. Determine what to update based on args and context:                                                                                                                                                                                        │
+│       - If --status: update frontmatter status (active → in-progress → completed/superseded/abandoned)                                                                                                                                          │
+│     - If --notes: append a dated note section to the plan body (learnings, scope changes, decisions made since import)                                                                                                                          │
+│     - If no flags: ask what the user wants to update. Options:                                                                                                                                                                                  │
+│           - "Update the plan content" → Claude reads conversation context + current plan, rewrites sections that have changed based on new information                                                                                          │
+│       - "Add implementation notes" → append dated notes section                                                                                                                                                                                 │
+│       - "Change status" → update frontmatter status                                                                                                                                                                                             │
+│       - "Supersede with new version" → create a new plan file, mark the old one as superseded with a superseded_by field                                                                                                                        │
+│   e. Show diff of changes to user for approval                                                                                                                                                                                                  │
+│   f. Write updated plan                                                                                                                                                                                                                         │
+│   g. Git workflow                                                                                                                                                                                                                               │
+│   h. Confirm with change summary                                                                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ /progress [plan]                                                                                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Show progress dashboard for a specific plan or all active plans                                                                                                                                                                               │
+│ - Steps:                                                                                                                                                                                                                                        │
+│   a. Load config + preferences + index.json                                                                                                                                                                                                     │
+│   b. If <plan> specified: show detailed progress for that plan. Otherwise: show overview of all non-completed plans                                                                                                                             │
+│   c. For each plan, gather:                                                                                                                                                                                                                     │
+│       - Plan status from frontmatter                                                                                                                                                                                                            │
+│     - Latest review (if any) from playbook/reviews/ — done count, actionable count                                                                                                                                                              │
+│     - Branch status (if project path known — check if branch exists, last commit date)                                                                                                                                                          │
+│   d. Display progress dashboard:                                                                                                                                                                                                                │
+│   Active Plans                                                                                                                                                                                                                                  │
+│ ─────────────────────────────────────────                                                                                                                                                                                                       │
+│ my-feature-plan          in-progress   ██████░░░░  6/10 done  (4 actionable)                                                                                                                                                                    │
+│   └─ Last review: 2026-02-20 | Branch: feature/my-feature                                                                                                                                                                                       │
+│ another-plan             active        ░░░░░░░░░░  Not reviewed yet                                                                                                                                                                             │
+│   └─ Imported: 2026-02-18 | No branch detected                                                                                                                                                                                                  │
+│   e. For detailed view (single plan): show all items with done/actionable status                                                                                                                                                                │
+│   f. Offer quick actions: "Mark as completed", "Run a review", "Resume implementation"                                                                                                                                                          │
+│                                                                                                                                                                                                                                                 │
+│ /migrate-pb [--dry-run]                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ - disable-model-invocation: false                                                                                                                                                                                                               │
+│ - Placeholder for v1. Offers to import Claude plan docs:                                                                                                                                                                                        │
+│   a. List ~/.claude/plans/*.md with brief descriptions in a numbered list                                                                                                                                                                       │
+│   b. User picks by number                                                                                                                                                                                                                       │
+│   c. Import selected plans via the same flow as /planned                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ Scripts                                                                                                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ scripts/rebuild-index.py                                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ - Python 3, no dependencies                                                                                                                                                                                                                     │
+│ - Scans all 3 subdirectories (plans/, workflows/, reviews/)                                                                                                                                                                                     │
+│ - Writes unified index.json with doc_type field distinguishing entries                                                                                                                                                                          │
+│ - Writes tags.json                                                                                                                                                                                                                              │
+│ - Index structure:                                                                                                                                                                                                                              │
+│ {                                                                                                                                                                                                                                               │
+│   "version": 1,                                                                                                                                                                                                                                 │
+│   "last_updated": "YYYY-MM-DD",                                                                                                                                                                                                                 │
+│   "total_items": N,                                                                                                                                                                                                                             │
+│   "by_type": { "plan": N, "workflow": N, "review": N },                                                                                                                                                                                         │
+│   "items": [{ "filename": "plans/slug.md", "doc_type": "plan", ... }]                                                                                                                                                                           │
+│ }                                                                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Reference Files                                                                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ skills/create-workflow/references/workflow-format.md                                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                 │
+│ Documents the bivvy XML workflow format — all tags, attributes, examples:                                                                                                                                                                       │
+│ - <workflow-summary>, <step> (number, id, ref), <title>, <goal>                                                                                                                                                                                 │
+│ - <instructions>, <instruction>, <command>, <expected>, <rationale>                                                                                                                                                                             │
+│ - <gate>, <condition>, <on_fail> (goto), <prerequisite> (ref)                                                                                                                                                                                   │
+│ - <principles>, <principle> (name)                                                                                                                                                                                                              │
+│ - <verification-commands>, <command-sequence>                                                                                                                                                                                                   │
+│ - <critical>, <conditional>, <action>                                                                                                                                                                                                           │
+│                                                                                                                                                                                                                                                 │
+│ skills/planned/references/plan-format.md                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ Documents plan frontmatter schema, status lifecycle, relationship to reviews.                                                                                                                                                                   │
+│                                                                                                                                                                                                                                                 │
+│ skills/review-against/references/review-format.md                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ Documents review document structure, item classification rules, interview loop pattern.                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ Files to Create                                                                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ plugins/playbook/                                                                                                                                                                                                                               │
+│   .claude-plugin/plugin.json                                                                                                                                                                                                                    │
+│   hooks/hooks.json               # (empty — things plugin handles PostToolUse dispatch)                                                                                                                                                         │
+│   scripts/rebuild-index.py                                                                                                                                                                                                                      │
+│   skills/                                                                                                                                                                                                                                       │
+│     setup/SKILL.md                                                                                                                                                                                                                              │
+│     planned/SKILL.md                                                                                                                                                                                                                            │
+│     planned/references/plan-format.md                                                                                                                                                                                                           │
+│     create-workflow/SKILL.md                                                                                                                                                                                                                    │
+│     create-workflow/references/workflow-format.md                                                                                                                                                                                               │
+│     review-against/SKILL.md                                                                                                                                                                                                                     │
+│     review-against/references/review-format.md                                                                                                                                                                                                  │
+│     resume-plan/SKILL.md                                                                                                                                                                                                                        │
+│     address/SKILL.md                                                                                                                                                                                                                            │
+│     update/SKILL.md                                                                                                                                                                                                                             │
+│     progress/SKILL.md                                                                                                                                                                                                                           │
+│     migrate/SKILL.md                                                                                                                                                                                                                            │
+│   README.md                                                                                                                                                                                                                                     │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Hooks                                                                                                                                                                                                                                           │
+│                                                                                                                                                                                                                                                 │
+│ Neither plugin needs its own PostToolUse hook — the things plugin's on-write.sh already dispatches rebuilds via registry for any write to ~/.things/. The registered rebuild_command will fire automatically.                                   │
+│                                                                                                                                                                                                                                                 │
+│ No PreToolUse validation hooks for v1 — keep it simple. Add validation later if needed.                                                                                                                                                         │
+│                                                                                                                                                                                                                                                 │
+│ Both plugins get an empty hooks/hooks.json:                                                                                                                                                                                                     │
+│ { "hooks": {} }                                                                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Marketplace Updates                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ marketplace.json changes                                                                                                                                                                                                                        │
+│                                                                                                                                                                                                                                                 │
+│ - Add for-the-record entry (category: "content")                                                                                                                                                                                                │
+│ - Add playbook entry (category: "engineering")                                                                                                                                                                                                  │
+│ - Bump metadata.version from "4.1.0" to "5.0.0"                                                                                                                                                                                                 │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Implementation Order                                                                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                 │
+│ Phase 1: for-the-record (foundation first — simpler plugin, establishes patterns)                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ 1. Create plugin scaffold: plugin.json, hooks/hooks.json, directory structure                                                                                                                                                                   │
+│ 2. Write scripts/rebuild-index.py                                                                                                                                                                                                               │
+│ 3. Write skills/setup/SKILL.md                                                                                                                                                                                                                  │
+│ 4. Write skills/add-doc/SKILL.md + references/doc-format.md                                                                                                                                                                                     │
+│ 5. Write skills/migrate/SKILL.md                                                                                                                                                                                                                │
+│ 6. Write README.md                                                                                                                                                                                                                              │
+│                                                                                                                                                                                                                                                 │
+│ Phase 2: playbook (builds on for-the-record patterns)                                                                                                                                                                                           │
+│                                                                                                                                                                                                                                                 │
+│ 7. Create plugin scaffold                                                                                                                                                                                                                       │
+│ 8. Write scripts/rebuild-index.py (extended version — 3 subdirectories)                                                                                                                                                                         │
+│ 9. Write skills/setup/SKILL.md                                                                                                                                                                                                                  │
+│ 10. Write skills/planned/SKILL.md + references/plan-format.md                                                                                                                                                                                   │
+│ 11. Write skills/create-workflow/SKILL.md + references/workflow-format.md                                                                                                                                                                       │
+│ 12. Write skills/review-against/SKILL.md + references/review-format.md                                                                                                                                                                          │
+│ 13. Write skills/resume-plan/SKILL.md                                                                                                                                                                                                           │
+│ 14. Write skills/address/SKILL.md                                                                                                                                                                                                               │
+│ 15. Write skills/update/SKILL.md                                                                                                                                                                                                                │
+│ 16. Write skills/progress/SKILL.md                                                                                                                                                                                                              │
+│ 17. Write skills/migrate/SKILL.md                                                                                                                                                                                                               │
+│ 18. Write README.md                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                 │
+│ Phase 3: Integration                                                                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                 │
+│ 19. Update marketplace.json — add both plugins, bump version                                                                                                                                                                                    │
+│ 20. Update MEMORY.md with new plugin entries                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                 │
+│ Key Dependencies                                                                                                                                                                                                                                │
+│                                                                                                                                                                                                                                                 │
+│ - things:setup must be run before either plugin's setup                                                                                                                                                                                         │
+│ - for-the-record's rebuild script pattern is reused by playbook                                                                                                                                                                                 │
+│ - /playbook:review-against references plans from playbook/plans/ (so /planned should exist first)                                                                                                                                               │
+│ - /playbook:review-against as:<profile> reads from think-like/profiles/ (existing, no changes needed)                                                                                                                                           │
+│ - /playbook:resume-plan reads from both playbook/plans/ and playbook/reviews/                                                                                                                                                                   │
+│                                                                                                                                                                                                                                                 │
+│ Critical Files to Reference During Implementation                                                                                                                                                                                               │
+│                                                                                                                                                                                                                                                 │
+│ - plugins/i-did-a-thing/scripts/rebuild-data.py — reuse parse_frontmatter, try_number, slugify, write_atomic                                                                                                                                    │
+│ - plugins/i-did-a-thing/skills/thing-i-did/SKILL.md — pattern for context assessment + fast path                                                                                                                                                │
+│ - plugins/things/skills/setup/SKILL.md — pattern for setup with collection registration                                                                                                                                                         │
+│ - plugins/things/skills/register/references/collection-schema.md — collection schema reference                                                                                                                                                  │
+│ - plugins/think-like/skills/profile/SKILL.md — pattern for think-like integration in review skill                                                                                                                                               │
+│ - /Users/brenna/Documents/personal/rust-projects/bivvy/.claude/bivvy-dev-workflow.md — XML workflow format source of truth                                                                                                                      │
+│                                                                                                                                                                                                                                                 │
+│ ---                                                                                                                                                                                                                                             │
+│ Verification                                                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                 │
+│ 1. Run /setup-ftr — verify directories and registry entries created                                                                                                                                                                             │
+│ 2. Run /add-doc test-topic --detailed — verify document written with frontmatter, index rebuilt                                                                                                                                                 │
+│ 3. Run /things:search --tag <auto-tag> — verify document is discoverable                                                                                                                                                                        │
+│ 4. Run /setup-pb — verify directories and 3 registry entries created                                                                                                                                                                            │
+│ 5. Place a test plan in ~/.claude/plans/, run /planned test-plan — verify import with frontmatter                                                                                                                                               │
+│ 6. Run /playbook:create-workflow development — verify XML workflow created                                                                                                                                                                      │
+│ 7. Run /playbook:review-against <plan> as:dhh — verify think-like integration works                                                                                                                                                             │
+│ 8. Verify index.json files rebuild correctly after each write

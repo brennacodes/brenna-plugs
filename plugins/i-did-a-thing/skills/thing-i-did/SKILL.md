@@ -66,7 +66,7 @@ Walk the user through capturing a professional experience with enough depth and 
       <constraint>
       What does NOT count:
       - Code debugging sessions or casual chat that isn't about a professional experience
-      - Prior skill runs (like `/practice`) -- these are not themselves loggable events
+      - Prior skill runs (like `/practice-wdyd`) -- these are not themselves loggable events
       - Generic greetings or unrelated conversation
       </constraint>
     </substep>
@@ -443,7 +443,7 @@ Walk the user through capturing a professional experience with enough depth and 
 
     This is your Nth logged entry. (encouraging message based on count/streak)
 
-    Resume bullets are ready in the log. Run `/practice` to practice talking about it in an interview.
+    Resume bullets are ready in the log. Run `/practice-wdyd` to practice talking about it in an interview.
     </completion-message>
   </step>
 

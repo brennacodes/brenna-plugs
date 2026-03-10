@@ -721,7 +721,7 @@ See `references/config-schema.md` for config schemas and `references/registry-sc
     - think-like/preferences.json
 
     Your existing data files (logs, sessions, voices, etc.) are still in their original locations.
-    Run `/migrate` to relocate them to the new per-plugin directory structure.
+    Run `/migrate-things` to relocate them to the new per-plugin directory structure.
 
     config.yml has been preserved as a backup.
     </output>
@@ -740,7 +740,7 @@ See `references/config-schema.md` for config schemas and `references/registry-sc
     Start using plugins:
     - `/thing-i-did` -- Log an accomplishment
     - `/profile dhh code-review` -- Run an expert code review
-    - `/status` -- See what's in your .things directory
+    - `/status-things` -- See what's in your .things directory
 
     Individual plugins will set up their directories on first use, or you can run their setup commands to pre-configure preferences.
     </output>

@@ -250,11 +250,11 @@ You are configuring the mark-my-words plugin for the user's blog. Your job is to
     <ask-user-question>
       <question>Would you like to create a voice profile? Voice profiles teach mark-my-words how you actually write, so posts sound like you instead of generic AI.</question>
       <option>Yes -- set one up now</option>
-      <option>Later -- I'll run `/create-voice` when I'm ready</option>
+      <option>Later -- I'll run `/create-voice-mmw` when I'm ready</option>
       <option>No thanks -- I'll skip voice profiles</option>
     </ask-user-question>
 
-    <if condition="user-yes-voice">Tell the user to run `/create-voice` after setup completes -- it needs writing samples and works best as its own step. Note that they can create multiple voice profiles and switch between them.</if>
+    <if condition="user-yes-voice">Tell the user to run `/create-voice-mmw` after setup completes -- it needs writing samples and works best as its own step. Note that they can create multiple voice profiles and switch between them.</if>
     <if condition="user-later-or-no-thanks">Move on.</if>
   </step>
 
@@ -262,11 +262,11 @@ You are configuring the mark-my-words plugin for the user's blog. Your job is to
     <description>Confirm</description>
 
     <completion-message>
-      Tell the user their config has been saved and they can now use `/new-post`, `/update-post`, `/manage-post`, and `/add-media`.
+      Tell the user their config has been saved and they can now use `/new-post-mmw`, `/update-post-mmw`, `/manage-post-mmw`, and `/add-media-mmw`.
 
       <if condition="user-said-yes-to-voice">Remind them:
 
-      > Run `/create-voice` to set up your writing voice. Voice profiles are stored in `<home>/.things/mark-my-words/voices/` for cross-machine sync.
+      > Run `/create-voice-mmw` to set up your writing voice. Voice profiles are stored in `<home>/.things/mark-my-words/voices/` for cross-machine sync.
 
       </if>
     </completion-message>

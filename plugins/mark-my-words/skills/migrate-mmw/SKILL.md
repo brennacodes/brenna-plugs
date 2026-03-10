@@ -136,7 +136,7 @@ This skill handles **data file relocation only**. Config migration (config.yml -
     - <n> voice profiles -> `~/.things/mark-my-words/voices/`
     - Blog working directory: `~/.mark-my-words`
 
-    Your data is now in the per-plugin directory structure. Use `/new-post` to write a post.
+    Your data is now in the per-plugin directory structure. Use `/new-post-mmw` to write a post.
     </completion-message>
   </step>
 

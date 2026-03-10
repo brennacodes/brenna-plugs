@@ -11,7 +11,7 @@ Capture a verbatim discussion into `~/.things/for-the-record/discussions/`. The 
 </purpose>
 
 <critical-constraint>
-This skill exists specifically because `/add-doc` intelligently structures and summarizes. This skill does the OPPOSITE: it preserves content verbatim. DO NOT summarize, reword, restructure, interpret, or omit ANY content. Every word the user provides (or that is read from a file) MUST appear in the output exactly as given.
+This skill exists specifically because `/add-doc-ftr` intelligently structures and summarizes. This skill does the OPPOSITE: it preserves content verbatim. DO NOT summarize, reword, restructure, interpret, or omit ANY content. Every word the user provides (or that is read from a file) MUST appear in the output exactly as given.
 </critical-constraint>
 
 <steps>

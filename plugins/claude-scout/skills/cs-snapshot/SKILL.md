@@ -123,7 +123,7 @@ Capture the current state of a tracked target directory as a git snapshot. Detec
     - Insertions: <insertions>, Deletions: <deletions>
     <if tag>- Tagged: `<tag>`</if>
 
-    View changes: `/diff-cs` or `/whats-new`
+    View changes: `/diff-cs` or `/whats-new-cs`
     </completion-message>
   </step>
 

@@ -29,7 +29,7 @@ To reconfigure:
 **Add Document** - Capture a document from conversation context. Gathers relevant context from the current conversation, auto-selects the best document structure (decision doc, technical reference, discussion summary, how-to guide, or architecture doc), generates tags from content and existing tag vocabulary, and writes a frontmatter-enhanced markdown file. Use `--detailed` for maximum context preservation or `--tags` to specify tags explicitly.
 
 ```
-/add-doc <topic> [--detailed] [--tags tag1,tag2]
+/add-doc-ftr <topic> [--detailed] [--tags tag1,tag2]
 ```
 
 **Capture Discussion** - Capture a verbatim discussion exactly as provided. No summarization, no rewording, no omission -- every word is preserved. Use when you need the full back-and-forth, not a structured summary. Paste content directly or read from a file.

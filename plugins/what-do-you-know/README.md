@@ -25,25 +25,25 @@ Requires things to be set up first (`/things:setup-things`).
 **Explore** - Topic-driven deep dive with a persona probing your understanding. Grounded in your arsenal - questions reference your actual projects, decisions, and lessons. Produces a concept map showing what's strong, partial, and missing.
 
 ```
-/explore <topic> [--persona staff-engineer|...] [--depth exploratory|focused|deep]
+/explore-wdyk <topic> [--persona staff-engineer|...] [--depth exploratory|focused|deep]
 ```
 
 **Quiz** - Concept-based spaced repetition with dynamically generated questions. No static question bank - every question is created from your index.json, referencing your real projects and experiences. Tracks scores over time for spaced repetition scheduling.
 
 ```
-/quiz [--topic <topic>] [--persona staff-engineer|...] [--count 3|5|10]
+/quiz-wdyk [--topic <topic>] [--persona staff-engineer|...] [--count 3|5|10]
 ```
 
 **Gaps** - Knowledge gap analysis that cross-references your building and aspirational skills against arsenal evidence depth, evidence type diversity, learning session scores, and evidence recency. Classifies each area as Strong, Building, Gap, or Blind Spot.
 
 ```
-/gaps [--focus building|aspirational|all]
+/gaps-wdyk [--focus building|aspirational|all]
 ```
 
 **Bridge** - Personalized learning plan builder. Finds your closest existing knowledge and builds a path from there to the gap topic, with exercises tied to your actual projects and checkpoints using explore and quiz sessions.
 
 ```
-/bridge <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
+/bridge-wdyk <gap-topic> [--from <existing-strength>] [--timeline 1-week|2-weeks|1-month]
 ```
 
 **Migrate Data** - Move what-do-you-know data from the old `~/.things/learning/` layout to the per-plugin directory structure. Moves sessions and study plans, and converts the markdown progress dashboard and knowledge map to JSON. Run `/things:setup-things` first if config.json doesn't exist yet.

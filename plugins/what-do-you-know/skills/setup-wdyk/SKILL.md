@@ -288,10 +288,10 @@ done
         - Focus areas: `<areas or "following building_skills + aspirational_skills">`
 
         Quick start:
-        - `/explore` -- Deep-dive into a topic from your experience
-        - `/quiz` -- Test your knowledge with concept questions
-        - `/gaps` -- Analyze knowledge gaps across your skill areas
-        - `/bridge` -- Build a learning plan for a specific gap
+        - `/explore-wdyk` -- Deep-dive into a topic from your experience
+        - `/quiz-wdyk` -- Test your knowledge with concept questions
+        - `/gaps-wdyk` -- Analyze knowledge gaps across your skill areas
+        - `/bridge-wdyk` -- Build a learning plan for a specific gap
         </output>
       </template>
     </completion-message>

@@ -1,0 +1,103 @@
+⏺ So you want to track a specific dotfile directory — like ~/.some-app/ — and understand what changes each time the app updates it. The git-tracking idea is actually solid for this. Let me think
+through the tradeoffs:
+
+Git-tracking the dotfile directory:
+- Pro: Automatic diffing, history, tree comparison all for free
+- Pro: git diff --stat gives you exactly the "what files changed" view
+- Pro: Content diffs come built-in
+- Concern: Would the app's update process blow away .git/?
+
+That last concern depends entirely on the app. Most apps update files within a directory rather than replacing the directory itself. If the app does rm -rf ~/.app && mkdir ~/.app, then yes,
+.git/ gets nuked. But if it just writes/overwrites individual files (which is far more common), git survives fine.
+
+You could test this with one update cycle — git init the directory, commit everything, run the update, and see if .git/ is still there.
+
+If git survives updates, the plugin becomes elegantly simple:
+1. Auto-commit a snapshot before the update (or on a schedule)
+2. After the update, diff against the last commit
+3. Present the results: new files, removed files, modified files with content diffs
+4. Optionally correlate with the app's CHANGELOG if one exists
+
+If git doesn't survive, the fallback is:
+1. Keep snapshots outside the target directory (e.g., in ~/.things/snapshots/)
+2. Store file tree manifests (path + hash + size + mtime) as JSON
+3. Diff manifests to detect changes
+4. Store full file copies for content diffing (or just the manifest if that's too heavy)
+
+Which app/directory are you thinking about? That might help nail down which approach fits. And is this something you'd want to generalize (track any dotfile directory) or is it really one
+specific target?
+
+⏺ So you want to track a specific dotfile directory — like ~/.some-app/ — and understand what changes each time the app updates it. The git-tracking idea is actually solid for this. Let me think
+  through the tradeoffs:
+
+  Git-tracking the dotfile directory:
+  - Pro: Automatic diffing, history, tree comparison all for free
+  - Pro: git diff --stat gives you exactly the "what files changed" view
+  - Pro: Content diffs come built-in
+  - Concern: Would the app's update process blow away .git/?
+
+  That last concern depends entirely on the app. Most apps update files within a directory rather than replacing the directory itself. If the app does rm -rf ~/.app && mkdir ~/.app, then yes,
+  .git/ gets nuked. But if it just writes/overwrites individual files (which is far more common), git survives fine.
+
+  You could test this with one update cycle — git init the directory, commit everything, run the update, and see if .git/ is still there.
+
+  If git survives updates, the plugin becomes elegantly simple:
+  1. Auto-commit a snapshot before the update (or on a schedule)
+  2. After the update, diff against the last commit
+  3. Present the results: new files, removed files, modified files with content diffs
+  4. Optionally correlate with the app's CHANGELOG if one exists
+
+  If git doesn't survive, the fallback is:
+  1. Keep snapshots outside the target directory (e.g., in ~/.things/snapshots/)
+  2. Store file tree manifests (path + hash + size + mtime) as JSON
+  3. Diff manifests to detect changes
+  4. Store full file copies for content diffing (or just the manifest if that's too heavy)
+
+  Which app/directory are you thinking about? That might help nail down which approach fits. And is this something you'd want to generalize (track any dotfile directory) or is it really one
+  specific target?
+
+✻ Worked for 40s
+
+❯ I could just re-initialize it if it got nuked with a hook of my own - no? It's really for one specific target - `.claude` lol I'm curious about what things are in there and being silently
+  added/updated/removed - mostly due to extreme curiosity but also to uncover what kinds of capabilites are being added/removed/moved/renamed/etc. and how the system running some of the
+  features is silently evolving or changing, if that makes sense. It also would be helpful for some plugins and skills I've made that assume certain structures exist. If those change and I
+  don't know, it breaks things and I have no way of flagging that without triggering the bug explicitly.
+
+⏺ That makes total sense — and yes, a hook to re-init is a perfectly reasonable safety net. This is a great use case. Let me think through the design with you.
+
+  What makes this interesting beyond "just git init ~/.claude":
+
+  1. Noise filtering — ~/.claude/ probably has a lot of churn you don't care about (session data, JSONL transcripts, caches). The value is in tracking structural changes: what directories exist,
+  what config files changed, what got renamed.
+  2. Structural assertions — This is the killer feature for you specifically. Your plugins assume paths like ~/.claude/plugins/installed_plugins.json with a certain shape. You could declare those
+   dependencies and get flagged when they break, before triggering a bug.
+  3. Change archaeology — "When did ~/.claude/plugins/cache/ start organizing by marketplace name?" or "What changed in the directory structure between Claude Code 1.x and 2.x?"
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+⏺ User answered Claude's questions:
+  ⎿  · How much of ~/.claude/ do you actually care about tracking? There's probably a lot of session/transcript noise in there. → Everything
+     · For the structural assertions feature — where should plugin authors declare their path dependencies? → I'm confused, are you suggesting every plugin I make that has built-in
+     assumptions make this update now? Or are you just spitballing ideas unrelated to this plugin? Or are you suggesting this plugin actually locate plugins with silent dependencies and make
+     this update to them for them so it can run some kind of /claude-deps-doctor skill/scrpt on it to uncover what should fixed based on breaking changes to the "api surface"?
+
+
+⏺ Great question — I was jumping ahead and conflating things. Let me separate what I was thinking:
+
+  This plugin's job would be:
+  1. Track ~/.claude/ with git (the foundation)
+  2. Let you query what changed (the diffing/filtering layer)
+  3. Detect when changes might break your existing plugins (the intelligence layer)
+
+  For #3, I wasn't suggesting you go update all your plugins. I was thinking this plugin would be the one that infers the dependencies by scanning your installed plugins' SKILL.md files and
+  scripts for path references like ~/.claude/plugins/installed_plugins.json or ~/.claude/plugins/cache/.... Then when a structural change happens, it cross-references and says: "Hey,
+  ~/.claude/plugins/cache/ reorganized — and session-scout, for-the-record, and things all reference paths under there."
+
+  So it's more like a /claude-deps-doctor that:
+  - Scans your plugins for implicit path assumptions (grep for ~/.claude/, $HOME/.claude/, etc.)
+  - Builds a dependency map automatically
+  - After a Claude Code update, diffs the tree and flags which of your plugins might be affected
+
+  The plugins themselves wouldn't need to declare anything — this plugin figures it out by reading them.
+
+  Does that framing make more sense? And does that feel like the right scope, or is the core value really just the tracking + querying and the deps-doctor is a "nice to have later"?

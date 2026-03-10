@@ -13,12 +13,12 @@ heres-the-thing takes any subject matter and tailors communication for a specifi
 | Skill | Description |
 |-------|-------------|
 | `/heres-the-thing:setup-htt` | Initialize directories, preferences, launchd agent, register collections with things |
-| `/heres-the-thing:pitch` | Guided interview to create a campaign with strategy brief and deliverables |
-| `/heres-the-thing:prep` | Generate or refine deliverables for a specific goal, includes Q&A prep sessions |
-| `/heres-the-thing:outcome` | Log what happened, capture reflections, push feedback to profiles |
-| `/heres-the-thing:review` | Cross-campaign analysis -- patterns, medium effectiveness, audience insights |
-| `/heres-the-thing:audience` | Create and manage reusable audience segment profiles |
-| `/heres-the-thing:create-type` | Create custom deliverable types with templates and tool requirements |
+| `/heres-the-thing:pitch-htt` | Guided interview to create a campaign with strategy brief and deliverables |
+| `/heres-the-thing:prep-htt` | Generate or refine deliverables for a specific goal, includes Q&A prep sessions |
+| `/heres-the-thing:outcome-htt` | Log what happened, capture reflections, push feedback to profiles |
+| `/heres-the-thing:review-htt` | Cross-campaign analysis -- patterns, medium effectiveness, audience insights |
+| `/heres-the-thing:audience-htt` | Create and manage reusable audience segment profiles |
+| `/heres-the-thing:create-type-htt` | Create custom deliverable types with templates and tool requirements |
 | `/heres-the-thing:migrate-htt` | Future migration support |
 
 ## Data Structure

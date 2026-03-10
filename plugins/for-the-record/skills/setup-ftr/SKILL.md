@@ -1,6 +1,6 @@
 ---
 name: setup-ftr
-description: "Initialize for-the-record in .things/ - creates docs directory, registers collection, writes preferences. Required before /add-doc can store documents."
+description: "Initialize for-the-record in .things/ - creates docs directory, registers collection, writes preferences. Required before /add-doc-ftr can store documents."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 argument-hint: "[reconfigure]"
@@ -229,8 +229,8 @@ Initialize the `for-the-record` plugin within `~/.things/`. Creates the docs dir
     - Collections registered: `for-the-record/docs`, `for-the-record/discussions`
 
     Start capturing:
-    - `/add-doc <topic>` -- Capture a document from conversation context
-    - `/add-doc <topic> --detailed` -- Capture with maximum detail
+    - `/add-doc-ftr <topic>` -- Capture a document from conversation context
+    - `/add-doc-ftr <topic> --detailed` -- Capture with maximum detail
     - `/capture-discussion` -- Capture a verbatim discussion (no summarization)
     - `/import-ftr <path>` -- Import existing documentation files from any directory
     </completion-message>

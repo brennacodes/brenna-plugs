@@ -13,12 +13,12 @@ things is **domain-ignorant**: it doesn't know what logs, profiles, or resumes a
 | Skill | Description |
 |-------|-------------|
 | `/things:setup-things` | Initialize `.things/` - create directory structure, config, registry, git repo |
-| `/things:register` | Add, update, or remove collection definitions in the registry |
-| `/things:status` | Show collection counts, last-modified dates, git state, tag aggregation |
+| `/things:register-things` | Add, update, or remove collection definitions in the registry |
+| `/things:status-things` | Show collection counts, last-modified dates, git state, tag aggregation |
 | `/things:search-things` | Search across collections by tag, field, text, or find orphaned items |
-| `/things:validate` | Check git health, registry integrity, structural correctness, orphan detection |
-| `/things:sync` | Git push, pull, or status for the `.things/` repository |
-| `/things:migrate` | Migrate shared resources and clean up old layout artifacts. Per-plugin data is handled by each plugin's own migrate command |
+| `/things:validate-things` | Check git health, registry integrity, structural correctness, orphan detection |
+| `/things:sync-things` | Git push, pull, or status for the `.things/` repository |
+| `/things:migrate-things` | Migrate shared resources and clean up old layout artifacts. Per-plugin data is handled by each plugin's own migrate command |
 
 ## Directory Structure
 

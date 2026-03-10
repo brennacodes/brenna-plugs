@@ -66,7 +66,7 @@ The plugin automatically maintains:
 - **A tag index** - `tags.json` with tag counts and last-used dates
 - **Resume bullets** - pre-written bullets generated with each log entry in the type-appropriate format
 
-Logs include a Blog Seed section for use with `/from-things`, and the celebration step points you to `/practice` for interview rehearsal.
+Logs include a Blog Seed section for use with `/from-things-mmw`, and the celebration step points you to `/practice-wdyd` for interview rehearsal.
 
 ## Directory Structure
 

@@ -282,10 +282,10 @@ done
     > - Trusted sources: `<count or "built-in only">`
     >
     > Quick start:
-    > - `/practice` -- Drill a single question with coached feedback
-    > - `/mock` -- Simulate a full interview round
-    > - `/prep-for` -- Prepare for a specific company
-    > - `/review` -- Check your readiness across dimensions
+    > - `/practice-wdyd` -- Drill a single question with coached feedback
+    > - `/mock-wdyd` -- Simulate a full interview round
+    > - `/prep-for-wdyd` -- Prepare for a specific company
+    > - `/review-wdyd` -- Check your readiness across dimensions
 
     </completion-message>
   </step>

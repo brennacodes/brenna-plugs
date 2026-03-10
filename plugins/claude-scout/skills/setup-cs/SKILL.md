@@ -115,7 +115,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <ask-user-question>
       <question>How should snapshots be triggered?</question>
       <option label="Manual (Recommended)">Take snapshots explicitly with /cs-snapshot</option>
-      <option label="Daily">Remind to snapshot if none taken today (via /whats-new)</option>
+      <option label="Daily">Remind to snapshot if none taken today (via /whats-new-cs)</option>
     </ask-user-question>
 
     <ask-user-question>
@@ -360,7 +360,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     Commands:
     - `/cs-snapshot` -- Capture current state
     - `/diff-cs` -- Show changes between snapshots
-    - `/whats-new` -- Human-friendly change summary
+    - `/whats-new-cs` -- Human-friendly change summary
     - `/cs-changelog` -- Parse and query changelogs
     - `/cs-dep-doctor` -- Plugin health check
     </completion-message>

@@ -25,27 +25,27 @@ Configure output directory, format, naming conventions, and capture preferences.
 Full-control screenshot capture with target selection, post-processing, and format options.
 
 ```
-/capture
+/capture-ss
 ```
 
 ```
-/capture window "Safari"
+/capture-ss window "Safari"
 ```
 
 ```
-/capture region 100,200,800,600
+/capture-ss region 100,200,800,600
 ```
 
 ```
-/capture url "https://example.com"
+/capture-ss url "https://example.com"
 ```
 
 ```
-/capture display 2
+/capture-ss display 2
 ```
 
 ```
-/capture window "Xcode" --format jpg --resize 1280 --name xcode-debug
+/capture-ss window "Xcode" --format jpg --resize 1280 --name xcode-debug
 ```
 
 ### List Windows

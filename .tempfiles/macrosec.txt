@@ -1,0 +1,190 @@
+1. macosrec — Purpose-built CLI tool for macOS screen capture with direct GIF output. Can list windows and record specific ones headlessly.
+  - https://github.com/xenodium/macosrec
+2. screencapture + ffmpeg + gifsicle — The classic pipeline approach:
+  - Use macOS's built-in screencapture to record a .mov
+  - Convert to GIF with ffmpeg and optimize with gifsicle
+  - Fully scriptable, no GUI needed
+  - https://gist.github.com/dergachev/4627207
+3. ffmpeg directly — Can capture the screen and output GIF in one command:
+ffmpeg -f avfoundation -i "1" -t 10 -vf "fps=10,scale=640:-1" output.gif
+
+⏺ No, ffmpeg with avfoundation on macOS can capture specific regions using the -crop video filter, but the input is always a full screen or device — you crop in post. There's no native way to tell
+   avfoundation "only capture this rectangle."
+
+  So the practical approaches for partial-screen capture are:
+
+  1. Capture full screen, crop with ffmpeg filter
+
+  ffmpeg -f avfoundation -i "1" -t 10 \
+    -vf "crop=w:h:x:y,fps=10,scale=640:-1" output.gif
+  This works but records the entire screen and discards pixels — wasteful for large displays.
+
+  2. screencapture (built-in macOS) supports regions
+
+  # Interactive region selection (not fully headless)
+  screencapture -R x,y,w,h -v output.mov
+  The -R x,y,w,h flag captures a specific rectangle, and -v records video. Then convert with ffmpeg:
+  ffmpeg -i output.mov -vf "fps=10,scale=640:-1" output.gif
+  This is more efficient since it only records the region you need.
+
+  3. macosrec captures specific windows
+
+  Rather than coordinates, it targets a window by ID — which is often what you actually want (capture "this app" rather than "these pixel coordinates").
+
+  Bottom line
+
+  - Specific window → macosrec is the cleanest option
+  - Specific rectangle, known coordinates → screencapture -R x,y,w,h -v then convert with ffmpeg
+  - Specific rectangle, fully headless → ffmpeg full-screen capture with crop filter (works but wasteful)
+
+  None of these require a GUI to operate.
+
+❯ How do you start/stop the recording?
+
+⏺ Good question — it depends on the tool:
+  ffmpeg
+  - Start: just run the command
+  - Stop: press q in the terminal, or send it a signal from another process
+  - Fixed duration: use -t <seconds> to auto-stop
+
+  For scripted start/stop from another process:
+  # Start in background
+  ffmpeg -f avfoundation -i "1" -vf "fps=10" output.gif &
+  PID=$!
+
+  # ... do stuff ...
+
+  # Stop gracefully (ffmpeg writes the file properly on SIGINT)
+  kill -INT $PID
+
+  screencapture -v
+
+  - Start: run the command
+  - Stop: Ctrl+C or kill -INT $PID
+  - No built-in duration flag — you have to signal it yourself
+
+  screencapture -R 100,100,800,600 -v output.mov &
+  PID=$!
+  sleep 10
+  kill -INT $PID
+
+  macosrec
+
+  - Same pattern — start the command, stop with Ctrl+C / SIGINT
+  - Supports --duration for auto-stop
+
+  Key gotcha
+
+  With all of these, use kill -INT (SIGINT), not kill -9 or kill -TERM. The tools need to finalize the file (write headers, flush frames). A hard kill produces a corrupt/empty file.
+
+⏺ Here's how /feature-video works:
+
+  Approach: Screenshots-as-frames, not screen recording
+
+  It does not do live screen recording. Instead it:
+
+  1. Uses agent-browser (a headless browser CLI) to navigate your app and take screenshots at key moments
+  2. Stitches the screenshots into a video/GIF with ffmpeg
+  3. Uploads via rclone (to Cloudflare R2)
+  4. Embeds it in the PR description via gh pr edit
+
+  The flow
+
+  1. Parse args — takes a PR number (or current) and a base URL (default localhost:3000)
+  2. Gather context — reads the PR's changed files via gh and maps them to routes
+  3. Plan the shot list — proposes a walkthrough (start → navigate → demonstrate → result), asks you to confirm
+  4. Record — runs agent-browser commands (open, click, snapshot, screenshot) step by step, saving numbered PNGs to tmp/screenshots/
+  5. Stitch — ffmpeg combines the PNGs into an MP4 and a small preview GIF:
+  ffmpeg -y -framerate 0.5 -pattern_type glob -i 'tmp/screenshots/*.png' \
+    -c:v libx264 -pix_fmt yuv420p -vf "scale=1280:-2" tmp/videos/feature-demo.mp4
+  6. Upload — rclone copy to R2 cloud storage
+  7. Update PR — adds a clickable GIF preview (linking to the full MP4) in the PR body
+
+  Key detail
+
+  The framerate is 0.5 (each screenshot shows for 2 seconds), so it's more of an animated slideshow of key states than a smooth screen recording. This makes sense for PR demos where you want to
+  show "here's the before → here's the interaction → here's the result."
+
+⏺ agent-browser is an extra dependency — it's an npm package that needs to be installed:
+  npm install -g agent-browser && agent-browser install
+  The install step also downloads a bundled Chromium browser. So it's not lightweight.
+  It's essentially a CLI wrapper around Playwright/Puppeteer for headless browser automation — not something that ships with macOS or that most developers would already have.
+
+⏺ Yes — safaridriver is built into every Mac. It speaks the W3C WebDriver protocol and requires zero installation, just a one-time enable:
+
+  safaridriver --enable
+
+  Then you can drive Safari entirely via HTTP/curl:
+
+  # Start the driver
+  safaridriver -p 4444 &
+
+  # Create a session
+  SESSION=$(curl -s -X POST http://localhost:4444/session \
+    -d '{"capabilities":{"browserName":"safari"}}' | python3 -c "import json,sys; print(json.load(sys.stdin)['value']['sessionId'])")
+
+  # Navigate
+  curl -s -X POST "http://localhost:4444/session/$SESSION/url" \
+    -d '{"url":"http://localhost:3000"}'
+
+  # Take a screenshot (returns base64 PNG)
+  curl -s "http://localhost:4444/session/$SESSION/screenshot" \
+    | python3 -c "import json,sys,base64; open('shot.png','wb').write(base64.b64decode(json.load(sys.stdin)['value']))"
+
+  # Find and click elements
+  ELEMENT=$(curl -s -X POST "http://localhost:4444/session/$SESSION/element" \
+    -d '{"using":"css selector","value":"button.submit"}' | python3 -c "import json,sys; print(list(json.load(sys.stdin)['value'].values())[0])")
+
+  curl -s -X POST "http://localhost:4444/session/$SESSION/element/$ELEMENT/click"
+
+  # Clean up
+  curl -s -X DELETE "http://localhost:4444/session/$SESSION"
+  kill %1
+
+  This gives you the same capabilities as agent-browser (navigate, click, screenshot) with zero extra dependencies. Combined with screencapture -l <windowid> as an alternative screenshot method,
+  and ffmpeg (which the skill already requires), you'd have the full pipeline using only macOS builtins + ffmpeg.
+
+  The only trade-off vs. agent-browser is that Safari might render slightly differently than Chrome, and the WebDriver API is more verbose to call via raw curl. But it's all built-in.
+
+❯ Is there a way to navigate around and target elements using the accessibility tree instead? I guess that would require a reliabl accessibility tree for whatever you're trying to navigate
+  around, though....
+
+⏺ Yes, macOS has this built in via System Events / Accessibility APIs — and you're right about the trade-off.
+
+  How it works
+
+  AppleScript/JXA can traverse the accessibility tree of any running app:
+
+  tell application "System Events"
+      tell process "Safari"
+          -- Get the full tree
+          entire contents of window 1
+          -- Click a button by its AX role + title
+          click button "Submit" of group 1 of scroll area 1 of window 1
+      end tell
+  end tell
+
+  This works with zero dependencies — it's a core macOS framework.
+
+  The problem for web content
+
+  You nailed it. For native macOS apps, the accessibility tree is the source of truth — it's generally well-structured and reliable. But for web content in a browser, the AX tree is a lossy
+  projection of the DOM:
+
+  - Deeply nested through browser chrome → tab group → scroll area → web area → ...
+  - The hierarchy changes between browser versions
+  - Quality depends entirely on the site's ARIA/semantic HTML
+  - Finding "the submit button" means traversing a fragile, deeply nested path
+  - Dynamic content (SPAs, JS-rendered) can lag behind the actual DOM state
+
+  Why WebDriver wins for web content
+
+  safaridriver talks to the DOM directly — it knows what a <button> is, can query by CSS selector or XPath, and doesn't go through the accessibility layer. It's the right abstraction level for web
+   pages.
+
+  Where AX tree shines
+
+  If you were automating native macOS apps (not browsers), the accessibility tree would be the right choice — and it's available for free via osascript. Hammerspoon (hs.axuielement) is another
+  option with a nicer API, though that's an extra install.
+
+  TL;DR: For the feature-video use case (navigating a web app), safaridriver is more reliable. The AX tree approach would make more sense for automating native app workflows.

@@ -41,7 +41,7 @@ Invoke this skill when the user says things like:
       <action>Fullscreen capture.</action>
     </if>
     <if condition="user-mentioned-url">
-      <action>This is better handled by `/capture url "..."` -- suggest that instead and stop.</action>
+      <action>This is better handled by `/capture-ss url "..."` -- suggest that instead and stop.</action>
       <exit />
     </if>
   </step>
