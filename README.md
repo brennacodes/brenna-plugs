@@ -2,9 +2,7 @@
 
 ![installs](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbrennacodes%2Fbrenna-plugs%2Fmain%2F.github%2Fdata%2Fclones.json&query=%24.total&label=installs&color=brightgreen)
 
-This is where I plugin.
-
-Forgive the cheezy names - we all have to get our kicks somewhere.
+A composable, portable, interactive knowledge system that grows with you — 9 plugins for Claude Code with a shared data layer, cross-plugin coordination, and migration tooling.
 
 ## 9 Plugins
 
