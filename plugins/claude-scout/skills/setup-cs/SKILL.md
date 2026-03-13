@@ -31,15 +31,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     </load-config>
   </step>
 
-  <step id="determine-script-path" number="2">
-    <description>Determine Script Path</description>
-
-    <action>Read `<home>/.claude/plugins/installed_plugins.json` to find the cached install path for `claude-scout`. The `snapshot.sh` script lives at `<cached-path>/scripts/snapshot.sh`.</action>
-
-    <constraint>If the cached path cannot be determined, fall back to using `${CLAUDE_PLUGIN_ROOT}/scripts/snapshot.sh` and note that this path may need updating.</constraint>
-  </step>
-
-  <step id="configure-target" number="3">
+  <step id="configure-target" number="2">
     <description>Configure Tracking Target</description>
 
     <ask-user-question>
@@ -69,7 +61,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <if condition="already-tracked">Tell the user this path is already tracked as target `<id>`. Offer to reconfigure or stop.<exit /></if>
   </step>
 
-  <step id="create-directories" number="4">
+  <step id="create-directories" number="3">
     <description>Create Plugin Directories</description>
 
     ```bash
@@ -79,7 +71,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     ```
   </step>
 
-  <step id="init-git" number="5">
+  <step id="init-git" number="4">
     <description>Initialize Git Tracking</description>
 
     <action>Run snapshot.sh init to set up git tracking on an orphan branch.</action>
@@ -90,7 +82,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <if condition="error">Report the error and stop.<exit /></if>
   </step>
 
-  <step id="auto-detect" number="6">
+  <step id="auto-detect" number="5">
     <description>Auto-Detect Changelogs and Plugin Paths</description>
 
     <action>Scan the target directory for changelog files:</action>
@@ -109,7 +101,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <action>Report findings to the user. Don't ask for confirmation — just show what was found.</action>
   </step>
 
-  <step id="gather-preferences" number="7">
+  <step id="gather-preferences" number="6">
     <description>Gather Preferences</description>
 
     <ask-user-question>
@@ -126,7 +118,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     </ask-user-question>
   </step>
 
-  <step id="write-data-files" number="8">
+  <step id="write-data-files" number="7">
     <description>Write Data Files</description>
 
     <write path="<home>/.things/claude-scout/preferences.json">
@@ -209,14 +201,10 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     </write>
   </step>
 
-  <step id="register-collections" number="9">
+  <step id="register-collections" number="8">
     <description>Register Collections in Registry</description>
 
     <read path="<home>/.things/registry.json" output="registry" />
-
-    <action>Determine the absolute path to the rebuild script. Read the plugin's cached install path from `~/.claude/plugins/installed_plugins.json` for the `claude-scout` plugin. The rebuild_command must use this absolute cached path.</action>
-
-    <constraint>If the cached path cannot be determined, use a placeholder: `"python3 <UPDATE-WITH-CACHED-PATH>/scripts/rebuild-index.py ${THINGS_PATH}"`</constraint>
 
     <action>Add three collection entries to `registry.json`:</action>
 
@@ -239,7 +227,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
           }
         },
         "master_index": "claude-scout/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:claude-scout@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -265,7 +253,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
           }
         },
         "master_index": "claude-scout/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:claude-scout@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -291,7 +279,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
           }
         },
         "master_index": "claude-scout/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:claude-scout@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -301,13 +289,13 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <action>Merge all three into `registry.json`'s `collections` object and write the file.</action>
   </step>
 
-  <step id="update-environment" number="10">
+  <step id="update-environment" number="9">
     <description>Update Environment Tracking</description>
 
     <action>Read `config.json`, find the current hostname's environment entry, and add `"claude-scout"` to its `plugins` array if not already present. Write back.</action>
   </step>
 
-  <step id="initial-snapshot" number="11">
+  <step id="initial-snapshot" number="10">
     <description>Take Initial Baseline Snapshot</description>
 
     <command language="bash" tool="Bash">bash <script-path>/snapshot.sh snapshot "<target-path>" claude-scout "initial baseline"</command>
@@ -315,7 +303,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     <action>Parse the JSON output. Update snapshot-log.json and targets.json with the snapshot entry.</action>
   </step>
 
-  <step id="parse-changelogs" number="12">
+  <step id="parse-changelogs" number="11">
     <description>Parse Detected Changelogs</description>
 
     <if condition="changelogs-detected">
@@ -325,7 +313,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     </if>
   </step>
 
-  <step id="git-workflow" number="13">
+  <step id="git-workflow" number="12">
     <description>Handle Git Workflow</description>
 
     <git-workflow>
@@ -344,7 +332,7 @@ Initialize the `claude-scout` plugin within `~/.things/`. Configures a target di
     </git-workflow>
   </step>
 
-  <step id="confirm" number="14">
+  <step id="confirm" number="13">
     <description>Confirm Setup</description>
 
     <completion-message>

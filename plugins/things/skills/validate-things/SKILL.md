@@ -107,6 +107,16 @@ Check the structural integrity of `.things/` data against the collection registr
     <check name="item-index-fields">Do required fields exist?</check>
     </validation>
     </if>
+
+    <if condition="rebuild-command-set">
+    Rebuild command validation:
+
+    <validation>
+    <check name="rebuild-command-stale">If `rebuild_command` contains an absolute path (does NOT contain `${PLUGIN_PATH:}`), check whether the referenced path exists on disk.</check>
+    <rule>Report: `STALE rebuild_command: path does not exist` if the path is missing.</rule>
+    <rule>In `--fix` mode: suggest running `/things:repair-things` to update to portable format.</rule>
+    </validation>
+    </if>
   </step>
 
   <step id="orphan-detection" number="6">

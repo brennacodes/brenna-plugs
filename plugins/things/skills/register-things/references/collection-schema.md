@@ -80,17 +80,22 @@ An empty schema (`{}`) means no index validation is performed.
 The `rebuild_command` is invoked by HTT's PostToolUse hook when a write is detected in the collection's directory.
 
 Requirements:
-- Must be a complete shell command with absolute paths
-- Path is resolved at registration time (not at runtime)
+- Must be a complete shell command
 - `${THINGS_PATH}` is available as an environment variable at invocation time
 - Command should exit 0 on success, non-zero on failure (failures don't block the hook)
+
+### Portable plugin paths
+
+Use `${PLUGIN_PATH:<plugin>@<marketplace>}` tokens instead of absolute paths. The token is resolved dynamically by `on-write.sh` at invocation time by looking up the plugin's current `installPath` in `~/.claude/plugins/installed_plugins.json`. This avoids path breakage when plugins are upgraded to new versions.
 
 Example:
 ```json
 {
-  "rebuild_command": "python3 /Users/user/.claude/plugins/cache/brenna-plugs/i-did-a-thing/4.0.0/scripts/rebuild-data.py ${THINGS_PATH}"
+  "rebuild_command": "python3 ${PLUGIN_PATH:i-did-a-thing@brenna-plugs}/scripts/rebuild-data.py ${THINGS_PATH}"
 }
 ```
+
+Raw absolute paths are still supported for backward compatibility but are discouraged — they break on plugin version upgrades.
 
 Set to `null` for collections that don't need automated rebuilds.
 
@@ -149,7 +154,7 @@ Set to `null` for collections that don't need automated rebuilds.
     }
   },
   "master_index": "i-did-a-thing/index.json",
-  "rebuild_command": "python3 /path/to/rebuild-data.py ${THINGS_PATH}"
+  "rebuild_command": "python3 ${PLUGIN_PATH:i-did-a-thing@brenna-plugs}/scripts/rebuild-data.py ${THINGS_PATH}"
 }
 ```
 

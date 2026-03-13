@@ -1,6 +1,6 @@
 {
   "name": "claude-scout",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Track filesystem changes in ~/.claude/ and other directories — git snapshots, changelog parsing, diff queries, and plugin dependency health checks",
   "author": {
     "name": "brennacodes",

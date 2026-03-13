@@ -133,13 +133,17 @@ When the PostToolUse hook triggers a collection rebuild, it also triggers a cent
 
 When present, HTT's PostToolUse hook invokes this command after detecting a write to the collection's directory. The command receives `${THINGS_PATH}` as an environment variable.
 
+### Portable plugin paths
+
+Use `${PLUGIN_PATH:<plugin>@<marketplace>}` tokens instead of absolute paths. The token is resolved dynamically by `on-write.sh` at invocation time by looking up the plugin's current `installPath` in `~/.claude/plugins/installed_plugins.json`. This avoids path breakage when plugins are upgraded to new versions.
+
 ```json
 {
-  "rebuild_command": "python3 /absolute/path/to/rebuild-data.py ${THINGS_PATH}"
+  "rebuild_command": "python3 ${PLUGIN_PATH:for-the-record@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
 }
 ```
 
-The path is resolved to an absolute path at registration time. If the plugin is upgraded to a new cached version, the registration should be updated.
+Raw absolute paths are still supported for backward compatibility but are discouraged — they break on plugin version upgrades.
 
 If `rebuild_command` is `null`, no rebuild is triggered for writes to this collection.
 
@@ -238,7 +242,7 @@ The central tag index at `tags/index.json` aggregates tags across all registered
         }
       },
       "master_index": "i-did-a-thing/index.json",
-      "rebuild_command": "python3 /path/to/rebuild-data.py ${THINGS_PATH}"
+      "rebuild_command": "python3 ${PLUGIN_PATH:i-did-a-thing@brenna-plugs}/scripts/rebuild-data.py ${THINGS_PATH}"
     }
   }
 }

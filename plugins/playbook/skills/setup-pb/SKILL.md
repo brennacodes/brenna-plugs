@@ -125,10 +125,6 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
 
     <read path="<home>/.things/registry.json" output="registry" />
 
-    <action>Determine the absolute path to the rebuild script. Read the plugin's cached install path from `~/.claude/plugins/installed_plugins.json` for the `playbook` plugin. The rebuild_command must use this absolute cached path.</action>
-
-    <constraint>If the cached path cannot be determined, use a placeholder: `"python3 <UPDATE-WITH-CACHED-PATH>/scripts/rebuild-index.py ${THINGS_PATH}"`</constraint>
-
     <action>Add (or update) all three collection entries in `registry.json`.</action>
 
     <schema name="plans-collection">
@@ -144,7 +140,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
           "optional_fields": { "status": "string", "source_plan": "string", "project": "string", "references": "string[]" }
         },
         "master_index": "playbook/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:playbook@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -163,7 +159,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
           "optional_fields": { "scope": "string", "target_path": "string", "step_count": "number" }
         },
         "master_index": "playbook/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:playbook@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -182,7 +178,7 @@ Initialize the `playbook` plugin within `~/.things/`. Creates directories for pl
           "optional_fields": { "plan_ref": "string", "branch": "string", "status": "string", "actionable_count": "number" }
         },
         "master_index": "playbook/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:playbook@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```

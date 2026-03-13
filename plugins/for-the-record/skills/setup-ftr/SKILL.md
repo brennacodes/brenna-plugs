@@ -118,10 +118,6 @@ Initialize the `for-the-record` plugin within `~/.things/`. Creates the docs dir
 
     <action>Add (or update) the `for-the-record/docs` and `for-the-record/discussions` collection entries.</action>
 
-    <action>Determine the absolute path to the rebuild script. Read the plugin's cached install path from `~/.claude/plugins/installed_plugins.json` for the `for-the-record` plugin. The rebuild_command must use this absolute cached path.</action>
-
-    <constraint>If the cached path cannot be determined, use a placeholder comment instructing the user to update after install: `"python3 <UPDATE-WITH-CACHED-PATH>/scripts/rebuild-index.py ${THINGS_PATH}"`</constraint>
-
     <schema name="collection-entry">
 
     ```json
@@ -148,7 +144,7 @@ Initialize the `for-the-record` plugin within `~/.things/`. Creates the docs dir
           }
         },
         "master_index": "for-the-record/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:for-the-record@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```
@@ -180,7 +176,7 @@ Initialize the `for-the-record` plugin within `~/.things/`. Creates the docs dir
           }
         },
         "master_index": "for-the-record/index.json",
-        "rebuild_command": "python3 <absolute-cached-path>/scripts/rebuild-index.py ${THINGS_PATH}"
+        "rebuild_command": "python3 ${PLUGIN_PATH:for-the-record@brenna-plugs}/scripts/rebuild-index.py ${THINGS_PATH}"
       }
     }
     ```

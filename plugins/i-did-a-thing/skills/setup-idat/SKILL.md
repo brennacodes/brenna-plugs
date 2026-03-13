@@ -53,6 +53,7 @@ mkdir -p <home>/.things/i-did-a-thing/resumes</command>
     {
       "plugin": "i-did-a-thing",
       "description": "Professional experience log entries",
+      "tags_field": "frontmatter.tags",
       "item_structure": {
         "directory_per_item": false,
         "file_pattern": "*.md"
@@ -71,15 +72,10 @@ mkdir -p <home>/.things/i-did-a-thing/resumes</command>
         }
       },
       "master_index": "i-did-a-thing/index.json",
-      "rebuild_command": "python3 ${PLUGIN_ROOT}/scripts/rebuild-data.py ${THINGS_PATH}"
+      "rebuild_command": "python3 ${PLUGIN_PATH:i-did-a-thing@brenna-plugs}/scripts/rebuild-data.py ${THINGS_PATH}"
     }
     ```
     </schema>
-
-    <constraint>
-    `${PLUGIN_ROOT}` in `rebuild_command` must be replaced with the actual absolute path to the i-did-a-thing plugin root at registration time. Detect it via:
-    <command language="bash" tool="Bash">echo "${CLAUDE_PLUGIN_ROOT}"</command>
-    </constraint>
 
     <schema name="arsenal-collection">
     i-did-a-thing/arsenal:
