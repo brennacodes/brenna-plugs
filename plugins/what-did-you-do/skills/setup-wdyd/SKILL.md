@@ -113,6 +113,8 @@ Configure the plugin to use your i-did-a-thing arsenal for interview preparation
 
     <command language="bash" tool="Bash">mkdir -p <home>/.things/what-did-you-do/sessions</command>
     <command language="bash" tool="Bash">mkdir -p <home>/.things/what-did-you-do/questions</command>
+    <command language="bash" tool="Bash">mkdir -p <home>/.things/what-did-you-do/prep-docs</command>
+    <command language="bash" tool="Bash">mkdir -p <home>/.things/what-did-you-do/printable-prep-docs</command>
   </step>
 
   <step id="seed-resources" number="6">
@@ -285,6 +287,8 @@ done
     > - `/practice-wdyd` -- Drill a single question with coached feedback
     > - `/mock-wdyd` -- Simulate a full interview round
     > - `/prep-for-wdyd` -- Prepare for a specific company
+    > - `/generate-prep-doc` -- Build a detailed prep doc for a specific interaction
+    > - `/print-prep` -- Create a printable HTML version of a prep doc
     > - `/review-wdyd` -- Check your readiness across dimensions
 
     </completion-message>
